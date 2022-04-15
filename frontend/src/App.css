@@ -24,6 +24,18 @@
   color: white;
 }
 
+.container {
+  background: #262626;
+  min-height: 100vh;
+  color: white;
+}
+
+.test {
+  width: 200px;
+  height: 200px;
+  margin: 20px;
+}
+
 .App-link {
   color: #61dafb;
 }
