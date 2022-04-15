@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+
+  backend:
+    container_name: api-backend
+    build:
+      context: backend
+    restart: always
+    image: api-backend:dev
+    ports:
+      - "10080:8080"
+    depends_on:
+      - postgres-db
+
+  postgres-db:
+    container_name: postgres-db
+    image: postgres
+    ports:
+      - '10000:5432'
+    environment:
+      POSTGRES_DB: postgres-db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_PORT: 5432
+    volumes:
+      - postgres-db-vol:/var/lib/postgres/data
+
+volumes:
+  postgres-db-vol:
+
+networks:
+  default:
+    external:
+      name: app-network

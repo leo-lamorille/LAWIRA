@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+    <changeSet id="insert accounts" author="HeavyNimbus">
+        <insert tableName="account">
+            <column name="email" value="admin@heavynimbus.com"/>
+            <column name="username" value="Administrator"/>
+            <column name="password" value="$2a$10$oJOUMdY8nUtCc0uJngwEA.elB86G36snDTBra31YUOh.xRuiJBW.K"/> <!-- pass -->
+        </insert>
+        <insert tableName="account">
+            <column name="email" value="staff@heavynimbus.com"/>
+            <column name="username" value="Staff"/>
+            <column name="password" value="$2a$10$oJOUMdY8nUtCc0uJngwEA.elB86G36snDTBra31YUOh.xRuiJBW.K"/> <!-- pass -->
+        </insert>
+        <insert tableName="account">
+            <column name="email" value="user@heavynimbus.com"/>
+            <column name="username" value="User"/>
+            <column name="password" value="$2a$10$oJOUMdY8nUtCc0uJngwEA.elB86G36snDTBra31YUOh.xRuiJBW.K"/> <!-- pass -->
+        </insert>
+    </changeSet>
+</databaseChangeLog>

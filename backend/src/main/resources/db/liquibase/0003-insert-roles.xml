@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+    <changeSet id="insert roles" author="HeavyNimbus">
+        <insert tableName="role">
+            <column name="role" value="ADMIN"/>
+            <column name="description" value="Allows the user to do all"/>
+        </insert>
+        <insert tableName="role">
+            <column name="role" value="STAFF"/>
+            <column name="description" value="Allows the user to call all endpoints related to staff"/>
+        </insert>
+        <insert tableName="role">
+            <column name="role" value="USER"/>
+            <column name="description" value="Allows the user to call all endpoints related to customers"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
