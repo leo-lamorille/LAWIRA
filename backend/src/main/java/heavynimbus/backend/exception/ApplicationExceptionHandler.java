@@ -34,8 +34,14 @@ import java.util.Map;
 @RestControllerAdvice
 public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler(BadCredentialsException.class)
+  @ResponseStatus(HttpStatus.CONFLICT)
+  @ExceptionHandler(AlreadyExistsException.class)
+  public void handleAlreadyExistsException(AlreadyExistsException e, HttpServletRequest request) {
+    log.error("An AlreadyExistsException has occurred on {}", request.getRequestURI(), e);
+  }
+
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  @ExceptionHandler(BadCredentialsException.class)
   public void handleBadCredentialsException(BadCredentialsException e, HttpServletRequest request) {
     log.error("Bad credentials on {}", request.getRequestURI(), e);
   }
@@ -44,28 +50,5 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public void handleInternalServerError(Exception e, HttpServletRequest request) {
     log.error("An internal server error has occurred on {}", request.getRequestURI(), e);
-  }
-
-  @Override
-  protected ResponseEntity<Object> handleMethodArgumentNotValid(
-      @NonNull MethodArgumentNotValidException ex,
-      HttpHeaders headers,
-      HttpStatus status,
-      WebRequest request) {
-    List<String> errors = new ArrayList<>();
-    for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-      errors.add(error.getField() + ": " + error.getDefaultMessage());
-    }
-    for (ObjectError error : ex.getBindingResult().getGlobalErrors()) {
-      errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
-    }
-
-    ApiExceptionResponse apiError =
-        ApiExceptionResponse.builder()
-            .status(HttpStatus.BAD_REQUEST)
-            .message(ex.getLocalizedMessage())
-            .data(Map.of("errors", errors))
-            .build();
-    return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
   }
 }

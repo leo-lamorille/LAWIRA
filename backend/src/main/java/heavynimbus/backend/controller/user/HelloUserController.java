@@ -1,6 +1,6 @@
 package heavynimbus.backend.controller.user;
 
-import heavynimbus.backend.controller.doc.HelloControllerDocumentation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/user/hello")
-public class HelloUserController implements HelloControllerDocumentation {
+@SecurityRequirement(name="jwt_auth")
+public class HelloUserController {
 
   @GetMapping
   @ResponseStatus(HttpStatus.OK)

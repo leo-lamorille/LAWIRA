@@ -13,10 +13,6 @@
                 <constraints nullable="false" notNullConstraintName="ACCOUNT_USERNAME_NOT_NULL" unique="true"
                              uniqueConstraintName="ACCOUNT_USERNAME_UNIQUE"/>
             </column>
-            <column name="email" type="VARCHAR(255)">
-                <constraints nullable="false" notNullConstraintName="ACCOUNT_EMAIL_NOT_NULL" unique="true"
-                             uniqueConstraintName="ACCOUNT_EMAIL_UNIQUE"/>
-            </column>
             <column name="password" type="VARCHAR(255)">
                 <constraints nullable="false" notNullConstraintName="ACCOUNT_PASSWORD_NOT_NULL"/>
             </column>

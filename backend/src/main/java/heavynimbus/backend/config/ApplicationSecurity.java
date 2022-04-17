@@ -30,16 +30,17 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
     http.authorizeRequests()
         .antMatchers(
             "/login",
+            "/signUp",
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/swagger-ui.html",
             "/health",
             "/error/**")
         .permitAll()
+        .antMatchers("/public/**")
+        .permitAll()
         .antMatchers("/user/**")
-        .hasAuthority("USER")
-        .antMatchers("/staff/**")
-        .hasAuthority("STAFF")
+        .hasAnyAuthority("USER", "ADMIN")
         .antMatchers("/admin/**")
         .hasAuthority("ADMIN")
         .anyRequest()
