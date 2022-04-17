@@ -29,17 +29,18 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests()
         .antMatchers(
-            "/login","/signUp",
+            "/login",
+            "/signUp",
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/swagger-ui.html",
             "/health",
             "/error/**")
         .permitAll()
+        .antMatchers("/public/**")
+        .permitAll()
         .antMatchers("/user/**")
-        .hasAuthority("USER")
-        .antMatchers("/staff/**")
-        .hasAuthority("STAFF")
+        .hasAnyAuthority("USER", "ADMIN")
         .antMatchers("/admin/**")
         .hasAuthority("ADMIN")
         .anyRequest()

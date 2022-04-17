@@ -10,22 +10,6 @@
             <column name="account_id" valueComputed="(SELECT id FROM account WHERE username='Administrator')"/>
         </insert>
         <insert tableName="account_roles">
-            <column name="role_id" valueComputed="(SELECT id FROM role WHERE role='STAFF')"/>
-            <column name="account_id" valueComputed="(SELECT id FROM account WHERE username='Administrator')"/>
-        </insert>
-        <insert tableName="account_roles">
-            <column name="role_id" valueComputed="(SELECT id FROM role WHERE role='USER')"/>
-            <column name="account_id" valueComputed="(SELECT id FROM account WHERE username='Administrator')"/>
-        </insert>
-        <insert tableName="account_roles">
-            <column name="role_id" valueComputed="(SELECT id FROM role WHERE role='STAFF')"/>
-            <column name="account_id" valueComputed="(SELECT id FROM account WHERE username='Staff')"/>
-        </insert>
-        <insert tableName="account_roles">
-            <column name="role_id" valueComputed="(SELECT id FROM role WHERE role='USER')"/>
-            <column name="account_id" valueComputed="(SELECT id FROM account WHERE username='Staff')"/>
-        </insert>
-        <insert tableName="account_roles">
             <column name="role_id" valueComputed="(SELECT id FROM role WHERE role='USER')"/>
             <column name="account_id" valueComputed="(SELECT id FROM account WHERE username='User')"/>
         </insert>

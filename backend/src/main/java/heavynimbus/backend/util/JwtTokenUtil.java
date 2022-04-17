@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -49,6 +50,12 @@ public class JwtTokenUtil {
   // generate token for user
   public String generateToken(UserDetails userDetails) {
     Map<String, Object> claims = new HashMap<>();
+    String role = userDetails.getAuthorities()
+            .stream()
+            .findAny()
+            .map(GrantedAuthority::getAuthority)
+            .orElseGet( () -> "USER");
+    claims.put("role", role);
     return doGenerateToken(claims, userDetails.getUsername());
   }
 

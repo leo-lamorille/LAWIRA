@@ -10,10 +10,6 @@
             <column name="description" value="Allows the user to do all"/>
         </insert>
         <insert tableName="role">
-            <column name="role" value="STAFF"/>
-            <column name="description" value="Allows the user to call all endpoints related to staff"/>
-        </insert>
-        <insert tableName="role">
             <column name="role" value="USER"/>
             <column name="description" value="Allows the user to call all endpoints related to customers"/>
         </insert>
