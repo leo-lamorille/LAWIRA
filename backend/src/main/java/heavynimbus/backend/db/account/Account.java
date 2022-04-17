@@ -1,26 +1,22 @@
 package heavynimbus.backend.db.account;
 
+import heavynimbus.backend.db.UUIDBasedEntity;
 import heavynimbus.backend.db.accountRole.AccountRole;
 import heavynimbus.backend.db.accountRole.AccountRoleEnum;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "account")
-public class Account {
-
-  @Id
-  @Column(name = "id")
-  private UUID id;
-
-  @NotNull
-  @Column(name = "email", nullable = false)
-  private String email;
+public class Account extends UUIDBasedEntity {
 
   @Column(name = "username", nullable = false)
   private String username;

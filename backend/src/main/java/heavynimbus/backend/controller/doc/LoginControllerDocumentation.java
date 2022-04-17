@@ -25,10 +25,6 @@ public interface LoginControllerDocumentation {
               content =
                   @Content(
                       schema = @Schema(implementation = LoginRequest.class),
-                      mediaType = MediaType.APPLICATION_JSON_VALUE,
-                      examples =
-                          @ExampleObject(
-                              summary = "login request example",
-                              description = "With valid credentials")))
+                      mediaType = MediaType.APPLICATION_JSON_VALUE))
           LoginRequest loginRequest);
 }
