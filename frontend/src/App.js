@@ -1,17 +1,16 @@
-import MenuIcon from '@material-ui/icons/Menu';
-import LocalGroceryStoreOutlinedIcon from '@mui/icons-material/LocalGroceryStoreOutlined';
 import './App.css';
+import {BrowserRouter} from "react-router-dom";
+import Navigator from "./features/navigator";
+import Navbar from "./features/navbar/navbar";
 
 function App() {
   return (
-    <div className="App">
-      <body>
-          <div className="container">
-              <MenuIcon />
-              <LocalGroceryStoreOutlinedIcon className="test"/>
-          </div>
-      </body>
-    </div>
+    <>
+      <BrowserRouter>
+          <Navbar />
+          <Navigator />
+      </BrowserRouter>
+    </>
   );
 }
 
