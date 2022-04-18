@@ -9,7 +9,7 @@ services:
     restart: always
     image: api-backend:dev
     ports:
-      - "10080:8080"
+      - "8080:8080"
     depends_on:
       - postgres-db
 
