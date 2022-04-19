@@ -9,10 +9,12 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import LocalGroceryStoreOutlinedIcon from '@mui/icons-material/LocalGroceryStoreOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined'
 import MenuIcon from '@material-ui/icons/Menu';
 import {useState} from "react";
 import {ThemeProvider} from "@material-ui/core";
 import {Link} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -61,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Navbar() {
     const classes = useStyles();
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-
+    const userRole = useSelector(state => state.user.role);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
     const handleMobileMenuClose = () => {
@@ -75,6 +77,11 @@ export default function Navbar() {
     const handleMobileMenuOpen = (event) => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
+
+    const checkNavigation = (path) => {
+        return userRole ? path : '/account/signIn';
+    }
+
 
     const mobileMenuId = 'primary-search-account-menu-mobile';
     const renderMobileMenu = (
@@ -123,31 +130,40 @@ export default function Navbar() {
                         <Link to="/aboutus" className={classes.title}>
                             A propos
                         </Link>
-                        <Link to="/product" className={classes.title}>
+                        <Link to={checkNavigation('/product')} className={classes.title}>
                             Produit
                         </Link>
                     </div>
                     <div className={classes.grow} />
-                    <Link to="admin" className={classes.iconButton}>
-                        <IconButton color="inherit">
-                            <LockOutlinedIcon />
-                        </IconButton>
-                    </Link>
-                    <Link to="/basket" className={classes.iconButton}>
+                    {
+                        userRole === 'ADMIN' ?
+                            <Link to="admin" className={classes.iconButton}>
+                                <IconButton color="inherit">
+                                    <LockOutlinedIcon />
+                                </IconButton>
+                            </Link> : null
+                    }
+                    <Link to={checkNavigation('/basket')} className={classes.iconButton}>
                         <IconButton color="inherit">
                             <LocalGroceryStoreOutlinedIcon />
                         </IconButton>
                     </Link>
-                    <Link to="/account" className={classes.iconButton}>
+                    <Link to={checkNavigation('/account')} className={classes.iconButton}>
                         <IconButton color="inherit">
                             <AccountCircle />
                         </IconButton>
                     </Link>
-                    <IconButton
-                        color="inherit"
-                    >
-                        <LogoutOutlinedIcon />
-                    </IconButton>
+                    {
+                        userRole === '' ?
+                            <Link to="/account/signIn" className={classes.iconButton}>
+                                <IconButton color="inherit">
+                                    <LoginOutlinedIcon />
+                                </IconButton>
+                            </Link> :
+                            <IconButton color="inherit">
+                                <LogoutOutlinedIcon />
+                            </IconButton>
+                    }
                 </Toolbar>
             </AppBar>
             {renderMobileMenu}
