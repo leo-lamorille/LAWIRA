@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
+import java.nio.charset.StandardCharsets;
+
 @Log4j2
 @RestController
 @RequiredArgsConstructor
@@ -36,5 +38,10 @@ public class LoginController implements LoginControllerDocumentation {
       throws AlreadyExistsException {
     String jwtToken = accountService.createAccount(loginRequest);
     return new LoginResponse(jwtToken);
+  }
+
+  public static void main(String[] args) {
+    String a = "";
+    a.getBytes(StandardCharsets.UTF_8);
   }
 }
