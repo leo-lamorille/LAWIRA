@@ -24,4 +24,8 @@ public record AccountService(AccountRepository accountRepository,
         }
         return loginService.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
     }
+
+    public Account findByUsername(String username){
+        return accountRepository.findByUsername(username).orElseThrow();
+    }
 }
