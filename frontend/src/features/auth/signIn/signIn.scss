@@ -1,0 +1,56 @@
+.signInContainer {
+  color: #ffffff;
+  position: relative;
+  height: 80vh;
+
+  .modal {
+    margin: 0;
+    width: 50%;
+    height: 60%;
+    background-color: #5D5D5D;
+    border-radius: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+    .title {
+      text-align: center;
+      font-size: 3vh;
+      font-weight: bold;
+    }
+
+    .inputContainer {
+      margin: 2vh 2vw;
+      .secondTitle {
+        font-size: 2vh;
+        font-weight: 500;
+      }
+      .inputSign {
+        width: 90%;
+        height: 3vh;
+        border-radius: 5px;
+        border: 0 solid;
+        background-color: #E4E4E4;
+        text-align: center;
+      }
+    }
+
+    .buttonContainer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .buttonSign {
+        cursor: pointer;
+        margin: 3vh 2.5vw;
+        border-radius: 10px;
+        border: 0 solid;
+        background-color: #F2F2F2;
+        font-weight: 700;
+        padding: 1.5vh 2vw;
+      }
+    }
+  }
+}
