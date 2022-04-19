@@ -2,14 +2,11 @@ package heavynimbus.backend.db.account;
 
 import heavynimbus.backend.db.UUIDBasedEntity;
 import heavynimbus.backend.db.accountRole.AccountRole;
-import heavynimbus.backend.db.accountRole.AccountRoleEnum;
-import heavynimbus.backend.db.order.Order;
+import heavynimbus.backend.db.command.Command;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -28,7 +25,7 @@ public class Account extends UUIDBasedEntity {
   @Column(name = "enabled", nullable = false)
   private Boolean enabled;
 
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
       name = "account_roles",
       joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
@@ -36,5 +33,5 @@ public class Account extends UUIDBasedEntity {
   private List<AccountRole> roles;
 
   @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
-  private List<Order> orders;
+  private List<Command> commands;
 }

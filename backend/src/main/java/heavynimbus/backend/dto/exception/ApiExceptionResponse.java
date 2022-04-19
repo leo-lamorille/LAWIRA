@@ -10,6 +10,5 @@ import java.util.Map;
 @Builder
 public class ApiExceptionResponse {
   private HttpStatus status;
-  private String message;
   private Map<String, Object> data;
 }

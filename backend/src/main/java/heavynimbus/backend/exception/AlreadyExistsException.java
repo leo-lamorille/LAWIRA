@@ -1,11 +1,13 @@
 package heavynimbus.backend.exception;
 
-public class AlreadyExistsException extends Exception {
+import org.springframework.http.HttpStatus;
+
+public class AlreadyExistsException extends ApiException {
   public AlreadyExistsException(String message) {
-    super(message);
+    super(HttpStatus.CONFLICT, null, message);
   }
 
   public AlreadyExistsException(String message, Throwable cause) {
-    super(message, cause);
+    super(HttpStatus.CONFLICT, null, message, cause);
   }
 }

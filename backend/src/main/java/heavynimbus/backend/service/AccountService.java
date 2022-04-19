@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 public record AccountService(AccountRepository accountRepository,
                              AccountMapper accountMapper,
                              LoginService loginService) {
-
     public String createAccount(LoginRequest loginRequest) throws AlreadyExistsException {
         Account account = accountMapper.loginRequestToAccount(loginRequest);
         try {
