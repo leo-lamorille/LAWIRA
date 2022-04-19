@@ -14,7 +14,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import {useState} from "react";
 import {ThemeProvider} from "@material-ui/core";
 import {Link} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {userSlice} from "../slices/userSlice";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -61,6 +62,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Navbar() {
+    const userAction = userSlice.actions;
+    const dispatch = useDispatch();
     const classes = useStyles();
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
     const userRole = useSelector(state => state.user.role);
@@ -80,6 +83,13 @@ export default function Navbar() {
 
     const checkNavigation = (path) => {
         return userRole ? path : '/account/signIn';
+    }
+
+    const logout = () => {
+        dispatch(userAction.setSub(''));
+        dispatch(userAction.setRole(''));
+        dispatch(userAction.setExp(0));
+        dispatch(userAction.setIat(0));
     }
 
 
@@ -160,7 +170,7 @@ export default function Navbar() {
                                     <LoginOutlinedIcon />
                                 </IconButton>
                             </Link> :
-                            <IconButton color="inherit">
+                            <IconButton color="inherit" onClick={logout}>
                                 <LogoutOutlinedIcon />
                             </IconButton>
                     }
