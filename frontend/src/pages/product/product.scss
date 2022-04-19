@@ -1,0 +1,25 @@
+.product__page {
+    padding: 5vh 15vw;
+
+    > .progress {
+        margin-top: 100px;
+        width: 50px;
+        margin: auto;
+    }
+
+    > h1 {
+        text-align: center;
+    }
+
+    .quantity, button{
+        display: block;
+        margin: 40px auto;
+        width: 300px;
+    }
+
+    .errorMessage {
+        text-align: center;
+        font-weight: bold;
+        color: red;
+    }
+}

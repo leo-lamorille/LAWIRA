@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+    <changeSet id="create product and configurations" author="HeavyNimbus">
+        <createTable tableName="attribute">
+            <column name="id" type="UUID" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" primaryKeyName="ATTRIBUTE_ID_PK"/>
+            </column>
+            <column name="name" type="VARCHAR(50)"/>
+            <column name="description" type="TEXT"/>
+        </createTable>
+
+        <createTable tableName="attribute_option">
+            <column name="id" type="UUID" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" primaryKeyName="ATTRIBUTE_OPTION_ID_PK"/>
+            </column>
+            <column name="value" type="VARCHAR(255)">
+                <constraints nullable="false" notNullConstraintName="ATTRIBUTE_OPTION_VALUE_NOT_NULL"/>
+            </column>
+            <column name="type" type="VARCHAR(10)">
+                <constraints nullable="false" notNullConstraintName="ATTRIBUTE_OPTION_TYPE_NOT_NULL"/>
+            </column>
+            <column name="attribute_id" type="UUID">
+                <constraints references="attribute(id)" foreignKeyName="ATTRIBUTE_OPTION_ATTRIBUTE_ID_FK"
+                             nullable="false" notNullConstraintName="ATTRIBUTE_OPTION_ATTRIBUTE_ID_NOT_NULL"
+                             deleteCascade="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

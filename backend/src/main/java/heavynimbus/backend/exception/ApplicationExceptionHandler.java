@@ -33,17 +33,21 @@ import java.util.Map;
 @Log4j2
 @RestControllerAdvice
 public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
-
-  @ResponseStatus(HttpStatus.CONFLICT)
-  @ExceptionHandler(AlreadyExistsException.class)
-  public void handleAlreadyExistsException(AlreadyExistsException e, HttpServletRequest request) {
-    log.error("An AlreadyExistsException has occurred on {}", request.getRequestURI(), e);
-  }
-
-  @ResponseStatus(HttpStatus.UNAUTHORIZED)
-  @ExceptionHandler(BadCredentialsException.class)
-  public void handleBadCredentialsException(BadCredentialsException e, HttpServletRequest request) {
-    log.error("Bad credentials on {}", request.getRequestURI(), e);
+  @ExceptionHandler(ApiException.class)
+  public ResponseEntity<ApiExceptionResponse> handleApiException(
+      ApiException e, HttpServletRequest request) {
+    log.info(
+        "Handled API exception ({}) on {}: {}",
+        e.getClass(),
+        request.getRequestURI(),
+        e.getMessage());
+    ApiExceptionResponse response =
+        ApiExceptionResponse.builder()
+            .status(e.getHttpStatus())
+            .message(e.getMessage())
+            .data(e.getData())
+            .build();
+    return ResponseEntity.status(e.getHttpStatus()).body(response);
   }
 
   @ExceptionHandler(Exception.class)

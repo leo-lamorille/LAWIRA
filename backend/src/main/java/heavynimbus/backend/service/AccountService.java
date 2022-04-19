@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 public record AccountService(AccountRepository accountRepository,
                              AccountMapper accountMapper,
                              LoginService loginService) {
-
     public String createAccount(LoginRequest loginRequest) throws AlreadyExistsException {
         Account account = accountMapper.loginRequestToAccount(loginRequest);
         try {
@@ -24,5 +23,9 @@ public record AccountService(AccountRepository accountRepository,
             throw new AlreadyExistsException(String.format("Account with username %s already exists", loginRequest.getUsername()), e);
         }
         return loginService.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
+    }
+
+    public Account findByUsername(String username){
+        return accountRepository.findByUsername(username).orElseThrow();
     }
 }
