@@ -1,21 +1,35 @@
 import './signIn.scss';
-import {useRef, useState} from "react";
+import {useRef} from "react";
+import {useDispatch} from "react-redux";
+import {userSlice} from "../../slices/userSlice";
+import jwtDecode from "jwt-decode";
 
 export default function SignIn() {
-    const [jwt, setJwt] = useState('');
+    const userAction = userSlice.actions;
+    const dispatch = useDispatch();
     const username = useRef();
     const password = useRef();
+
+    function setUser(token) {
+        var decoded = jwtDecode(token);
+        console.log(decoded);
+        dispatch(userAction.setSub(decoded.sub));
+        dispatch(userAction.setRole(decoded.role));
+        dispatch(userAction.setExp(decoded.exp));
+        dispatch(userAction.setIat(decoded.iat));
+    }
 
     function connection() {
         const body = JSON.stringify({
             username: username.current.value,
             password: password.current.value
         });
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json')
 
-        fetch(`http://localhost:8080/public/login`, { method: 'POST', body })
+        fetch(`http://localhost:8080/public/login`, { method: 'POST', body, headers })
             .then(res => res.json())
-            .then(token => setJwt(token));
-        console.log(jwt);
+            .then(({jwtToken}) => setUser(jwtToken));
     }
 
     return (
