@@ -3,16 +3,17 @@ import {useRef} from "react";
 import {useDispatch} from "react-redux";
 import {userSlice} from "../../slices/userSlice";
 import jwtDecode from "jwt-decode";
+import {useNavigate} from "react-router-dom";
 
 export default function SignIn() {
     const userAction = userSlice.actions;
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const username = useRef();
     const password = useRef();
 
     function setUser(token) {
-        var decoded = jwtDecode(token);
-        console.log(decoded);
+        const decoded = jwtDecode(token);
         dispatch(userAction.setSub(decoded.sub));
         dispatch(userAction.setRole(decoded.role));
         dispatch(userAction.setExp(decoded.exp));
@@ -29,7 +30,14 @@ export default function SignIn() {
 
         fetch(`http://localhost:8080/public/login`, { method: 'POST', body, headers })
             .then(res => res.json())
-            .then(({jwtToken}) => setUser(jwtToken));
+            .then(({jwtToken}) => {
+                setUser(jwtToken);
+                navigate('/account');
+            });
+    }
+
+    function signUp() {
+        navigate('/account/signUp');
     }
 
     return (
@@ -46,7 +54,7 @@ export default function SignIn() {
             </div>
             <div className="buttonContainer">
                 <button className="buttonSign" onClick={connection}>Connexion</button>
-                <button className="buttonSign">Sign up</button>
+                <button className="buttonSign" onClick={signUp}>Sign up</button>
             </div>
         </div>
       </div>
