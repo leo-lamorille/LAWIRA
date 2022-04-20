@@ -4,6 +4,7 @@ import {Button, CircularProgress, TextField} from "@mui/material";
 import Attribute from "../../features/attribute/Attribute";
 import {useLocation, useNavigate} from "react-router-dom";
 import {parseSearchRequest, selectionToLocation} from "../../util";
+import {useSelector} from "react-redux";
 
 export default function Product() {
     const [attributes, setAttributes] = useState([]);
@@ -11,11 +12,16 @@ export default function Product() {
     const [errorMessage, setErrorMessage] = useState("")
     const location = useLocation();
     const navigate = useNavigate();
+    const userToken = useSelector(state => state.user.jwt);
 
     useEffect(() => {
-        fetch('http://localhost:8080/public/attributes')
-            .then((res) => res.json())
-            .then(res => setAttributes(res));
+        if (userToken === '') {
+            navigate('/account/signIn');
+        } else {
+            fetch('http://localhost:8080/public/attributes')
+                .then((res) => res.json())
+                .then(res => setAttributes(res));
+        }
     }, [])
 
     if (attributes.length === 0) return <div className="product__page">

@@ -18,7 +18,7 @@ export default function SignIn() {
 
     function setUser(token) {
         const decoded = jwtDecode(token);
-        dispatch(userAction.setSub(decoded.sub));
+        dispatch(userAction.setName(decoded.sub));
         dispatch(userAction.setRole(decoded.role));
         dispatch(userAction.setExp(decoded.exp));
         dispatch(userAction.setIat(decoded.iat));
@@ -37,7 +37,7 @@ export default function SignIn() {
             .then(res => res.json())
             .then(({jwtToken}) => {
                 setUser(jwtToken);
-                navigate('/account');
+                navigate('/home');
             }).catch(error => {
                 setErrorLogin('Utilisateur ou mot de passe incorrect');
         });

@@ -68,6 +68,7 @@ export default function Navbar() {
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
     const userRole = useSelector(state => state.user.role);
     const userJwt = useSelector(state => state.user.jwt);
+    const userName = useSelector(state => state.user.name);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
     const handleMobileMenuClose = () => {
@@ -154,6 +155,9 @@ export default function Navbar() {
                                 </IconButton>
                             </Link> : null
                     }
+                    <div className={classes.title}>
+                        {userName}
+                    </div>
                     <Link to={checkNavigation('/basket')} className={classes.iconButton}>
                         <IconButton color="inherit">
                             <LocalGroceryStoreOutlinedIcon />

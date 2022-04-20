@@ -6,6 +6,7 @@ import SignIn from "./auth/signIn/signIn";
 import SignUp from "./auth/signUp/signUp";
 import Admin from "../pages/admin/admin";
 import Account from "../pages/account/account";
+import Basket from "../pages/basket/basket";
 
 export default function Navigator() {
     return (
@@ -17,6 +18,7 @@ export default function Navigator() {
           <Route path="/account/signIn" element={<SignIn/>} />
           <Route path="/account/signUp" element={<SignUp />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/basket" element={<Basket />} />
           <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
     );

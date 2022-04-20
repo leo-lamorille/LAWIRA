@@ -4,9 +4,9 @@ export const userSlice = createSlice({
    name: 'user',
 
     reducers: {
-       setSub: (state, action) => {
+       setName: (state, action) => {
            return {
-               ...state, sub: action.payload
+               ...state, name: action.payload
            }
        },
 
@@ -34,7 +34,7 @@ export const userSlice = createSlice({
     },
 
    initialState: {
-       sub: '',
+       name: '',
        role: '',
        exp: 0,
        iat: 0,
