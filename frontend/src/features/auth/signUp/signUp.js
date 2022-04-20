@@ -20,7 +20,7 @@ export default function SignUp() {
 
     const setUser = (token) => {
         const decoded = jwtDecode(token);
-        dispatch(userAction.setSub(decoded.sub));
+        dispatch(userAction.setName(decoded.sub));
         dispatch(userAction.setRole(decoded.role));
         dispatch(userAction.setExp(decoded.exp));
         dispatch(userAction.setIat(decoded.iat));
@@ -69,7 +69,7 @@ export default function SignUp() {
                 .then(res => res.json())
                 .then(({jwtToken}) => {
                     setUser(jwtToken);
-                    navigate('/account');
+                    navigate('/home');
                 });
         }
     }
