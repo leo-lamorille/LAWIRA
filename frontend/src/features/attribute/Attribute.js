@@ -1,7 +1,7 @@
 import './Attribute.scss';
 import AttributeOption from "../attributeOption/AttributeOption";
 
-export default function ({id, name, description, options, selectedOptionId, clickOnOption}) {
+export default function Attribute({id, name, description, options, selectedOptionId, clickOnOption}) {
     function _clickOnOption(optionId) {
         clickOnOption(id, optionId);
     }
