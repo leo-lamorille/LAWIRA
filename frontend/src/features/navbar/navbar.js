@@ -67,6 +67,7 @@ export default function Navbar() {
     const classes = useStyles();
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
     const userRole = useSelector(state => state.user.role);
+    const userJwt = useSelector(state => state.user.jwt);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
     const handleMobileMenuClose = () => {
@@ -82,7 +83,7 @@ export default function Navbar() {
     };
 
     const checkNavigation = (path) => {
-        return userRole ? path : '/account/signIn';
+        return userJwt ? path : '/account/signIn';
     }
 
     const logout = () => {

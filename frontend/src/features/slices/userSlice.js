@@ -25,6 +25,11 @@ export const userSlice = createSlice({
             return {
                 ...state, iat: action.payload
             }
+        },
+        setJwtToken: (state, action) => {
+           return {
+               ...state, jwt: action.payload
+           }
         }
    },
 
@@ -32,6 +37,7 @@ export const userSlice = createSlice({
        sub: '',
        role: '',
        exp: 0,
-       iat: 0
+       iat: 0,
+       jwt: ''
    },
 });

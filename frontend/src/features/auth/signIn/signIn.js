@@ -18,6 +18,7 @@ export default function SignIn() {
         dispatch(userAction.setRole(decoded.role));
         dispatch(userAction.setExp(decoded.exp));
         dispatch(userAction.setIat(decoded.iat));
+        dispatch(userAction.setJwtToken(token));
     }
 
     function connection() {
