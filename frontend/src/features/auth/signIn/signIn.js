@@ -1,6 +1,6 @@
 import '../sign.scss';
 
-import {useRef} from "react";
+import {useRef, useState} from "react";
 import {useDispatch} from "react-redux";
 import {userSlice} from "../../slices/userSlice";
 import jwtDecode from "jwt-decode";
@@ -9,6 +9,9 @@ import {useNavigate} from "react-router-dom";
 export default function SignIn() {
     const userAction = userSlice.actions;
     const dispatch = useDispatch();
+
+    const [errorLogin, setErrorLogin] = useState('');
+
     const navigate = useNavigate();
     const username = useRef();
     const password = useRef();
@@ -35,7 +38,9 @@ export default function SignIn() {
             .then(({jwtToken}) => {
                 setUser(jwtToken);
                 navigate('/account');
-            });
+            }).catch(error => {
+                setErrorLogin('Utilisateur ou mot de passe incorrect');
+        });
     }
 
     function signUp() {
@@ -54,6 +59,11 @@ export default function SignIn() {
                 <p className="secondTitle">Mot de passe</p>
                 <input type="password" className="inputSign" ref={password}/>
             </div>
+            {
+                <p className="error">
+                    {errorLogin}
+                </p>
+            }
             <div className="buttonContainer">
                 <button className="buttonSign" onClick={connection}>Connexion</button>
                 <button className="buttonSign" onClick={signUp}>Sign up</button>

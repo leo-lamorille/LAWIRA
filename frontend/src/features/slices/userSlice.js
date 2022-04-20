@@ -31,7 +31,7 @@ export const userSlice = createSlice({
                ...state, jwt: action.payload
            }
         }
-   },
+    },
 
    initialState: {
        sub: '',

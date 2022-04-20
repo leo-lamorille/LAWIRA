@@ -1,17 +1,17 @@
 .signContainer {
   color: #ffffff;
   position: relative;
-  height: 80vh;
+  height: 85vh;
 
   .modal {
     margin: 0;
     width: 50%;
-    height: 65%;
     background-color: #5D5D5D;
     border-radius: 40px;
     position: absolute;
     top: 50%;
     left: 50%;
+    box-shadow: 0 0 100px 25px #131313;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 
@@ -22,6 +22,7 @@
     }
 
     .inputContainer {
+      text-align: center;
       margin: 2vh 2vw;
       .secondTitle {
         font-size: 2vh;
@@ -35,6 +36,13 @@
         background-color: #E4E4E4;
         text-align: center;
       }
+    }
+
+    .error {
+      text-align: center;
+      font-size: 2vh;
+      font-weight: 500;
+      color: red;
     }
 
     .buttonContainer {
