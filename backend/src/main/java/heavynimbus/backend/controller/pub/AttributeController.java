@@ -1,5 +1,6 @@
 package heavynimbus.backend.controller.pub;
 
+import heavynimbus.backend.controller.doc.AttributeControllerDocumentation;
 import heavynimbus.backend.dto.product.AttributeResponse;
 import heavynimbus.backend.exception.NotFoundException;
 import heavynimbus.backend.service.AttributeService;
@@ -13,7 +14,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/public/attributes")
-public class AttributeController {
+public class AttributeController implements AttributeControllerDocumentation {
   private final AttributeService attributeService;
 
   @GetMapping

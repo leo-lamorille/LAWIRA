@@ -3,6 +3,7 @@ package heavynimbus.backend.db.account;
 import heavynimbus.backend.db.UUIDBasedEntity;
 import heavynimbus.backend.db.accountRole.AccountRole;
 import heavynimbus.backend.db.command.Command;
+import heavynimbus.backend.db.configuration.Configuration;
 import lombok.*;
 
 import javax.persistence.*;
@@ -34,4 +35,7 @@ public class Account extends UUIDBasedEntity {
 
   @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
   private List<Command> commands;
+
+  @OneToMany(mappedBy = "account")
+  private List<Configuration> configurations;
 }

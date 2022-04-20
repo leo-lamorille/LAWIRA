@@ -39,9 +39,4 @@ public class LoginController implements LoginControllerDocumentation {
     String jwtToken = accountService.createAccount(loginRequest);
     return new LoginResponse(jwtToken);
   }
-
-  public static void main(String[] args) {
-    String a = "";
-    a.getBytes(StandardCharsets.UTF_8);
-  }
 }

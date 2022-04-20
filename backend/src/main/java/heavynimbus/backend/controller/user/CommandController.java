@@ -1,5 +1,6 @@
 package heavynimbus.backend.controller.user;
 
+import heavynimbus.backend.controller.doc.CommandControllerDocumentation;
 import heavynimbus.backend.db.command.CommandStatus;
 import heavynimbus.backend.dto.command.CommandResponse;
 import heavynimbus.backend.dto.command.CreateCommandRequest;
@@ -17,8 +18,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user/commands")
-@SecurityRequirement(name = "jwt_auth")
-public class CommandController {
+public class CommandController implements CommandControllerDocumentation {
   private final CommandService commandService;
 
   @GetMapping
@@ -38,6 +38,15 @@ public class CommandController {
       Authentication authentication, @RequestBody CreateCommandRequest createCommandRequest)
       throws NotFoundException, BadRequestException {
     return commandService.createCommand(createCommandRequest, authentication);
+  }
+
+  @PutMapping("/{commandId}")
+  public CommandResponse updateCommand(
+      Authentication authentication,
+      @PathVariable UUID commandId,
+      @RequestBody CreateCommandRequest createCommandRequest)
+      throws NotFoundException, BadRequestException {
+    return commandService.updateCommand(commandId, createCommandRequest, authentication);
   }
 
   @DeleteMapping("/{commandId}")

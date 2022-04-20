@@ -21,7 +21,8 @@ import java.util.stream.Collectors;
 public record CommandService(CommandRepository commandRepository,
                              CommandMapper commandMapper,
                              AttributeOptionService attributeOptionService,
-                             AttributeRepository attributeRepository, AccountService accountService) {
+                             AttributeRepository attributeRepository,
+                             AccountService accountService) {
     public Command findCommandByIdAndAccountUsername(UUID id, String username) throws NotFoundException {
         return commandRepository.findByIdAndAccount_Username(id, username)
                 .orElseThrow(() ->new NotFoundException("command", "id", id.toString()));
@@ -39,10 +40,9 @@ public record CommandService(CommandRepository commandRepository,
         return commandMapper.commandToCommandResponse(command);
     }
 
-    public CommandResponse createCommand(CreateCommandRequest createCommandRequest, Authentication authentication)
-            throws NotFoundException, BadRequestException {
+    private List<AttributeOption> checkCreateCommandRequestAndGetOptions(CreateCommandRequest createCommandRequest) throws BadRequestException, NotFoundException {
+
         if(createCommandRequest.getQuantity()<0) throw new BadRequestException("Command quantity must be positive");
-        Account account = accountService.findByUsername(authentication.getName());
         List<AttributeOption> optionList = new ArrayList<>();
         for (UUID optionId: createCommandRequest.getOptions()) {
             AttributeOption option = attributeOptionService.findAttributeOptionById(optionId);
@@ -52,21 +52,35 @@ public record CommandService(CommandRepository commandRepository,
                 throw new BadRequestException("There are two options specifying " + option.getAttributeName());
             optionList.add(option);
         }
+        return optionList;
+    }
 
+    public CommandResponse createCommand(CreateCommandRequest createCommandRequest, Authentication authentication)
+            throws NotFoundException, BadRequestException {
+        Account account = accountService.findByUsername(authentication.getName());
+        List<AttributeOption> optionList = checkCreateCommandRequestAndGetOptions(createCommandRequest);
         long count = attributeRepository.count();
         if(optionList.size() != count) throw new BadRequestException(String.format("Should have %s options but have %s", count, optionList.size()));
-        Command command = Command.builder()
-                .account(account)
-                .status(CommandStatus.CREATED)
-                .quantity(createCommandRequest.getQuantity())
-                .values(optionList)
-                .build();
+        Command command = commandMapper.createCommandRequestToCommand(createCommandRequest, account, optionList);
         command = commandRepository.save(command);
         return commandMapper.commandToCommandResponse(command);
     }
 
-    public void deleteByIdAndAccountUsername(UUID id, String username) throws NotFoundException{
+    public CommandResponse updateCommand(UUID commandId, CreateCommandRequest createCommandRequest, Authentication authentication) throws NotFoundException, BadRequestException {
+        Command command = findCommandByIdAndAccountUsername(commandId, authentication.getName());
+        List<AttributeOption> optionList = checkCreateCommandRequestAndGetOptions(createCommandRequest);
+        long count = attributeRepository.count();
+        if(optionList.size() != count) throw new BadRequestException(String.format("Should have %s options but have %s", count, optionList.size()));
+        commandMapper.updateCommand(command, optionList, createCommandRequest.getQuantity());
+        command = commandRepository.save(command);
+        return commandMapper.commandToCommandResponse(command);
+    }
+
+
+
+    public void deleteByIdAndAccountUsername(UUID id, String username) throws NotFoundException {
         Command command = findCommandByIdAndAccountUsername(id, username);
-        commandRepository.delete(command);
+        if (command.getStatus().equals(CommandStatus.CREATED)) commandRepository.delete(command);
+        else throw new NotFoundException("CREATED command", "id", id.toString());
     }
 }
