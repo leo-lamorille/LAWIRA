@@ -1,4 +1,4 @@
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import Home from "../pages/home/home";
 import Product from "../pages/product/product";
 import AboutUs from "../pages/aboutUs/aboutUs";
@@ -17,6 +17,7 @@ export default function Navigator() {
           <Route path="/account/signIn" element={<SignIn/>} />
           <Route path="/account/signUp" element={<SignUp />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
     );
 }
