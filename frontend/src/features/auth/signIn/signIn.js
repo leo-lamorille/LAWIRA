@@ -1,4 +1,5 @@
-import './signIn.scss';
+import '../sign.scss';
+
 import {useRef} from "react";
 import {useDispatch} from "react-redux";
 import {userSlice} from "../../slices/userSlice";
@@ -42,7 +43,7 @@ export default function SignIn() {
     }
 
     return (
-      <div className="signInContainer">
+      <div className="signContainer">
         <div className="modal">
             <p className="title">Sign In</p>
             <div className="inputContainer">
