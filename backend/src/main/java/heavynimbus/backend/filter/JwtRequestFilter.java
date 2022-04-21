@@ -1,12 +1,15 @@
 package heavynimbus.backend.filter;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import heavynimbus.backend.config.ApplicationSecurity;
 import heavynimbus.backend.service.JwtUserDetailService;
 import heavynimbus.backend.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +38,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain chain)
       throws ServletException, IOException {
+    for (String route : ApplicationSecurity.PUBLIC_ROUTES) {
+      Pattern pattern = Pattern.compile(route.replace("**", "*"));
+      if (pattern.matcher(request.getRequestURI()).matches()) {
+        chain.doFilter(request, response);
+        return;
+      }
+    }
+    request.getRequestURI();
     final String requestTokenHeader = request.getHeader("Authorization");
 
     String username = null;

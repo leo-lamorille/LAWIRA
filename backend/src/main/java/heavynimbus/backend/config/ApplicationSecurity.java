@@ -12,11 +12,23 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
+
+  public static List<String> PUBLIC_ROUTES =
+      List.of(
+          "/login",
+          "/signUp",
+          "/v3/api-docs/**",
+          "/swagger-ui/**",
+          "/swagger-ui.html",
+          "/health",
+          "/error/**");
   private final JwtRequestFilter jwtRequestFilter;
 
   @Bean
@@ -27,16 +39,11 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests()
-        .antMatchers(
-            "/login",
-            "/signUp",
-            "/v3/api-docs/**",
-            "/swagger-ui/**",
-            "/swagger-ui.html",
-            "/health",
-            "/error/**")
-        .permitAll()
+    var requestConfigurer = http.authorizeRequests();
+    for (String publicRoute : PUBLIC_ROUTES) {
+      requestConfigurer.antMatchers(publicRoute).permitAll();
+    }
+    requestConfigurer
         .antMatchers("/public/**")
         .permitAll()
         .antMatchers("/user/**")
