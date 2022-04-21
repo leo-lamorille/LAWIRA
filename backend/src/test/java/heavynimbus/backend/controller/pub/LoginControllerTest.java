@@ -1,29 +1,27 @@
 package heavynimbus.backend.controller.pub;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import heavynimbus.backend.IntegrationTests;
-import heavynimbus.backend.db.account.AccountRepository;
 import heavynimbus.backend.dto.login.LoginRequest;
+import heavynimbus.backend.dto.login.LoginResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
+@Order(1)
+@DisplayName("[PUBLIC] Authentication")
 public class LoginControllerTest extends IntegrationTests {
 
-  private final AccountRepository accountRepository;
-
   @Autowired
-  public LoginControllerTest(
-      MockMvc mockMvc, AccountRepository accountRepository, ObjectMapper objectMapper) {
+  public LoginControllerTest(MockMvc mockMvc, ObjectMapper objectMapper) {
     super(mockMvc, objectMapper);
-    this.accountRepository = accountRepository;
   }
 
   @Test
@@ -31,15 +29,19 @@ public class LoginControllerTest extends IntegrationTests {
   @DisplayName("POST /public/login - 200 - OK")
   public void should_successfully_authenticate() throws Exception {
     LoginRequest loginRequest = LoginRequest.builder().username("User").password("pass").build();
-
-    mockMvc
-        .perform(
-            post("/public/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(loginRequest)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.jwtToken").exists());
+    MvcResult result =
+        mockMvc
+            .perform(
+                post("/public/login")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(loginRequest)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.jwtToken").exists())
+            .andReturn();
+    LoginResponse loginResponse =
+        objectMapper.readValue(result.getResponse().getContentAsString(), LoginResponse.class);
+    JWT_TOKEN = loginResponse.jwtToken();
   }
 
   @Test
