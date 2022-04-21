@@ -28,8 +28,10 @@ public record CommandService(CommandRepository commandRepository,
                 .orElseThrow(() ->new NotFoundException("command", "id", id.toString()));
     }
     public List<CommandResponse> findAllByStatusAndAccountUsername(CommandStatus status, String username){
-        status = status == null ? CommandStatus.CREATED : status;
-        return commandRepository.findAllByAccount_UsernameAndStatus(username, status)
+        List<Command> commands = status == null ? commandRepository.findAllByAccount_Username(username) :
+                commandRepository.findAllByAccount_UsernameAndStatus(username, status);
+
+        return commands
                 .stream()
                 .map(commandMapper::commandToCommandResponse)
                 .collect(Collectors.toList());

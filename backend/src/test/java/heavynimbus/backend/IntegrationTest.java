@@ -16,7 +16,6 @@ import java.io.File;
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 public abstract class IntegrationTest {
   protected final MockMvc mockMvc;

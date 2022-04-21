@@ -9,5 +9,6 @@ import java.util.UUID;
 public interface CommandRepository extends JpaRepository<Command, UUID> {
   List<Command> findAllByAccount_UsernameAndStatus(String username, CommandStatus status);
 
+  List<Command> findAllByAccount_Username(String username);
   Optional<Command> findByIdAndAccount_Username(UUID id, String username);
 }
