@@ -1,6 +1,7 @@
 package heavynimbus.backend.exception;
 
 import heavynimbus.backend.dto.exception.ApiExceptionResponse;
+import io.swagger.v3.oas.models.responses.ApiResponse;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
@@ -33,6 +34,18 @@ import java.util.Map;
 @Log4j2
 @RestControllerAdvice
 public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
+
+  @ExceptionHandler(BadCredentialsException.class)
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  public ApiExceptionResponse handleBadCredentialsException() {
+    log.info("Handled login request with bad credentials");
+    return ApiExceptionResponse.builder()
+        .status(HttpStatus.FORBIDDEN)
+        .message("Wrong username or password")
+        .data(Map.of())
+        .build();
+  }
+
   @ExceptionHandler(ApiException.class)
   public ResponseEntity<ApiExceptionResponse> handleApiException(
       ApiException e, HttpServletRequest request) {

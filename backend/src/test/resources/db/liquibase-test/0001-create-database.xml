@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+    <changeSet id="create database" author="HeavyNimbus">
+        <createTable tableName="account">
+            <column name="id" type="UUID" defaultValueComputed="RANDOM_UUID()">
+                <constraints primaryKey="true" primaryKeyName="ACCOUNT_ID_PK"/>
+            </column>
+            <column name="username" type="VARCHAR(255)">
+                <constraints nullable="false" notNullConstraintName="ACCOUNT_USERNAME_NOT_NULL" unique="true"
+                             uniqueConstraintName="ACCOUNT_USERNAME_UNIQUE"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false" notNullConstraintName="ACCOUNT_PASSWORD_NOT_NULL"/>
+            </column>
+            <column name="enabled" type="VARCHAR" defaultValue="true">
+                <constraints nullable="false" notNullConstraintName="ACCOUNT_ENABLED_NOT_NULL"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="role">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="ACCOUNT_ROLE_ID_PK"/>
+            </column>
+            <column name="role" type="VARCHAR(10)">
+                <constraints unique="true" uniqueConstraintName="ACCOUNT_ROLE_ROLE_UNIQUE" nullable="false"
+                             notNullConstraintName="ACCOUNT_ROLE_ROLE_NOT_NULL"/>
+            </column>
+            <column name="description" type="TEXT"/>
+        </createTable>
+
+        <createTable tableName="account_roles">
+            <column name="role_id" type="INTEGER">
+                <constraints references="role(id)" foreignKeyName="ACCOUNT_ROLES_ROLE_ID_FK" primaryKey="true"/>
+            </column>
+            <column name="account_id" type="UUID">
+                <constraints references="account(id)" foreignKeyName="ACCOUNT_ROLES_ACCOUNT_ID_FK" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
