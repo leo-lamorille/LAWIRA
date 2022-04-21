@@ -12,9 +12,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.client.RestTemplate;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Log4j2
 public class UserControllersTest extends IntegrationTest {
@@ -25,7 +25,6 @@ public class UserControllersTest extends IntegrationTest {
     super(mockMvc, objectMapper);
   }
 
-
   @Nested
   @Order(1)
   @DisplayName("[PUBLIC] Authentication")
@@ -35,17 +34,17 @@ public class UserControllersTest extends IntegrationTest {
     public void userAuthentication() throws Exception {
       LoginRequest loginRequest = LoginRequest.builder().username("User").password("pass").build();
       MvcResult result =
-              mockMvc
-                      .perform(
-                              post("/public/login")
-                                      .contentType(MediaType.APPLICATION_JSON)
-                                      .accept(MediaType.APPLICATION_JSON)
-                                      .content(objectMapper.writeValueAsString(loginRequest)))
-                      .andExpect(status().isOk())
-                      .andExpect(jsonPath("$.jwtToken").exists())
-                      .andReturn();
+          mockMvc
+              .perform(
+                  post("/public/login")
+                      .contentType(MediaType.APPLICATION_JSON)
+                      .accept(MediaType.APPLICATION_JSON)
+                      .content(objectMapper.writeValueAsString(loginRequest)))
+              .andExpect(status().isOk())
+              .andExpect(jsonPath("$.jwtToken").exists())
+              .andReturn();
       LoginResponse loginResponse =
-              objectMapper.readValue(result.getResponse().getContentAsString(), LoginResponse.class);
+          objectMapper.readValue(result.getResponse().getContentAsString(), LoginResponse.class);
       JWT_TOKEN = loginResponse.jwtToken();
     }
   }
@@ -54,9 +53,18 @@ public class UserControllersTest extends IntegrationTest {
   @Order(2)
   @DisplayName("[PUBLIC] Commands")
   class CommandControllerTest {
+
     @Test
-    public void test() {
-      log.info("jwt token: {}", JWT_TOKEN);
+    @Order(1)
+    @DisplayName("GET /user/commands - 401 - No token")
+    public void should_throw_401_on_get_all_command_due_to_no_token() throws Exception {
+      mockMvc
+          .perform(get("/user/commands"))
+          .andExpect(status().isUnauthorized())
+          .andExpect(jsonPath("$.status").value("UNAUTHORIZED"))
+          .andExpect(
+              jsonPath("$.message").value("You are not authorized to access to this resource"))
+          .andExpect(jsonPath("$.data.url").value("/user/commands"));
     }
   }
 }
