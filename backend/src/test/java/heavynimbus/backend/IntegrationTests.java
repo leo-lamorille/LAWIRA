@@ -2,6 +2,7 @@ package heavynimbus.backend;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -15,7 +16,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.sql.DataSource;
+import java.io.File;
 
+@Log4j2
 @AutoConfigureMockMvc
 @RequiredArgsConstructor
 @ExtendWith(SpringExtension.class)
@@ -27,13 +30,15 @@ public abstract class IntegrationTests {
   protected final MockMvc mockMvc;
   protected final ObjectMapper objectMapper;
 
-  protected DataSource dataSource;
-
-
   @AfterAll
-  public static void after(){
-    System.out.println("==================================================================================================");
-    System.out.println("AFTER ALL");
-    System.out.println("==================================================================================================");
+  public static void after() {
+    File h2Database = new File("./test-db.mv.db");
+    File h2Trace = new File("test-db.trace.db");
+    boolean deleted = h2Database.delete();
+    if (deleted) log.info("H2 database cleaned");
+    else log.error("Cannot clean H2 database");
+    deleted = h2Trace.delete();
+    if (deleted) log.info("H2 trace cleaned");
+    else log.error("Cannot clean H2 trace");
   }
 }
