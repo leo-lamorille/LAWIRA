@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
-    <changeSet id="insert account roles" author="HeavyNimbus">
-        <insert tableName="account_roles">
-            <column name="role_id" valueComputed="(SELECT id FROM role WHERE role='ADMIN')"/>
-            <column name="account_id" valueComputed="(SELECT id FROM account WHERE username='Administrator')"/>
-        </insert>
-        <insert tableName="account_roles">
-            <column name="role_id" valueComputed="(SELECT id FROM role WHERE role='USER')"/>
-            <column name="account_id" valueComputed="(SELECT id FROM account WHERE username='User')"/>
-        </insert>
-    </changeSet>
+  <changeSet id="insert account roles" author="HeavyNimbus">
+    <sql>
+      INSERT INTO account_roles(role_id, account_id)
+      VALUES ((SELECT id FROM role WHERE role = 'ADMIN'),
+              (SELECT id FROM account WHERE username = 'Administrator')),
+             ((SELECT id FROM role WHERE role = 'USER'),
+              (SELECT id FROM account WHERE username = 'Leo')),
+             ((SELECT id FROM role WHERE role = 'USER'),
+              (SELECT id FROM account WHERE username = 'Armel')),
+             ((SELECT id FROM role WHERE role = 'USER'),
+              (SELECT id FROM account WHERE username = 'Hugo'));
+    </sql>
+  </changeSet>
 </databaseChangeLog>

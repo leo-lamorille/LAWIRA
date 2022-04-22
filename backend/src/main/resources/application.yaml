@@ -1,8 +1,9 @@
 spring:
   datasource:
-    url: jdbc:postgresql://postgres-db:5432/postgres-db
+    url: jdbc:mysql://db:3306/db
     username: user
-    password: pass
+    password: password
+    driver-class-name: com.mysql.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: none
@@ -10,7 +11,7 @@ spring:
 
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.MySQLDialect
   liquibase:
     change-log: db/changelog-master.xml
 
