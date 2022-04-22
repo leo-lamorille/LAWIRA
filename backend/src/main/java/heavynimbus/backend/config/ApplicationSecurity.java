@@ -52,6 +52,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
+
     var requestConfigurer = http.authorizeRequests();
     for (String publicRoute : PUBLIC_ROUTES) {
       requestConfigurer.antMatchers(publicRoute).permitAll();
@@ -77,7 +78,9 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
         .logout()
         .disable()
         .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .cors();
     http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
   }
 }
