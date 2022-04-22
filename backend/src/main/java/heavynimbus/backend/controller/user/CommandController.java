@@ -1,12 +1,13 @@
 package heavynimbus.backend.controller.user;
 
+import heavynimbus.backend.controller.doc.CommandControllerDocumentation;
 import heavynimbus.backend.db.command.CommandStatus;
 import heavynimbus.backend.dto.command.CommandResponse;
 import heavynimbus.backend.dto.command.CreateCommandRequest;
 import heavynimbus.backend.exception.BadRequestException;
 import heavynimbus.backend.exception.NotFoundException;
 import heavynimbus.backend.service.CommandService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +18,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user/commands")
-@SecurityRequirement(name = "jwt_auth")
-public class CommandController {
+public class CommandController implements CommandControllerDocumentation {
   private final CommandService commandService;
 
   @GetMapping
@@ -35,9 +35,18 @@ public class CommandController {
 
   @PostMapping
   public CommandResponse createCommand(
-      Authentication authentication, @RequestBody CreateCommandRequest createCommandRequest)
+      Authentication authentication, @Valid @RequestBody CreateCommandRequest createCommandRequest)
       throws NotFoundException, BadRequestException {
     return commandService.createCommand(createCommandRequest, authentication);
+  }
+
+  @PutMapping("/{commandId}")
+  public CommandResponse updateCommand(
+      Authentication authentication,
+      @PathVariable UUID commandId,
+      @Valid @RequestBody CreateCommandRequest createCommandRequest)
+      throws NotFoundException, BadRequestException {
+    return commandService.updateCommand(commandId, createCommandRequest, authentication);
   }
 
   @DeleteMapping("/{commandId}")

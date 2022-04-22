@@ -1,5 +1,6 @@
 package heavynimbus.backend.controller.pub;
 
+import heavynimbus.backend.controller.doc.AttributeOptionControllerDocumentation;
 import heavynimbus.backend.dto.product.AttributeOptionResponse;
 import heavynimbus.backend.exception.NotFoundException;
 import heavynimbus.backend.service.AttributeOptionService;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/public/attributes/{attributeId}/options")
-public class AttributeOptionController {
+public class AttributeOptionController implements AttributeOptionControllerDocumentation {
 
   private final AttributeOptionService attributeOptionService;
 

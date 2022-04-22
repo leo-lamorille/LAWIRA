@@ -8,10 +8,11 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 
-@Tag(name = "Authentication", description = "How to be authenticated")
+@Tag(name = "[PUBLIC] Authentication", description = "How to be authenticated")
 public interface LoginControllerDocumentation {
   @Operation(summary = "Authenticate", description = """
           This request authenticates you by returning a jwt token

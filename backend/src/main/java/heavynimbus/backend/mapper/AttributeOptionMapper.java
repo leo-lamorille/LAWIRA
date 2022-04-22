@@ -1,6 +1,7 @@
 package heavynimbus.backend.mapper;
 
 import heavynimbus.backend.db.attributeOption.AttributeOption;
+import heavynimbus.backend.dto.product.AttributeOptionDetailResponse;
 import heavynimbus.backend.dto.product.AttributeOptionResponse;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,17 @@ public class AttributeOptionMapper {
         .id(attributeOption.getId())
         .type(attributeOption.getType())
         .value(attributeOption.getValue())
+        .build();
+  }
+
+  public AttributeOptionDetailResponse attributeOptionToAttributeOptionDetailResponse(
+      AttributeOption attributeOption) {
+    return AttributeOptionDetailResponse.builder()
+        .attributeId(attributeOption.getAttribute().getId())
+        .attributeName(attributeOption.getAttribute().getName())
+        .optionId(attributeOption.getId())
+        .optionType(attributeOption.getType())
+        .optionValue(attributeOption.getValue())
         .build();
   }
 
