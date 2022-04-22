@@ -12,15 +12,11 @@
              (UUID(), 'Capacité de stockage',
               'Choisissez la couleur de led qui vous conviendra le mieux !'),
              (UUID(), 'Étanchéité',
-              'Rendre votre CLEF URB LAWIRA étanche vous permettra de craindre ni le froid, ni' ||
-              ' le vent, ni la pluie ! Vous pourrez même lui faire profiter de votre piscine ...'),
+              'Rendre votre CLEF URB LAWIRA étanche vous permettra de craindre ni le froid, ni le vent, ni la pluie ! Vous pourrez même lui faire profiter de votre piscine ...'),
              (UUID(), 'Bluetooth',
-              'Équiper votre CLEF USB LAWIRA d’une option Bluetooth vous permettra de l’appairer' ||
-              ' avec votre téléphone. En cas de déconnexion (possible vol ou perte) votre' ||
-              ' téléphone ainsi que la clef sonneront pendant 30 secondes.'),
+              'Équiper votre CLEF USB LAWIRA d’une option Bluetooth vous permettra de l’appairer avec votre téléphone. En cas de déconnexion (possible vol ou perte) votre téléphone ainsi que la clef sonneront pendant 30 secondes.'),
              (UUID(), 'Géolocalisation',
-              'Équiper votre CLEF USB LAWIRA d’une option Géolocalisatiion vous permettra de ' ||
-              'géolocaliser votre clef USB grâce à votre téléphone en cas de perte.');
+              'Équiper votre CLEF USB LAWIRA d’une option Géolocalisatiion vous permettra de géolocaliser votre clef USB grâce à votre téléphone en cas de perte.');
     </sql>
   </changeSet>
   <changeSet id="insert attribute options" author="HeavyNimbus">
@@ -32,7 +28,6 @@
              (UUID(), '#0000FF', 'COLOR', (SELECT id FROM attribute WHERE name = 'Couleur')),
              (UUID(), '#FFFF00', 'COLOR', (SELECT id FROM attribute WHERE name = 'Couleur')),
              (UUID(), '#FF00FF', 'COLOR', (SELECT id FROM attribute WHERE name = 'Couleur')),
-             (UUID(), '#00FF00', 'COLOR', (SELECT id FROM attribute WHERE name = 'Couleur')),
              (UUID(), '#00FFFF', 'COLOR', (SELECT id FROM attribute WHERE name = 'Couleur')),
              (UUID(), '#FFFFFF', 'COLOR', (SELECT id FROM attribute WHERE name = 'Couleur')),
              (UUID(), '#0F0F0F', 'COLOR', (SELECT id FROM attribute WHERE name = 'Couleur'));
@@ -45,8 +40,6 @@
              (UUID(), '#0000FF', 'COLOR', (SELECT id FROM attribute WHERE name = 'Leds')),
              (UUID(), '#FFFF00', 'COLOR', (SELECT id FROM attribute WHERE name = 'Leds')),
              (UUID(), '#FF00FF', 'COLOR', (SELECT id FROM attribute WHERE name = 'Leds')),
-             (UUID(), '#00FF00', 'COLOR', (SELECT id FROM attribute WHERE name = 'Leds')),
-             (UUID(), '#00FFFF', 'COLOR', (SELECT id FROM attribute WHERE name = 'Leds')),
              (UUID(), '#FFFFFF', 'COLOR', (SELECT id FROM attribute WHERE name = 'Leds')),
              (UUID(), '#0F0F0F', 'COLOR', (SELECT id FROM attribute WHERE name = 'Leds'));
 

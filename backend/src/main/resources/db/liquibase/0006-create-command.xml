@@ -19,7 +19,7 @@
         command_id          CHAR(36),
         attribute_option_id CHAR(36),
         FOREIGN KEY (command_id) REFERENCES command (id),
-        FOREIGN KEY (attribute_option_id) REFERENCES command (id)
+        FOREIGN KEY (attribute_option_id) REFERENCES attribute_option (id)
       );
     </sql>
   </changeSet>

@@ -12,8 +12,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
-  liquibase:
-    change-log: db/changelog-master.xml
+#  liquibase:
+#    change-log: db/changelog-master.xml
 
 jwt:
   secret: "This is a secret"

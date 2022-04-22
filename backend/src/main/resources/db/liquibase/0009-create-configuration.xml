@@ -1,31 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
-    <changeSet id="create configuration" author="HeavyNimbus">
-        <createTable tableName="configuration">
-            <column name="id" type="UUID" defaultValueComputed="UUID()">
-                <constraints primaryKey="true" primaryKeyName="CONFIGURATION_ID_PK"/>
-            </column>
-            <column name="name" type="varchar(255)">
-                <constraints nullable="false" notNullConstraintName="CONFIGURATION_NAME_NOT_NULL"/>
-            </column>
-            <column name="account_id" type="UUID">
-                <constraints references="account(id)" foreignKeyName="CONFIGURATION_ACCOUNT_ID_FK" nullable="false"
-                             notNullConstraintName="CONFIGURATION_ACCOUNT_ID_NOT_NULL" deleteCascade="true"/>
-            </column>
-        </createTable>
-        <createTable tableName="configuration_attribute_options">
-            <column name="attribute_option_id" type="UUID">
-                <constraints references="attribute_option(id)"
-                             foreignKeyName="CONFIGURATION_ATTRIBUTE_OPTIONS_ATTRIBUTE_OPTION_ID_FK" />
-            </column>
-            <column name="configuration_id" type="UUID">
-                <constraints references="configuration(id)"
-                             foreignKeyName="CONFIGURATION_ATTRIBUTE_OPTIONS_CONFIGURATION_ID_FK" />
-            </column>
-        </createTable>
-    </changeSet>
+  <changeSet id="create configuration" author="HeavyNimbus">
+    <sql>
+      CREATE TABLE configuration
+      (
+        id         CHAR(36) PRIMARY KEY,
+        name       VARCHAR(255) NOT NULL,
+        account_id CHAR(36)     NOT NULL,
+        FOREIGN KEY (account_id) REFERENCES account (id)
+      );
+
+      CREATE TABLE configuration_attribute_options
+      (
+        attribute_option_id CHAR(36) NOT NULL,
+        configuration_id    CHAR(36) NOT NULL,
+
+        FOREIGN KEY (attribute_option_id) REFERENCES attribute_option(id),
+        FOREIGN KEY (configuration_id) REFERENCES configuration(id)
+      );
+    </sql>
+  </changeSet>
 </databaseChangeLog>
