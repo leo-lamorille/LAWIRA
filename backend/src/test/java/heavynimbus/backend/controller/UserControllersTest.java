@@ -1,11 +1,18 @@
 package heavynimbus.backend.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import heavynimbus.backend.IntegrationTest;
+import heavynimbus.backend.db.attribute.Attribute;
+import heavynimbus.backend.db.attribute.AttributeRepository;
+import heavynimbus.backend.db.attributeOption.AttributeOption;
+import heavynimbus.backend.db.command.CommandRepository;
 import heavynimbus.backend.dto.command.CommandResponse;
+import heavynimbus.backend.dto.command.CreateCommandRequest;
 import heavynimbus.backend.dto.login.LoginRequest;
 import heavynimbus.backend.dto.login.LoginResponse;
+import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +30,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllersTest extends IntegrationTest {
   public static String JWT_TOKEN;
   public static CommandResponse ANY_COMMAND;
+  private final CommandRepository commandRepository;
+  private final AttributeRepository attributeRepository;
 
   @Autowired
-  public UserControllersTest(MockMvc mockMvc, ObjectMapper objectMapper) {
+  public UserControllersTest(
+      MockMvc mockMvc,
+      ObjectMapper objectMapper,
+      CommandRepository commandRepository,
+      AttributeRepository attributeRepository) {
     super(mockMvc, objectMapper);
+    this.commandRepository = commandRepository;
+    this.attributeRepository = attributeRepository;
   }
 
   @Nested
@@ -58,6 +73,9 @@ public class UserControllersTest extends IntegrationTest {
   @DisplayName("[PUBLIC] Commands")
   class CommandControllerTest {
 
+    final CreateCommandRequest VALID_CREATE_COMMAND_REQUEST =
+        CreateCommandRequest.builder().quantity(10).build();
+
     @Nested
     @Order(1)
     @DisplayName("GET /user/commands")
@@ -72,7 +90,8 @@ public class UserControllersTest extends IntegrationTest {
             .andExpect(jsonPath("$.status").value("UNAUTHORIZED"))
             .andExpect(
                 jsonPath("$.message").value("You are not authorized to access to this resource"))
-            .andExpect(jsonPath("$.data.url").value("/user/commands"));
+            .andExpect(jsonPath("$.data.url").value("/user/commands"))
+            .andExpect(jsonPath("$.data.method").value("GET"));
       }
 
       @Test
@@ -124,7 +143,7 @@ public class UserControllersTest extends IntegrationTest {
     @Nested
     @Order(2)
     @DisplayName("GET /user/commands/{commandId}")
-    class GetCommandById {
+    class GetCommandByIdTest {
       @Test
       @Order(1)
       @DisplayName("401 - No token")
@@ -135,7 +154,8 @@ public class UserControllersTest extends IntegrationTest {
             .andExpect(jsonPath("$.status").value("UNAUTHORIZED"))
             .andExpect(
                 jsonPath("$.message").value("You are not authorized to access to this resource"))
-            .andExpect(jsonPath("$.data.url").value("/user/commands/" + ANY_COMMAND.getId()));
+            .andExpect(jsonPath("$.data.url").value("/user/commands/" + ANY_COMMAND.getId()))
+            .andExpect(jsonPath("$.data.method").value("GET"));
       }
 
       @Test
@@ -170,6 +190,50 @@ public class UserControllersTest extends IntegrationTest {
             .andExpect(jsonPath("$.status").value(ANY_COMMAND.getStatus().toString()))
             .andExpect(jsonPath("$.quantity").value(ANY_COMMAND.getQuantity()))
             .andExpect(jsonPath("$.values.size()").value(ANY_COMMAND.getValues().size()));
+      }
+    }
+
+    @Nested
+    @Order(3)
+    @DisplayName("POST /user/commands")
+    class CreateCommandTest {
+
+      @Test
+      @Order(1)
+      @DisplayName("401 - No token")
+      public void should_throw_401_on_create_command_due_to_no_token() throws Exception {
+        mockMvc
+            .perform(
+                post("/user/commands")
+                    .content(objectMapper.writeValueAsString(VALID_CREATE_COMMAND_REQUEST))
+                    .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isUnauthorized())
+            .andExpect(jsonPath("$.status").value("UNAUTHORIZED"))
+            .andExpect(
+                jsonPath("$.message").value("You are not authorized to access to this resource"))
+            .andExpect(jsonPath("$.data.url").value("/user/commands"))
+            .andExpect(jsonPath("$.data.method").value("POST"));
+      }
+
+      @Test
+      @Order(2)
+      @DisplayName("200 - OK")
+      public void should_successfully_create_command() throws Exception {
+        var request = CreateCommandRequest.builder().quantity(10);
+        List<UUID> selection =
+            attributeRepository.findAll().stream()
+                .map(Attribute::getOptions)
+                .map(optionList -> optionList.stream().findAny().orElseThrow())
+                .map(AttributeOption::getId)
+                .toList();
+        request.options(selection);
+        mockMvc
+            .perform(
+                post("/user/commands")
+                    .content(objectMapper.writeValueAsString(request.build()))
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .header("Authorization", "Bearer " + JWT_TOKEN))
+            .andExpect(status().isOk());
       }
     }
   }

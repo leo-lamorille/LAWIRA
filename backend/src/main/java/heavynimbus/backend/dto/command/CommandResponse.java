@@ -1,9 +1,10 @@
 package heavynimbus.backend.dto.command;
 
 import heavynimbus.backend.db.command.CommandStatus;
+import heavynimbus.backend.dto.product.AttributeOptionDetailResponse;
+import java.util.List;
 import lombok.*;
 
-import java.util.Map;
 import java.util.UUID;
 
 @Getter
@@ -15,5 +16,5 @@ public class CommandResponse {
     private UUID id;
     private CommandStatus status;
     private int quantity;
-    private Map<String, String> values;
+    private List<AttributeOptionDetailResponse> values;
 }

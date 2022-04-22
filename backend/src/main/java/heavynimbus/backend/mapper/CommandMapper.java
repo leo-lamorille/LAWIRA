@@ -30,13 +30,14 @@ public record CommandMapper(AttributeOptionMapper attributeOptionMapper) {
     command.setValues(optionList);
   }
   public CommandResponse commandToCommandResponse(Command command) {
-    Map<String, String> values = attributeOptionMapper.collectionToValues(command.getValues());
     return CommandResponse.builder()
         .id(command.getId())
         .quantity(command.getQuantity())
         .status(command.getStatus())
-        .values(values)
+        .values(command.getValues()
+            .stream()
+            .map(attributeOptionMapper::attributeOptionToAttributeOptionDetailResponse)
+            .toList())
         .build();
   }
-
 }

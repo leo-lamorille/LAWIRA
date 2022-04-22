@@ -8,6 +8,7 @@ import heavynimbus.backend.exception.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.validation.Valid;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public interface CommandControllerDocumentation {
           Creates a command to the authenticated user and returns it
           """)
   CommandResponse createCommand(
-      Authentication authentication, CreateCommandRequest createCommandRequest)
+      Authentication authentication, @Valid CreateCommandRequest createCommandRequest)
       throws NotFoundException, BadRequestException;
 
   @Operation(summary = "Update existing command", description = """
@@ -41,7 +42,7 @@ public interface CommandControllerDocumentation {
   CommandResponse updateCommand(
           Authentication authentication,
           UUID commandId,
-          CreateCommandRequest createCommandRequest)
+          @Valid CreateCommandRequest createCommandRequest)
           throws NotFoundException, BadRequestException;
 
   @Operation(summary = "Delete command", description = """

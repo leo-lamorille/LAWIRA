@@ -7,6 +7,7 @@ import heavynimbus.backend.dto.command.CreateCommandRequest;
 import heavynimbus.backend.exception.BadRequestException;
 import heavynimbus.backend.exception.NotFoundException;
 import heavynimbus.backend.service.CommandService;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class CommandController implements CommandControllerDocumentation {
 
   @PostMapping
   public CommandResponse createCommand(
-      Authentication authentication, @RequestBody CreateCommandRequest createCommandRequest)
+      Authentication authentication, @Valid @RequestBody CreateCommandRequest createCommandRequest)
       throws NotFoundException, BadRequestException {
     return commandService.createCommand(createCommandRequest, authentication);
   }
@@ -43,7 +44,7 @@ public class CommandController implements CommandControllerDocumentation {
   public CommandResponse updateCommand(
       Authentication authentication,
       @PathVariable UUID commandId,
-      @RequestBody CreateCommandRequest createCommandRequest)
+      @Valid @RequestBody CreateCommandRequest createCommandRequest)
       throws NotFoundException, BadRequestException {
     return commandService.updateCommand(commandId, createCommandRequest, authentication);
   }

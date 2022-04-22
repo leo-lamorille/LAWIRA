@@ -2,6 +2,7 @@ package heavynimbus.backend.exception;
 
 import heavynimbus.backend.dto.exception.ApiExceptionResponse;
 import io.swagger.v3.oas.models.responses.ApiResponse;
+import java.util.HashMap;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +14,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -67,5 +69,20 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public void handleInternalServerError(Exception e, HttpServletRequest request) {
     log.error("An internal server error has occurred on {}", request.getRequestURI(), e);
+  }
+
+  @Override
+  protected ResponseEntity<Object> handleMethodArgumentNotValid(
+      MethodArgumentNotValidException ex,
+      HttpHeaders headers,
+      HttpStatus status,
+      WebRequest request) {
+    BindingResult bindingResult = ex.getBindingResult();
+    var body = ApiExceptionResponse.builder().status(status).message("Argument not valid");
+    Map<String, Object> errors = new HashMap<>();
+    for (FieldError fieldError : bindingResult.getFieldErrors())
+      errors.put(fieldError.getField(), fieldError.getDefaultMessage());
+    body.data(errors);
+    return ResponseEntity.status(status).body(body.build());
   }
 }

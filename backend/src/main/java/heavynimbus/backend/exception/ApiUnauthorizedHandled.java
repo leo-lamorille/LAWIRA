@@ -21,13 +21,15 @@ public class ApiUnauthorizedHandled implements AuthenticationEntryPoint {
       throws IOException, ServletException {
     ObjectMapper mapper = new ObjectMapper();
     var body =
-            ApiExceptionResponse.builder()
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .message("You are not authorized to access to this resource")
-                    .data(Map.of("url", request.getRequestURI()))
-                    .build();
+        ApiExceptionResponse.builder()
+            .status(HttpStatus.UNAUTHORIZED)
+            .message("You are not authorized to access to this resource")
+            .data(Map.of("url", request.getRequestURI(), "method", request.getMethod()))
+            .build();
     response.setContentType("application/json;charset=UTF-8");
     response.setStatus(401);
-    response.getWriter().write(mapper.writeValueAsString(body)); //my util class for creating json strings
+    response
+        .getWriter()
+        .write(mapper.writeValueAsString(body)); // my util class for creating json strings
   }
 }
