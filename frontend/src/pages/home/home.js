@@ -14,7 +14,7 @@ export default function Home() {
         if (light === 1){
             setLight(0);
             setLightPic("../../../framePics/LIGHT_ON_PIC.png");
-            setLightHalo({boxShadow: "23vw -17vw 40vw 6vw rgb(141 202 229 / 60%)"});
+            setLightHalo({boxShadow: "28vw -10vw 40vw 14vw rgb(141 202 229 / 60%)"});
         } else {
             setLight(1);
             setLightPic("../../../framePics/LIGHT_OFF_PIC.png");
@@ -49,9 +49,30 @@ export default function Home() {
                     <div className="lightFrame">
                         <a href="" onClick={ Light }><img className="lightPic" src={lightPic}/></a>
                     </div>
-                    <div className="picFrame" style={lightHalo}>
-                        <img src="../../../framePics/FIRST_FRAME_PIC.png"/>
+                    <div className="frameAndDescription">
+                        <div className="picFrame" style={lightHalo}>
+                            <img src="../../../framePics/FIRST_FRAME_PIC.png"/>
+                        </div>
+                        <span className="picFrameText">
+                            <p className="para1">Une capacité de stockage</p>
+                            <p className="para2">EXTRAORDINAIRE</p>
+                            <p className="para3">allant jusqu'à</p>
+                            <p className="para4">1To</p>
+                        </span>
                     </div>
+                    <div className="endHomeText">
+                        <p>Avec votre clef USB</p>
+                        <p className="endBold">UNIQUE</p>
+                        <p>et</p>
+                        <p className="endBold">PERSONNALISABLE</p>
+                        <p>alliez</p>
+                        <p className="endBold">SEREINITÉ</p>
+                        <p>et</p>
+                        <p className="endBold">STYLE</p>
+                        <p>grâce à son système</p>
+                        <p className="endBold">D'EMPREINTE DIGITALE</p>
+                    </div>
+
                 </div>
             </div>
             )

@@ -28,6 +28,7 @@
   border: solid 0px;
   background: linear-gradient(rgb(13.5,19.5,25.5), black);
   height: 100vw;
+  overflow: hidden;
 }
 
 .lightWire{
@@ -46,13 +47,60 @@
   transform: rotate(0.5turn);
 }
 
+.frameAndDescription{
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  grid-auto-rows: minmax(15vw, auto);
+  z-index: 0;
+}
+
 .picFrame{
-  max-width: 35%;
+  max-width: 80%;
   border: solid 0px;
   border-radius: 5vw;
-  margin: 9%;
- // box-shadow: 0px 50vw 115px rgba(255, 255, 255, 0.8);
+  margin: 1% 0 0 9%;
+  // box-shadow: 0px 50vw 115px rgba(255, 255, 255, 0.8);
   overflow: hidden;
+  padding-bottom: 0%;
+  grid-column: 1;
+}
+
+.picFrameText{
+  color: rgb(11, 14, 17);
+  line-height: 28%;
+  width: 100%;
+  grid-column: 2;
+  text-align: center;
+}
+
+.para1{
+  font-size: 4vw;
+}
+
+.para2{
+  font-size: 5vw;
+  font-weight: bold;
+}
+
+.para3{
+  font-size: 4vw;
+}
+
+.para4{
+  font-size: 6.5vw;
+  font-weight: bolder;
+}
+
+.endHomeText{
+  color: white;
+  text-align: center;
+  line-height: 25%;
+  font-size: 3vw;
+}
+
+.endBold{
+  font-size: 4.5vw;
+  font-weight: bold;
 }
 
 img{
