@@ -1,7 +1,6 @@
 package heavynimbus.backend.filter;
 
 import java.io.IOException;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.FilterChain;
@@ -14,8 +13,6 @@ import heavynimbus.backend.service.JwtUserDetailService;
 import heavynimbus.backend.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,31 +35,25 @@ public class JwtRequestFilter extends OncePerRequestFilter {
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain chain)
       throws ServletException, IOException {
-    for (String route : ApplicationSecurity.PUBLIC_ROUTES) {
-      Pattern pattern = Pattern.compile(route.replace("**", "*"));
-      if (pattern.matcher(request.getRequestURI()).matches()) {
-        chain.doFilter(request, response);
-        return;
-      }
-    }
     request.getRequestURI();
     final String requestTokenHeader = request.getHeader("Authorization");
-
     String username = null;
     String jwtToken = null;
     // JWT Token is in the form "Bearer token". Remove Bearer word and get
     // only the Token
-    if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-      jwtToken = requestTokenHeader.substring(7);
-      try {
-        username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-      } catch (IllegalArgumentException e) {
-        log.warn("Unable to get JWT Token");
-      } catch (ExpiredJwtException e) {
-        log.warn("JWT Token has expired");
+    if (requestTokenHeader != null) {
+      if (requestTokenHeader.startsWith("Bearer ")) {
+        jwtToken = requestTokenHeader.substring(7);
+        try {
+          username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+        } catch (IllegalArgumentException e) {
+          log.warn("Unable to get JWT Token");
+        } catch (ExpiredJwtException e) {
+          log.warn("JWT Token has expired");
+        }
+      } else {
+        logger.warn("JWT Token does not begin with Bearer String");
       }
-    } else {
-      logger.warn("JWT Token does not begin with Bearer String");
     }
 
     // Once we get the token validate it.

@@ -19,8 +19,7 @@ public record AttributeService(AttributeRepository attributeRepository, Attribut
 
     public List<AttributeResponse> findAll(){
         List<Attribute> attributes = attributeRepository.findAll();
-        return attributes.stream().peek(elt -> System.out.println(String.format("%s: %s", elt.getId(), elt)))
-            .map(attributeMapper::attributeToAttributeResponse).toList();
+        return attributes.stream().map(attributeMapper::attributeToAttributeResponse).toList();
     }
 
     public AttributeResponse findById(UUID id) throws NotFoundException {

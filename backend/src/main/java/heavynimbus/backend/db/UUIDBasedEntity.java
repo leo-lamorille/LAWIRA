@@ -18,7 +18,6 @@ public abstract class UUIDBasedEntity {
 
   @PrePersist
   public void prePersist() {
-    System.out.println("id = " + id);
     if (this.id == null) this.id = UUID.randomUUID().toString();
   }
 }
