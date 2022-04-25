@@ -16,7 +16,7 @@ public record AttributeOptionService(AttributeOptionRepository attributeOptionRe
                                      AttributeOptionMapper attributeOptionMapper,
                                      AttributeService attributeService) {
     public AttributeOption findAttributeOptionById(UUID id) throws NotFoundException {
-        return attributeOptionRepository.findById(id)
+        return attributeOptionRepository.findById(id.toString())
                 .orElseThrow(()->new NotFoundException("attribute option", "id", id.toString()));
     }
 
@@ -24,7 +24,7 @@ public record AttributeOptionService(AttributeOptionRepository attributeOptionRe
         Attribute attribute = attributeService.findAttributeById(attributeId);
         AttributeOption attributeOption = attribute.getOptions()
                 .stream()
-                .filter(option->id.equals(option.getId()))
+                .filter(option->id.toString().equals(option.getId()))
                 .findAny()
                 .orElseThrow(()->new NotFoundException("Attribute option", "id", id.toString()));
         return attributeOptionMapper.attributeOptionToAttributeOptionResponse(attributeOption);

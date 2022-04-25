@@ -13,17 +13,18 @@ import java.util.UUID;
 @Service
 public record AttributeService(AttributeRepository attributeRepository, AttributeMapper attributeMapper) {
     public Attribute findAttributeById(UUID id) throws NotFoundException {
-        return attributeRepository.findById(id)
+        return attributeRepository.findById(id.toString())
                 .orElseThrow(()->new NotFoundException("attribute", "id", id.toString()));
     }
 
     public List<AttributeResponse> findAll(){
         List<Attribute> attributes = attributeRepository.findAll();
-        return attributes.stream().peek(System.out::println).map(attributeMapper::attributeToAttributeResponse).toList();
+        return attributes.stream().peek(elt -> System.out.println(String.format("%s: %s", elt.getId(), elt)))
+            .map(attributeMapper::attributeToAttributeResponse).toList();
     }
 
     public AttributeResponse findById(UUID id) throws NotFoundException {
-        Attribute attribute = attributeRepository.findById(id)
+        Attribute attribute = attributeRepository.findById(id.toString())
                 .orElseThrow(()->new NotFoundException("attribute", "id", id.toString()));
         return attributeMapper.attributeToAttributeResponse(attribute);
     }

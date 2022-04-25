@@ -12,12 +12,13 @@ import java.util.UUID;
 @MappedSuperclass
 public abstract class UUIDBasedEntity {
 
-    @Id
-    @Column(name = "id")
-    protected UUID id;
+  @Id
+  @Column(name = "id")
+  protected String id;
 
-    @PrePersist
-    public void prePersist(){
-        if (this.id == null) this.id = UUID.randomUUID();
-    }
+  @PrePersist
+  public void prePersist() {
+    System.out.println("id = " + id);
+    if (this.id == null) this.id = UUID.randomUUID().toString();
+  }
 }

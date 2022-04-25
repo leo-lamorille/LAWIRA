@@ -15,7 +15,7 @@ public record ConfigurationService(ConfigurationRepository configurationReposito
                                    ConfigurationMapper configurationMapper) {
 
     public Configuration findConfigurationByIdAndUsername(UUID configurationId, String username) throws NotFoundException {
-        return configurationRepository.findByIdAndAccount_Username(configurationId, username)
+        return configurationRepository.findByIdAndAccount_Username(configurationId.toString(), username)
                 .orElseThrow(()->new NotFoundException("configuration", "id", configurationId.toString()));
     }
 

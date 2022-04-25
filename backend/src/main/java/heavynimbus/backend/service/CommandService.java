@@ -24,7 +24,7 @@ public record CommandService(CommandRepository commandRepository,
                              AttributeRepository attributeRepository,
                              AccountService accountService) {
     public Command findCommandByIdAndAccountUsername(UUID id, String username) throws NotFoundException {
-        return commandRepository.findByIdAndAccount_Username(id, username)
+        return commandRepository.findByIdAndAccount_Username(id.toString(), username)
                 .orElseThrow(() ->new NotFoundException("command", "id", id.toString()));
     }
     public List<CommandResponse> findAllByStatusAndAccountUsername(CommandStatus status, String username){

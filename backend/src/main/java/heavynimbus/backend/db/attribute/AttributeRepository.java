@@ -6,4 +6,4 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface AttributeRepository extends JpaRepository<Attribute, UUID> {}
+public interface AttributeRepository extends JpaRepository<Attribute, String> {}

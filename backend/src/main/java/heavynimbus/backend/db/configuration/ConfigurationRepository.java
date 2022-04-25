@@ -8,9 +8,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface ConfigurationRepository extends JpaRepository<Configuration, UUID> {
+public interface ConfigurationRepository extends JpaRepository<Configuration, String> {
 
-  Optional<Configuration> findByIdAndAccount_Username(UUID id, String username);
+  Optional<Configuration> findByIdAndAccount_Username(String id, String username);
 
   List<Configuration> findAllByAccount_Username(String username);
 }
