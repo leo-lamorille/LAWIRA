@@ -1,93 +1,550 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
-    <changeSet id="insert command 1" author="HeavyNimbus">
-        <insert tableName="command">
-            <column name="quantity" value="10"/>
-            <column name="status" value="CREATED"/>
-            <column name="account_id" valueComputed="(SELECT id FROM account WHERE username = 'User')"/>
-        </insert>
-        <insert tableName="command_attribute_options">
-            <column name="command_id" valueComputed="(SELECT id FROM command WHERE quantity = 10)"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Couleur' AND ao.value = '#FF0000')"/>
-        </insert>
-        <insert tableName="command_attribute_options">
-            <column name="command_id" valueComputed="(SELECT id FROM command WHERE quantity = 10)"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Leds' AND ao.value = '#FF0000')"/>
-        </insert>
-        <insert tableName="command_attribute_options">
-            <column name="command_id" valueComputed="(SELECT id FROM command WHERE quantity = 10)"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                     WHERE a.name = 'Capacité de stockage' AND ao.value = '512 Go')"/>
-        </insert>
-        <insert tableName="command_attribute_options">
-            <column name="command_id" valueComputed="(SELECT id FROM command WHERE quantity = 10)"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Étanchéité' AND ao.value = 'Étanche')"/>
-        </insert>
-        <insert tableName="command_attribute_options">
-            <column name="command_id" valueComputed="(SELECT id FROM command WHERE quantity = 10)"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Bluetooth' AND ao.value = 'Avec bluetooth')"/>
-        </insert>
-        <insert tableName="command_attribute_options">
-            <column name="command_id" valueComputed="(SELECT id FROM command WHERE quantity = 10)"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Géolocalisation' AND ao.value = 'Sans géolocalisation')"/>
-        </insert>
-    </changeSet>
-    <changeSet id="insert command 2" author="HeavyNimbus">
-        <insert tableName="command">
-            <column name="quantity" value="100"/>
-            <column name="status" value="DONE"/>
-            <column name="account_id" valueComputed="(SELECT id FROM account WHERE username = 'User')"/>
-        </insert>
-        <insert tableName="command_attribute_options">
-            <column name="command_id" valueComputed="(SELECT id FROM command WHERE quantity = 100)"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Couleur' AND ao.value = '#00FFFF')"/>
-        </insert>
-        <insert tableName="command_attribute_options">
-            <column name="command_id" valueComputed="(SELECT id FROM command WHERE quantity = 100)"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Leds' AND ao.value = '#FFFF00')"/>
-        </insert>
-        <insert tableName="command_attribute_options">
-            <column name="command_id" valueComputed="(SELECT id FROM command WHERE quantity = 100)"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Capacité de stockage' AND ao.value = '1 To')"/>
-        </insert>
-        <insert tableName="command_attribute_options">
-            <column name="command_id" valueComputed="(SELECT id FROM command WHERE quantity = 100)"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Étanchéité' AND ao.value = 'Étanche')"/>
-        </insert>
-        <insert tableName="command_attribute_options">
-            <column name="command_id" valueComputed="(SELECT id FROM command WHERE quantity = 100)"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Bluetooth' AND ao.value = 'Sans bluetooth')"/>
-        </insert>
-        <insert tableName="command_attribute_options">
-            <column name="command_id" valueComputed="(SELECT id FROM command WHERE quantity = 100)"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Géolocalisation' AND ao.value = 'Avec géolocalisation')"/>
-        </insert>
-    </changeSet>
+  <changeSet id="insert created command" author="HeavyNimbus">
+    <sql>
+      INSERT INTO command(id, quantity, status, account_id)
+      VALUES (UUID(), 10, 'CREATED', (SELECT id FROM account WHERE username = 'Leo'));
+
+      INSERT INTO command_attribute_options (command_id, attribute_option_id)
+      VALUES ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Leo'
+                 AND command.quantity = 10), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Couleur'
+                                                AND ao.value = '#FF0000')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Leo'
+                 AND command.quantity = 10), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Leds'
+                                                AND ao.value = '#FF0000')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Leo'
+                 AND command.quantity = 10), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Capacité de stockage'
+                                                AND ao.value = '512 Go')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Leo'
+                 AND command.quantity = 10), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Étanchéité'
+                                                AND ao.value = 'Étanche')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Leo'
+                 AND command.quantity = 10), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Bluetooth'
+                                                AND ao.value = 'Avec bluetooth')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Leo'
+                 AND command.quantity = 10), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Géolocalisation'
+                                                AND ao.value = 'Sans géolocalisation'));
+
+
+      INSERT INTO command(id, quantity, status, account_id)
+      VALUES (UUID(), 10, 'CREATED', (SELECT id FROM account WHERE username = 'Armel'));
+
+      INSERT INTO command_attribute_options (command_id, attribute_option_id)
+      VALUES ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Armel'
+                 AND command.quantity = 10), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Couleur'
+                                                AND ao.value = '#FF0000')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Armel'
+                 AND command.quantity = 10), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Leds'
+                                                AND ao.value = '#FF0000')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Armel'
+                 AND command.quantity = 10), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Capacité de stockage'
+                                                AND ao.value = '512 Go')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Armel'
+                 AND command.quantity = 10), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Étanchéité'
+                                                AND ao.value = 'Étanche')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Armel'
+                 AND command.quantity = 10), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Bluetooth'
+                                                AND ao.value = 'Avec bluetooth')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Armel'
+                 AND command.quantity = 10), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Géolocalisation'
+                                                AND ao.value = 'Sans géolocalisation'));
+
+
+      INSERT INTO command(id, quantity, status, account_id)
+      VALUES (UUID(), 10, 'CREATED', (SELECT id FROM account WHERE username = 'Hugo'));
+
+      INSERT INTO command_attribute_options (command_id, attribute_option_id)
+      VALUES ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Hugo'
+                 AND command.quantity = 10), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Couleur'
+                                                AND ao.value = '#FF0000')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Hugo'
+                 AND command.quantity = 10), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Leds'
+                                                AND ao.value = '#FF0000')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Hugo'
+                 AND command.quantity = 10), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Capacité de stockage'
+                                                AND ao.value = '512 Go')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Hugo'
+                 AND command.quantity = 10), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Étanchéité'
+                                                AND ao.value = 'Étanche')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Hugo'
+                 AND command.quantity = 10), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Bluetooth'
+                                                AND ao.value = 'Avec bluetooth')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Hugo'
+                 AND command.quantity = 10), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Géolocalisation'
+                                                AND ao.value = 'Sans géolocalisation'));
+    </sql>
+  </changeSet>
+  <changeSet id="insert pending command" author="HeavyNimbus">
+    <sql>
+      INSERT INTO command(id, quantity, status, account_id)
+      VALUES (UUID(), 1000, 'PENDING', (SELECT id FROM account WHERE username = 'Leo'));
+
+      INSERT INTO command_attribute_options (command_id, attribute_option_id)
+      VALUES ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Leo'
+                 AND command.quantity = 1000), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Couleur'
+                                                AND ao.value = '#00FF00')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Leo'
+                 AND command.quantity = 1000), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Leds'
+                                                AND ao.value = '#FF00FF')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Leo'
+                 AND command.quantity = 1000), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Capacité de stockage'
+                                                AND ao.value = '128 Go')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Leo'
+                 AND command.quantity = 1000), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Étanchéité'
+                                                AND ao.value = 'Non Étanche')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Leo'
+                 AND command.quantity = 1000), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Bluetooth'
+                                                AND ao.value = 'Avec bluetooth')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Leo'
+                 AND command.quantity = 1000), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Géolocalisation'
+                                                AND ao.value = 'Avec géolocalisation'));
+
+      INSERT INTO command(id, quantity, status, account_id)
+      VALUES (UUID(), 1000, 'PENDING', (SELECT id FROM account WHERE username = 'Armel'));
+
+      INSERT INTO command_attribute_options (command_id, attribute_option_id)
+      VALUES ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Armel'
+                 AND command.quantity = 1000), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Couleur'
+                                                AND ao.value = '#00FF00')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Armel'
+                 AND command.quantity = 1000), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Leds'
+                                                AND ao.value = '#FF00FF')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Armel'
+                 AND command.quantity = 1000), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Capacité de stockage'
+                                                AND ao.value = '128 Go')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Armel'
+                 AND command.quantity = 1000), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Étanchéité'
+                                                AND ao.value = 'Non Étanche')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Armel'
+                 AND command.quantity = 1000), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Bluetooth'
+                                                AND ao.value = 'Avec bluetooth')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Armel'
+                 AND command.quantity = 1000), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Géolocalisation'
+                                                AND ao.value = 'Avec géolocalisation'));
+
+      INSERT INTO command(id, quantity, status, account_id)
+      VALUES (UUID(), 1000, 'PENDING', (SELECT id FROM account WHERE username = 'Hugo'));
+
+      INSERT INTO command_attribute_options (command_id, attribute_option_id)
+      VALUES ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Hugo'
+                 AND command.quantity = 1000), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Couleur'
+                                                AND ao.value = '#00FF00')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Hugo'
+                 AND command.quantity = 1000), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Leds'
+                                                AND ao.value = '#FF00FF')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Hugo'
+                 AND command.quantity = 1000), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Capacité de stockage'
+                                                AND ao.value = '128 Go')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Hugo'
+                 AND command.quantity = 1000), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Étanchéité'
+                                                AND ao.value = 'Non Étanche')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Hugo'
+                 AND command.quantity = 1000), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Bluetooth'
+                                                AND ao.value = 'Avec bluetooth')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Hugo'
+                 AND command.quantity = 1000), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Géolocalisation'
+                                                AND ao.value = 'Avec géolocalisation'));
+    </sql>
+  </changeSet>
+  <changeSet id="insert done command" author="HeavyNimbus">
+    <sql>
+      INSERT INTO command(id, quantity, status, account_id)
+      VALUES (UUID(), 100, 'DONE', (SELECT id FROM account WHERE username = 'Leo'));
+
+      INSERT INTO command_attribute_options (command_id, attribute_option_id)
+      VALUES ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Leo'
+                 AND command.quantity = 100), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Couleur'
+                                                AND ao.value = '#00FF00')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Leo'
+                 AND command.quantity = 100), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Leds'
+                                                AND ao.value = '#FF00FF')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Leo'
+                 AND command.quantity = 100), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Capacité de stockage'
+                                                AND ao.value = '128 Go')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Leo'
+                 AND command.quantity = 100), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Étanchéité'
+                                                AND ao.value = 'Non Étanche')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Leo'
+                 AND command.quantity = 100), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Bluetooth'
+                                                AND ao.value = 'Avec bluetooth')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Leo'
+                 AND command.quantity = 100), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Géolocalisation'
+                                                AND ao.value = 'Avec géolocalisation'));
+
+      INSERT INTO command(id, quantity, status, account_id)
+      VALUES (UUID(), 100, 'DONE', (SELECT id FROM account WHERE username = 'Armel'));
+
+      INSERT INTO command_attribute_options (command_id, attribute_option_id)
+      VALUES ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Armel'
+                 AND command.quantity = 100), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Couleur'
+                                                AND ao.value = '#00FF00')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Armel'
+                 AND command.quantity = 100), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Leds'
+                                                AND ao.value = '#FF00FF')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Armel'
+                 AND command.quantity = 100), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Capacité de stockage'
+                                                AND ao.value = '128 Go')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Armel'
+                 AND command.quantity = 100), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Étanchéité'
+                                                AND ao.value = 'Non Étanche')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Armel'
+                 AND command.quantity = 100), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Bluetooth'
+                                                AND ao.value = 'Avec bluetooth')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Armel'
+                 AND command.quantity = 100), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Géolocalisation'
+                                                AND ao.value = 'Avec géolocalisation'));
+
+      INSERT INTO command(id, quantity, status, account_id)
+      VALUES (UUID(), 100, 'DONE', (SELECT id FROM account WHERE username = 'Hugo'));
+
+      INSERT INTO command_attribute_options (command_id, attribute_option_id)
+      VALUES ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Hugo'
+                 AND command.quantity = 100), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Couleur'
+                                                AND ao.value = '#00FF00')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Hugo'
+                 AND command.quantity = 100), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Leds'
+                                                AND ao.value = '#FF00FF')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Hugo'
+                 AND command.quantity = 100), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Capacité de stockage'
+                                                AND ao.value = '128 Go')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Hugo'
+                 AND command.quantity = 100), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Étanchéité'
+                                                AND ao.value = 'Non Étanche')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Hugo'
+                 AND command.quantity = 100), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Bluetooth'
+                                                AND ao.value = 'Avec bluetooth')),
+             ((SELECT command.id
+               FROM command
+                      JOIN account ON (account.id = command.account_id)
+               WHERE account.username = 'Hugo'
+                 AND command.quantity = 100), (SELECT ao.id
+                                              FROM attribute_option AS ao
+                                                     JOIN attribute AS a on (ao.attribute_id = a.id)
+                                              WHERE a.name = 'Géolocalisation'
+                                                AND ao.value = 'Avec géolocalisation'));
+    </sql>
+  </changeSet>
+
 </databaseChangeLog>

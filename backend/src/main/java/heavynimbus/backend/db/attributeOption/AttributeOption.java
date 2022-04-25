@@ -20,11 +20,11 @@ public class AttributeOption extends UUIDBasedEntity {
   @Column(name = "type")
   private AttributeOptionType type;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, targetEntity = Attribute.class)
   @JoinColumn(name = "attribute_id", referencedColumnName = "id")
   private Attribute attribute;
 
-  public String getAttributeName(){
+  public String getAttributeName() {
     return attribute.getName();
   }
 }

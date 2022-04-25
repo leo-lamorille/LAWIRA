@@ -1,106 +1,357 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
 
-    <changeSet id="insert configuration perso" author="HeavyNimbus">
-        <insert tableName="configuration">
-            <column name="name" value="Configuration personnelle"/>
-            <column name="account_id" valueComputed="(SELECT id FROM account WHERE username = 'User')"/>
-        </insert>
+  <changeSet id="insert configuration perso" author="HeavyNimbus">
+    <sql>
+      INSERT INTO configuration(id, name, account_id)
+      VALUES (UUID(), 'Configuration personnelle', (SELECT id FROM account WHERE username = 'Leo')),
+             (UUID(), 'Configuration personnelle',
+              (SELECT id FROM account WHERE username = 'Armel')),
+             (UUID(), 'Configuration personnelle',
+              (SELECT id FROM account WHERE username = 'Hugo'));
 
-        <insert tableName="configuration_attribute_options">
-            <column name="configuration_id"
-                    valueComputed="(SELECT id FROM configuration WHERE name = 'Configuration personnelle')"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Couleur' AND ao.value = '#00FFFF')"/>
-        </insert>
-        <insert tableName="configuration_attribute_options">
-            <column name="configuration_id"
-                    valueComputed="(SELECT id FROM configuration WHERE name = 'Configuration personnelle')"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Leds' AND ao.value = '#FFFF00')"/>
-        </insert>
-        <insert tableName="configuration_attribute_options">
-            <column name="configuration_id"
-                    valueComputed="(SELECT id FROM configuration WHERE name = 'Configuration personnelle')"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Capacité de stockage' AND ao.value = '1 To')"/>
-        </insert>
-        <insert tableName="configuration_attribute_options">
-            <column name="configuration_id"
-                    valueComputed="(SELECT id FROM configuration WHERE name = 'Configuration personnelle')"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Étanchéité' AND ao.value = 'Étanche')"/>
-        </insert>
-        <insert tableName="configuration_attribute_options">
-            <column name="configuration_id"
-                    valueComputed="(SELECT id FROM configuration WHERE name = 'Configuration personnelle')"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Bluetooth' AND ao.value = 'Sans bluetooth')"/>
-        </insert>
-        <insert tableName="configuration_attribute_options">
-            <column name="configuration_id"
-                    valueComputed="(SELECT id FROM configuration WHERE name = 'Configuration personnelle')"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Géolocalisation' AND ao.value = 'Avec géolocalisation')"/>
-        </insert>
-    </changeSet>
+      INSERT INTO configuration_attribute_options(configuration_id, attribute_option_id)
+      VALUES ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration personnelle'
+                         AND account.username = 'Leo'), (SELECT ao.id
+                                                         FROM attribute_option AS ao
+                                                                JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                         WHERE a.name = 'Couleur'
+                                                           AND ao.value = '#00FFFF')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration personnelle'
+                         AND account.username = 'Leo'), (SELECT ao.id
+                                                         FROM attribute_option AS ao
+                                                                JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                         WHERE a.name = 'Leds'
+                                                           AND ao.value = '#FFFF00')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration personnelle'
+                         AND account.username = 'Leo'), (SELECT ao.id
+                                                         FROM attribute_option AS ao
+                                                                JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                         WHERE a.name = 'Capacité de stockage'
+                                                           AND ao.value = '1 To')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration personnelle'
+                         AND account.username = 'Leo'), (SELECT ao.id
+                                                         FROM attribute_option AS ao
+                                                                JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                         WHERE a.name = 'Étanchéité'
+                                                           AND ao.value = 'Étanche')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration personnelle'
+                         AND account.username = 'Leo'), (SELECT ao.id
+                                                         FROM attribute_option AS ao
+                                                                JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                         WHERE a.name = 'Bluetooth'
+                                                           AND ao.value = 'Sans bluetooth')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration personnelle'
+                         AND account.username = 'Leo'), (SELECT ao.id
+                                                         FROM attribute_option AS ao
+                                                                JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                         WHERE a.name = 'Géolocalisation'
+                                                           AND ao.value = 'Avec géolocalisation')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration personnelle'
+                         AND account.username = 'Armel'), (SELECT ao.id
+                                                           FROM attribute_option AS ao
+                                                                  JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                           WHERE a.name = 'Couleur'
+                                                             AND ao.value = '#00FFFF')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration personnelle'
+                         AND account.username = 'Armel'), (SELECT ao.id
+                                                           FROM attribute_option AS ao
+                                                                  JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                           WHERE a.name = 'Leds'
+                                                             AND ao.value = '#FFFF00')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration personnelle'
+                         AND account.username = 'Armel'), (SELECT ao.id
+                                                           FROM attribute_option AS ao
+                                                                  JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                           WHERE a.name = 'Capacité de stockage'
+                                                             AND ao.value = '1 To')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration personnelle'
+                         AND account.username = 'Armel'), (SELECT ao.id
+                                                           FROM attribute_option AS ao
+                                                                  JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                           WHERE a.name = 'Étanchéité'
+                                                             AND ao.value = 'Étanche')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration personnelle'
+                         AND account.username = 'Armel'), (SELECT ao.id
+                                                           FROM attribute_option AS ao
+                                                                  JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                           WHERE a.name = 'Bluetooth'
+                                                             AND ao.value = 'Sans bluetooth')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration personnelle'
+                         AND account.username = 'Armel'), (SELECT ao.id
+                                                           FROM attribute_option AS ao
+                                                                  JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                           WHERE a.name = 'Géolocalisation'
+                                                             AND ao.value = 'Avec géolocalisation')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration personnelle'
+                         AND account.username = 'Hugo'), (SELECT ao.id
+                                                          FROM attribute_option AS ao
+                                                                 JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                          WHERE a.name = 'Couleur'
+                                                            AND ao.value = '#00FFFF')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration personnelle'
+                         AND account.username = 'Hugo'), (SELECT ao.id
+                                                          FROM attribute_option AS ao
+                                                                 JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                          WHERE a.name = 'Leds'
+                                                            AND ao.value = '#FFFF00')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration personnelle'
+                         AND account.username = 'Hugo'), (SELECT ao.id
+                                                          FROM attribute_option AS ao
+                                                                 JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                          WHERE a.name = 'Capacité de stockage'
+                                                            AND ao.value = '1 To')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration personnelle'
+                         AND account.username = 'Hugo'), (SELECT ao.id
+                                                          FROM attribute_option AS ao
+                                                                 JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                          WHERE a.name = 'Étanchéité'
+                                                            AND ao.value = 'Étanche')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration personnelle'
+                         AND account.username = 'Hugo'), (SELECT ao.id
+                                                          FROM attribute_option AS ao
+                                                                 JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                          WHERE a.name = 'Bluetooth'
+                                                            AND ao.value = 'Sans bluetooth')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration personnelle'
+                         AND account.username = 'Hugo'), (SELECT ao.id
+                                                          FROM attribute_option AS ao
+                                                                 JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                          WHERE a.name = 'Géolocalisation'
+                                                            AND ao.value = 'Avec géolocalisation'));
+    </sql>
+  </changeSet>
 
-    <changeSet id="insert configuration pro" author="HeavyNimbus">
-        <insert tableName="configuration">
-            <column name="name" value="Configuration professionnelle"/>
-            <column name="account_id" valueComputed="(SELECT id FROM account WHERE username = 'User')"/>
-        </insert>
-        <insert tableName="configuration_attribute_options">
-            <column name="configuration_id"
-                    valueComputed="(SELECT id FROM configuration WHERE name = 'Configuration professionnelle')"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Couleur' AND ao.value = '#FF0000')"/>
-        </insert>
-        <insert tableName="configuration_attribute_options">
-            <column name="configuration_id"
-                    valueComputed="(SELECT id FROM configuration WHERE name = 'Configuration professionnelle')"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Leds' AND ao.value = '#FF0000')"/>
-        </insert>
-        <insert tableName="configuration_attribute_options">
-            <column name="configuration_id"
-                    valueComputed="(SELECT id FROM configuration WHERE name = 'Configuration professionnelle')"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                     WHERE a.name = 'Capacité de stockage' AND ao.value = '512 Go')"/>
-        </insert>
-        <insert tableName="configuration_attribute_options">
-            <column name="configuration_id"
-                    valueComputed="(SELECT id FROM configuration WHERE name = 'Configuration professionnelle')"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Étanchéité' AND ao.value = 'Étanche')"/>
-        </insert>
-        <insert tableName="configuration_attribute_options">
-            <column name="configuration_id"
-                    valueComputed="(SELECT id FROM configuration WHERE name = 'Configuration professionnelle')"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Bluetooth' AND ao.value = 'Avec bluetooth')"/>
-        </insert>
-        <insert tableName="configuration_attribute_options">
-            <column name="configuration_id"
-                    valueComputed="(SELECT id FROM configuration WHERE name = 'Configuration professionnelle')"/>
-            <column name="attribute_option_id"
-                    valueComputed="(SELECT ao.id FROM attribute_option AS ao JOIN attribute AS a on (ao.attribute_id = a.id)
-                    WHERE a.name = 'Géolocalisation' AND ao.value = 'Sans géolocalisation')"/>
-        </insert>
-    </changeSet>
+  <changeSet id="insert configuration pro" author="HeavyNimbus">
+    <sql>
+      INSERT INTO configuration(id, name, account_id)
+      VALUES (UUID(), 'Configuration professionnelle', (SELECT id FROM account WHERE username = 'Leo')),
+             (UUID(), 'Configuration professionnelle',
+              (SELECT id FROM account WHERE username = 'Armel')),
+             (UUID(), 'Configuration professionnelle',
+              (SELECT id FROM account WHERE username = 'Hugo'));
+
+      INSERT INTO configuration_attribute_options(configuration_id, attribute_option_id)
+      VALUES ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration professionnelle'
+                         AND account.username = 'Leo'), (SELECT ao.id
+                                                         FROM attribute_option AS ao
+                                                                JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                         WHERE a.name = 'Couleur'
+                                                           AND ao.value = '#0000FF')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration professionnelle'
+                         AND account.username = 'Leo'), (SELECT ao.id
+                                                         FROM attribute_option AS ao
+                                                                JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                         WHERE a.name = 'Leds'
+                                                           AND ao.value = '#FFFF00')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration professionnelle'
+                         AND account.username = 'Leo'), (SELECT ao.id
+                                                         FROM attribute_option AS ao
+                                                                JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                         WHERE a.name = 'Capacité de stockage'
+                                                           AND ao.value = '1 To')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration professionnelle'
+                         AND account.username = 'Leo'), (SELECT ao.id
+                                                         FROM attribute_option AS ao
+                                                                JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                         WHERE a.name = 'Étanchéité'
+                                                           AND ao.value = 'Non Étanche')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration professionnelle'
+                         AND account.username = 'Leo'), (SELECT ao.id
+                                                         FROM attribute_option AS ao
+                                                                JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                         WHERE a.name = 'Bluetooth'
+                                                           AND ao.value = 'Sans bluetooth')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration professionnelle'
+                         AND account.username = 'Leo'), (SELECT ao.id
+                                                         FROM attribute_option AS ao
+                                                                JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                         WHERE a.name = 'Géolocalisation'
+                                                           AND ao.value = 'Sans géolocalisation')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration professionnelle'
+                         AND account.username = 'Armel'), (SELECT ao.id
+                                                           FROM attribute_option AS ao
+                                                                  JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                           WHERE a.name = 'Couleur'
+                                                             AND ao.value = '#00FF00')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration professionnelle'
+                         AND account.username = 'Armel'), (SELECT ao.id
+                                                           FROM attribute_option AS ao
+                                                                  JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                           WHERE a.name = 'Leds'
+                                                             AND ao.value = '#FFFF00')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration professionnelle'
+                         AND account.username = 'Armel'), (SELECT ao.id
+                                                           FROM attribute_option AS ao
+                                                                  JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                           WHERE a.name = 'Capacité de stockage'
+                                                             AND ao.value = '256 Go')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration professionnelle'
+                         AND account.username = 'Armel'), (SELECT ao.id
+                                                           FROM attribute_option AS ao
+                                                                  JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                           WHERE a.name = 'Étanchéité'
+                                                             AND ao.value = 'Étanche')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration professionnelle'
+                         AND account.username = 'Armel'), (SELECT ao.id
+                                                           FROM attribute_option AS ao
+                                                                  JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                           WHERE a.name = 'Bluetooth'
+                                                             AND ao.value = 'Avec bluetooth')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration professionnelle'
+                         AND account.username = 'Armel'), (SELECT ao.id
+                                                           FROM attribute_option AS ao
+                                                                  JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                           WHERE a.name = 'Géolocalisation'
+                                                             AND ao.value = 'Sans géolocalisation')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration professionnelle'
+                         AND account.username = 'Hugo'), (SELECT ao.id
+                                                          FROM attribute_option AS ao
+                                                                 JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                          WHERE a.name = 'Couleur'
+                                                            AND ao.value = '#000000')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration professionnelle'
+                         AND account.username = 'Hugo'), (SELECT ao.id
+                                                          FROM attribute_option AS ao
+                                                                 JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                          WHERE a.name = 'Leds'
+                                                            AND ao.value = '#FFFFFF')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration professionnelle'
+                         AND account.username = 'Hugo'), (SELECT ao.id
+                                                          FROM attribute_option AS ao
+                                                                 JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                          WHERE a.name = 'Capacité de stockage'
+                                                            AND ao.value = '1 To')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration professionnelle'
+                         AND account.username = 'Hugo'), (SELECT ao.id
+                                                          FROM attribute_option AS ao
+                                                                 JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                          WHERE a.name = 'Étanchéité'
+                                                            AND ao.value = 'Étanche')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration professionnelle'
+                         AND account.username = 'Hugo'), (SELECT ao.id
+                                                          FROM attribute_option AS ao
+                                                                 JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                          WHERE a.name = 'Bluetooth'
+                                                            AND ao.value = 'Sans bluetooth')),
+             ((SELECT configuration.id
+                       FROM configuration
+                              JOIN account ON (account.id = configuration.account_id)
+                       WHERE configuration.name = 'Configuration professionnelle'
+                         AND account.username = 'Hugo'), (SELECT ao.id
+                                                          FROM attribute_option AS ao
+                                                                 JOIN attribute AS a on (ao.attribute_id = a.id)
+                                                          WHERE a.name = 'Géolocalisation'
+                                                            AND ao.value = 'Sans géolocalisation'));
+    </sql>
+  </changeSet>
 </databaseChangeLog>

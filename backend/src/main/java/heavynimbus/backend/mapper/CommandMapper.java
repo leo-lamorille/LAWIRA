@@ -6,6 +6,7 @@ import heavynimbus.backend.db.command.Command;
 import heavynimbus.backend.db.command.CommandStatus;
 import heavynimbus.backend.dto.command.CommandResponse;
 import heavynimbus.backend.dto.command.CreateCommandRequest;
+import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public record CommandMapper(AttributeOptionMapper attributeOptionMapper) {
   }
   public CommandResponse commandToCommandResponse(Command command) {
     return CommandResponse.builder()
-        .id(command.getId())
+        .id(UUID.fromString(command.getId()))
         .quantity(command.getQuantity())
         .status(command.getStatus())
         .values(command.getValues()

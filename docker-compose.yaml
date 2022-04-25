@@ -2,32 +2,37 @@ version: '3.7'
 
 services:
 
-  backend:
-    container_name: api-backend
+  lawira-backend:
+    container_name: lawira-backend
     build:
       context: backend
     restart: always
     image: api-backend:dev
     ports:
-      - "10080:8080"
+      - "8080:8080"
     depends_on:
-      - postgres-db
+      - lawira-db
 
-  postgres-db:
-    container_name: postgres-db
-    image: postgres
-    ports:
-      - '10000:5432'
+  lawira-db:
+    image: mariadb:10.2
+    container_name: lawira-db
     environment:
-      POSTGRES_DB: postgres-db
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
-      POSTGRES_PORT: 5432
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    ports:
+      - '3307:3306'
+    logging:
+      driver: syslog
+      options:
+        tag: "{{.DaemonName}}(image={{.ImageName}};name={{.Name}};id={{.ID}})"
+    restart: on-failure
     volumes:
-      - postgres-db-vol:/var/lib/postgres/data
+      - lawira-db-vol:/var/lib/mysql
 
 volumes:
-  postgres-db-vol:
+  lawira-db-vol:
 
 networks:
   default:

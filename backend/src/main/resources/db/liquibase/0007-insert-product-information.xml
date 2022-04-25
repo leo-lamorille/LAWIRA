@@ -1,187 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
-    <changeSet id="insert attributes" author="HeavyNimbus">
-        <insert tableName="attribute">
-            <column name="name" value="Couleur"/>
-            <column name="description" value="Choisissez la couleur qui vous conviendra le mieux !"/>
-        </insert>
-        <insert tableName="attribute">
-            <column name="name" value="Leds"/>
-            <column name="description" value="Choisissez la couleur de led qui vous conviendra le mieux !"/>
-        </insert>
-        <insert tableName="attribute">
-            <column name="name" value="Capacité de stockage"/>
-            <column name="description"
-                    value="Une capacité de stockage plus grande vous permettra de profiter de plus de photos souvenirs, vidéos..."/>
-        </insert>
-        <insert tableName="attribute">
-            <column name="name" value="Étanchéité"/>
-            <column name="description"
-                    value="Rendre votre CLEF URB LAWIRA étanche vous permettra de craindre ni le froid, ni le vent, ni la pluie ! Vous pourrez même lui faire profiter de votre piscine ..."/>
-        </insert>
-        <insert tableName="attribute">
-            <column name="name" value="Bluetooth"/>
-            <column name="description"
-                    value="Équiper votre CLEF USB LAWIRA d’une option Bluetooth vous permettra de l’appairer avec votre téléphone. En cas de déconnexion (possible vol ou perte) votre téléphone ainsi que la clef sonneront pendant 30 secondes."/>
-        </insert>
-        <insert tableName="attribute">
-            <column name="name" value="Géolocalisation"/>
-            <column name="description"
-                    value="Équiper votre CLEF USB LAWIRA d’une option Géolocalisatiion vous permettra de géolocaliser votre clef USB grâce à votre téléphone en cas de perte."/>
-        </insert>
-    </changeSet>
-    <changeSet id="insert attribute options" author="HeavyNimbus">
-        <insert tableName="attribute_option">
-            <column name="value" value="#000000"/>
-            <column name="type" value="COLOR"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Couleur')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="#FF0000"/>
-            <column name="type" value="COLOR"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Couleur')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="#FFFF00"/>
-            <column name="type" value="COLOR"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Couleur')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="#00FF00"/>
-            <column name="type" value="COLOR"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Couleur')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="#00FFFF"/>
-            <column name="type" value="COLOR"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Couleur')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="#0000FF"/>
-            <column name="type" value="COLOR"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Couleur')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="#FFFFFF"/>
-            <column name="type" value="COLOR"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Couleur')"/>
-        </insert>
-
-        <insert tableName="attribute_option">
-            <column name="value" value="#000000"/>
-            <column name="type" value="COLOR"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Leds')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="#FF0000"/>
-            <column name="type" value="COLOR"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Leds')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="#FFFF00"/>
-            <column name="type" value="COLOR"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Leds')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="#00FF00"/>
-            <column name="type" value="COLOR"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Leds')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="#00FFFF"/>
-            <column name="type" value="COLOR"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Leds')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="#0000FF"/>
-            <column name="type" value="COLOR"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Leds')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="#FFFFFF"/>
-            <column name="type" value="COLOR"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Leds')"/>
-        </insert>
+  <changeSet id="insert attributes" author="HeavyNimbus">
+    <sql>
+      INSERT INTO attribute (id, name, description)
+      VALUES (UUID(), 'Couleur', 'Choisissez la couleur qui vous conviendra le mieux !'),
+             (UUID(), 'Leds', 'Choisissez la couleur de led qui vous conviendra le mieux !'),
+             (UUID(), 'Capacité de stockage',
+              'Choisissez la couleur de led qui vous conviendra le mieux !'),
+             (UUID(), 'Étanchéité',
+              'Rendre votre CLEF URB LAWIRA étanche vous permettra de craindre ni le froid, ni le vent, ni la pluie ! Vous pourrez même lui faire profiter de votre piscine ...'),
+             (UUID(), 'Bluetooth',
+              'Équiper votre CLEF USB LAWIRA d’une option Bluetooth vous permettra de l’appairer avec votre téléphone. En cas de déconnexion (possible vol ou perte) votre téléphone ainsi que la clef sonneront pendant 30 secondes.'),
+             (UUID(), 'Géolocalisation',
+              'Équiper votre CLEF USB LAWIRA d’une option Géolocalisatiion vous permettra de géolocaliser votre clef USB grâce à votre téléphone en cas de perte.');
+    </sql>
+  </changeSet>
+  <changeSet id="insert attribute options" author="HeavyNimbus">
+    <sql>
+      INSERT INTO attribute_option (id, value, type, attribute_id)
+      VALUES (UUID(), '#000000', 'COLOR', (SELECT id FROM attribute WHERE name = 'Couleur')),
+             (UUID(), '#FF0000', 'COLOR', (SELECT id FROM attribute WHERE name = 'Couleur')),
+             (UUID(), '#00FF00', 'COLOR', (SELECT id FROM attribute WHERE name = 'Couleur')),
+             (UUID(), '#0000FF', 'COLOR', (SELECT id FROM attribute WHERE name = 'Couleur')),
+             (UUID(), '#FFFF00', 'COLOR', (SELECT id FROM attribute WHERE name = 'Couleur')),
+             (UUID(), '#FF00FF', 'COLOR', (SELECT id FROM attribute WHERE name = 'Couleur')),
+             (UUID(), '#00FFFF', 'COLOR', (SELECT id FROM attribute WHERE name = 'Couleur')),
+             (UUID(), '#FFFFFF', 'COLOR', (SELECT id FROM attribute WHERE name = 'Couleur')),
+             (UUID(), '#0F0F0F', 'COLOR', (SELECT id FROM attribute WHERE name = 'Couleur'));
 
 
-        <insert tableName="attribute_option">
-            <column name="value" value="8 Go"/>
-            <column name="type" value="TEXT"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Capacité de stockage')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="16 Go"/>
-            <column name="type" value="TEXT"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Capacité de stockage')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="32 Go"/>
-            <column name="type" value="TEXT"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Capacité de stockage')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="64 Go"/>
-            <column name="type" value="TEXT"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Capacité de stockage')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="128 Go"/>
-            <column name="type" value="TEXT"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Capacité de stockage')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="256 Go"/>
-            <column name="type" value="TEXT"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Capacité de stockage')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="512 Go"/>
-            <column name="type" value="TEXT"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Capacité de stockage')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="1 To"/>
-            <column name="type" value="TEXT"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Capacité de stockage')"/>
-        </insert>
+      INSERT INTO attribute_option (id, value, type, attribute_id)
+      VALUES (UUID(), '#000000', 'COLOR', (SELECT id FROM attribute WHERE name = 'Leds')),
+             (UUID(), '#FF0000', 'COLOR', (SELECT id FROM attribute WHERE name = 'Leds')),
+             (UUID(), '#00FF00', 'COLOR', (SELECT id FROM attribute WHERE name = 'Leds')),
+             (UUID(), '#0000FF', 'COLOR', (SELECT id FROM attribute WHERE name = 'Leds')),
+             (UUID(), '#FFFF00', 'COLOR', (SELECT id FROM attribute WHERE name = 'Leds')),
+             (UUID(), '#FF00FF', 'COLOR', (SELECT id FROM attribute WHERE name = 'Leds')),
+             (UUID(), '#FFFFFF', 'COLOR', (SELECT id FROM attribute WHERE name = 'Leds')),
+             (UUID(), '#0F0F0F', 'COLOR', (SELECT id FROM attribute WHERE name = 'Leds'));
 
 
-        <insert tableName="attribute_option">
-            <column name="value" value="Non Étanche"/>
-            <column name="type" value="TEXT"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Étanchéité')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="Étanche"/>
-            <column name="type" value="TEXT"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Étanchéité')"/>
-        </insert>
+      INSERT INTO attribute_option (id, value, type, attribute_id)
+      VALUES (UUID(), '8 Go', 'TEXT',
+              (SELECT id FROM attribute WHERE name = 'Capacité de stockage')),
+             (UUID(), '16 Go', 'TEXT',
+              (SELECT id FROM attribute WHERE name = 'Capacité de stockage')),
+             (UUID(), '32 Go', 'TEXT',
+              (SELECT id FROM attribute WHERE name = 'Capacité de stockage')),
+             (UUID(), '64 Go', 'TEXT',
+              (SELECT id FROM attribute WHERE name = 'Capacité de stockage')),
+             (UUID(), '128 Go', 'TEXT',
+              (SELECT id FROM attribute WHERE name = 'Capacité de stockage')),
+             (UUID(), '256 Go', 'TEXT',
+              (SELECT id FROM attribute WHERE name = 'Capacité de stockage')),
+             (UUID(), '512 Go', 'TEXT',
+              (SELECT id FROM attribute WHERE name = 'Capacité de stockage')),
+             (UUID(), '1 To', 'TEXT',
+              (SELECT id FROM attribute WHERE name = 'Capacité de stockage'));
+
+      INSERT INTO attribute_option (id, value, type, attribute_id)
+      VALUES (UUID(), 'Non Étanche', 'TEXT', (SELECT id FROM attribute WHERE name = 'Étanchéité')),
+             (UUID(), 'Étanche', 'TEXT', (SELECT id FROM attribute WHERE name = 'Étanchéité'));
 
 
-        <insert tableName="attribute_option">
-            <column name="value" value="Sans bluetooth"/>
-            <column name="type" value="TEXT"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Bluetooth')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="Avec bluetooth"/>
-            <column name="type" value="TEXT"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Bluetooth')"/>
-        </insert>
+      INSERT INTO attribute_option (id, value, type, attribute_id)
+      VALUES (UUID(), 'Sans Bluetooth', 'TEXT',
+              (SELECT id FROM attribute WHERE name = 'Bluetooth')),
+             (UUID(), 'Avec Bluetooth', 'TEXT',
+              (SELECT id FROM attribute WHERE name = 'Bluetooth'));
 
-        <insert tableName="attribute_option">
-            <column name="value" value="Sans géolocalisation"/>
-            <column name="type" value="TEXT"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Géolocalisation')"/>
-        </insert>
-        <insert tableName="attribute_option">
-            <column name="value" value="Avec géolocalisation"/>
-            <column name="type" value="TEXT"/>
-            <column name="attribute_id" valueComputed="(SELECT id FROM attribute WHERE name = 'Géolocalisation')"/>
-        </insert>
-    </changeSet>
+      INSERT INTO attribute_option (id, value, type, attribute_id)
+      VALUES (UUID(), 'Sans Géolocalisation', 'TEXT',
+              (SELECT id FROM attribute WHERE name = 'Géolocalisation')),
+             (UUID(), 'Avec Géolocalisation', 'TEXT',
+              (SELECT id FROM attribute WHERE name = 'Géolocalisation'));
+    </sql>
+  </changeSet>
 </databaseChangeLog>

@@ -225,6 +225,7 @@ public class UserControllersTest extends IntegrationTest {
                 .map(Attribute::getOptions)
                 .map(optionList -> optionList.stream().findAny().orElseThrow())
                 .map(AttributeOption::getId)
+                .map(UUID::fromString)
                 .toList();
         request.options(selection);
         mockMvc

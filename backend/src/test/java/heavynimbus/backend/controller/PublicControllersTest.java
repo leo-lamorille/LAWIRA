@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import heavynimbus.backend.IntegrationTest;
 import heavynimbus.backend.dto.login.LoginRequest;
-import heavynimbus.backend.dto.login.LoginResponse;
 import heavynimbus.backend.dto.product.AttributeOptionResponse;
 import heavynimbus.backend.dto.product.AttributeResponse;
 import lombok.extern.log4j.Log4j2;
@@ -96,7 +95,6 @@ public class PublicControllersTest extends IntegrationTest {
     public void should_successfully_sign_up() throws Exception {
       LoginRequest loginRequest =
           LoginRequest.builder().username("HeavyNimbus").password("myPassword").build();
-
       mockMvc
           .perform(
               post("/public/sign-up")
@@ -220,6 +218,8 @@ public class PublicControllersTest extends IntegrationTest {
     @Order(3)
     @DisplayName("GET /public/attributes/{attributeId}/options/{optionId} - 200 - OK")
     public void should_successfully_get_option_by_id_and_attribute_id() throws Exception {
+      System.out.println("ANY_ATTRIBUTE = " + ANY_ATTRIBUTE);
+      System.out.println("ANY_OPTION = " + ANY_OPTION);
       mockMvc
           .perform(
               get(

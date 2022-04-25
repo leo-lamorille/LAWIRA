@@ -13,7 +13,7 @@ import java.util.UUID;
 @Service
 public record AttributeService(AttributeRepository attributeRepository, AttributeMapper attributeMapper) {
     public Attribute findAttributeById(UUID id) throws NotFoundException {
-        return attributeRepository.findById(id)
+        return attributeRepository.findById(id.toString())
                 .orElseThrow(()->new NotFoundException("attribute", "id", id.toString()));
     }
 
@@ -23,7 +23,7 @@ public record AttributeService(AttributeRepository attributeRepository, Attribut
     }
 
     public AttributeResponse findById(UUID id) throws NotFoundException {
-        Attribute attribute = attributeRepository.findById(id)
+        Attribute attribute = attributeRepository.findById(id.toString())
                 .orElseThrow(()->new NotFoundException("attribute", "id", id.toString()));
         return attributeMapper.attributeToAttributeResponse(attribute);
     }
