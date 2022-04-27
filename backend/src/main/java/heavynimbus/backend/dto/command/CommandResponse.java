@@ -16,5 +16,5 @@ public class CommandResponse {
     private UUID id;
     private CommandStatus status;
     private int quantity;
-    private List<AttributeOptionDetailResponse> values;
+    private List<AttributeOptionDetailResponse> options;
 }

@@ -10,7 +10,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
 @Component
 public record CommandMapper(AttributeOptionMapper attributeOptionMapper) {
@@ -35,7 +34,7 @@ public record CommandMapper(AttributeOptionMapper attributeOptionMapper) {
         .id(UUID.fromString(command.getId()))
         .quantity(command.getQuantity())
         .status(command.getStatus())
-        .values(command.getValues()
+        .options(command.getValues()
             .stream()
             .map(attributeOptionMapper::attributeOptionToAttributeOptionDetailResponse)
             .toList())

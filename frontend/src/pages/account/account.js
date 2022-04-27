@@ -1,5 +1,5 @@
 import './account.scss';
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {CircularProgress} from "@mui/material";
@@ -24,11 +24,20 @@ export default function Account() {
     .catch(err => console.error(err));
   }, []);
 
-  return <p>{
+  function computeProductUrlByValues(options, configurationId) {
+    let valuesString = ''
+    options.forEach(({attributeId, optionId}) => {
+      valuesString += '&' + attributeId + "=" + optionId
+    })
+    return '/product?configurationId=' + configurationId + valuesString
+  }
+
+  return <div>{
     configurations === undefined ? <CircularProgress/>
         : configurations.map(({id, name, options}) => {
           return <div className={"command"} key={id}>
-            <span>name: {name}</span>
+            <Link to={computeProductUrlByValues(options,
+                id)}><span>name: {name}</span></Link>
             <div className={"values"}>
               {options.map(({
                 attributeId,
@@ -43,5 +52,5 @@ export default function Account() {
             </div>
           </div>
         })
-  }</p>
+  }</div>
 }

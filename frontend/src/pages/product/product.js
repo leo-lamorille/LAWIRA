@@ -13,15 +13,60 @@ export default function Product() {
   const navigate = useNavigate();
   const userToken = useSelector(state => state.user.jwt);
 
-  useEffect(() => {
-    if (userToken === '') {
-      navigate('/account/signIn');
-    } else {
-      fetch('http://localhost:8080/public/attributes')
-      .then((res) => res.json())
-      .then(res => setAttributes(res));
+  const requestParams = parseSearchRequest(location);
+  const {commandId, configurationId} = requestParams;
+  let {quantity} = requestParams;
+  quantity = parseInt(quantity);
+  quantity = isNaN(quantity) ? 0 : quantity;
+
+  const selection = {}
+  attributes.forEach(({id}) => {
+    const optionId = requestParams[id];
+    if (optionId !== undefined) {
+      selection[id] = optionId
     }
+  })
+
+  useEffect(() => {
+    fetch('http://localhost:8080/public/attributes')
+    .then((res) => res.json())
+    .then(res => setAttributes(res));
   }, [])
+
+  useEffect(() => {
+    if (commandId !== undefined) {
+      const headers = new Headers()
+      headers.append("Authorization", 'Bearer ' + userToken)
+      headers.append("Content-Type", "application/json")
+      fetch('http://localhost:8080/user/commands/' + commandId, {
+        method: 'GET',
+        headers
+      })
+      .then(res => {
+        if (res.status !== 200) {
+          const url = location.pathname + selectionToLocation(selection,
+              quantity, undefined, configurationId);
+          navigate(url);
+        }
+      })
+    }
+    if (configurationId !== undefined) {
+      const headers = new Headers()
+      headers.append("Authorization", 'Bearer ' + userToken)
+      headers.append("Content-Type", "application/json")
+      fetch('http://localhost:8080/user/configurations/' + configurationId, {
+        method: 'GET',
+        headers
+      })
+      .then(res => {
+        if (res.status !== 200) {
+          const url = location.pathname + selectionToLocation(selection,
+              quantity, commandId, undefined);
+          navigate(url);
+        }
+      })
+    }
+  })
 
   if (attributes.length === 0) {
     return <div className="product__page">
@@ -32,15 +77,14 @@ export default function Product() {
       </div>
     </div>;
   }
-  const requestParams = parseSearchRequest(location);
-  const {quantity, commandId, configurationId} = requestParams;
-  const selection = {}
-  attributes.forEach(({id}) => {
-    const optionId = requestParams[id];
-    if (optionId !== undefined) {
-      selection[id] = optionId
+
+  function checkConnection() {
+    if (userToken === '') {
+      navigate('/account/signIn')
+      return false;
     }
-  })
+    return true;
+  }
 
   function clickOnOption(attributeId, optionId) {
     const newSelection = Object.assign(selection);
@@ -59,10 +103,10 @@ export default function Product() {
     }
     if (quantity < 1) {
       setErrorMessage("Erreur: La quantité doit être supérieure à 1");
-      return true;
+      return false;
     }
     setErrorMessage("")
-    return nbSelection === nbAttributes && quantity >= 1;
+    return true;
   }
 
   return <div className="product__page">
@@ -78,6 +122,9 @@ export default function Product() {
     }
 
     <Button variant="outlined" onClick={() => {
+      if (!checkConnection()) {
+        return;
+      }
       const isSelectionGood = checkSelectionBeforeAddToStore()
       if (isSelectionGood) {
         const configurationName = prompt(
@@ -93,12 +140,47 @@ export default function Product() {
           method: 'POST',
           headers, body
         })
-        .then(() => navigate("/account"))
+        .then((res) => {
+          if (res.status === 201) {
+            navigate("/account")
+          }
+        })
         .catch(err => console.error(err));
       }
     }}>
       Sauvegarder la configuration
     </Button>
+    {
+        configurationId && <Button variant="outlined" onClick={() => {
+          if (!checkConnection()) {
+            return;
+          }
+          const isSelectionGood = checkSelectionBeforeAddToStore()
+          if (isSelectionGood) {
+            const configurationName = prompt(
+                "Choisissez un nom pour votre configuration");
+            const headers = new Headers()
+            headers.append("Authorization", 'Bearer ' + userToken)
+            headers.append("Content-Type", "application/json")
+            const body = JSON.stringify({
+              name: configurationName,
+              options: Object.entries(selection).map(elt => elt[1])
+            })
+            fetch('http://localhost:8080/user/configurations/' + configurationId, {
+              method: 'PUT',
+              headers, body
+            })
+            .then((res) => {
+              if (res.status === 200) {
+                navigate("/account")
+              }
+            })
+            .catch(err => console.error(err));
+          }
+        }}>
+          Mettre à jour la configuration
+        </Button>
+    }
 
     <TextField className="quantity" value={quantity} type="text"
                label="Quantité"
@@ -113,6 +195,9 @@ export default function Product() {
       <div className="errorMessage">{errorMessage}</div>
     }
     <Button variant="outlined" onClick={() => {
+      if (!checkConnection()) {
+        return;
+      }
       const isSelectionGood = checkSelectionBeforeAddToStore()
       if (isSelectionGood) {
         const headers = new Headers()
@@ -134,27 +219,30 @@ export default function Product() {
       Ajouter au panier
     </Button>
     {
-      commandId && <Button variant="outlined" onClick={() => {
-        const isSelectionGood = checkSelectionBeforeAddToStore()
-        if (isSelectionGood) {
-          const headers = new Headers()
-          headers.append("Authorization", 'Bearer ' + userToken)
-          headers.append("Content-Type", "application/json")
-          const body = JSON.stringify({
-            quantity: quantity,
-            options: Object.entries(selection).map(elt => elt[1])
-          })
-          fetch('http://localhost:8080/user/commands/' + commandId, {
-            method: 'PUT',
-            headers, body
-          })
-          .then(res => res.json())
-          .then(() => navigate("/basket"))
-          .catch(err => console.error(err));
-        }
-      }}>
-        Mettre à jour le panier
-      </Button>
+        commandId && <Button variant="outlined" onClick={() => {
+          if (!checkConnection()) {
+            return;
+          }
+          const isSelectionGood = checkSelectionBeforeAddToStore()
+          if (isSelectionGood) {
+            const headers = new Headers()
+            headers.append("Authorization", 'Bearer ' + userToken)
+            headers.append("Content-Type", "application/json")
+            const body = JSON.stringify({
+              quantity: quantity,
+              options: Object.entries(selection).map(elt => elt[1])
+            })
+            fetch('http://localhost:8080/user/commands/' + commandId, {
+              method: 'PUT',
+              headers, body
+            })
+            .then(res => res.json())
+            .then(() => navigate("/basket"))
+            .catch(err => console.error(err));
+          }
+        }}>
+          Mettre à jour la commande
+        </Button>
     }
   </div>
 }

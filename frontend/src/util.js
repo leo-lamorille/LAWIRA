@@ -15,12 +15,10 @@ export function parseSearchRequest(location) {
 
 export function selectionToLocation(selection, quantity, commandId,
     configurationId) {
-  let queryParam = quantity !== undefined ? "quantity=" + quantity + '' : '';
-  queryParam += commandId !== undefined ? ((queryParam.length === 0)
-      ? "commandId=" + commandId : '&commandId=' + commandId) : '';
-  queryParam += configurationId !== undefined ? ((queryParam.length === 0)
-      ? "configurationId=" + configurationId : '&configurationId='
-      + configurationId) : '';
+  let queryParam = 'quantity=' + quantity;
+  queryParam += commandId === undefined ? '' : '&commandId=' + commandId;
+  queryParam += configurationId === undefined ? '' : '&configurationId='
+      + configurationId;
   for (const [key, value] of Object.entries(selection)) {
     queryParam += "&" + key + "=" + value
   }

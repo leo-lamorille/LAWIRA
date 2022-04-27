@@ -42,25 +42,10 @@ public record CommandService(CommandRepository commandRepository,
         return commandMapper.commandToCommandResponse(command);
     }
 
-    private List<AttributeOption> checkCreateCommandRequestAndGetOptions(CreateCommandRequest createCommandRequest) throws BadRequestException, NotFoundException {
-
-        if(createCommandRequest.getQuantity()<0) throw new BadRequestException("Command quantity must be positive");
-        List<AttributeOption> optionList = new ArrayList<>();
-        for (UUID optionId: createCommandRequest.getOptions()) {
-            AttributeOption option = attributeOptionService.findAttributeOptionById(optionId);
-
-            List<String> alreadyPresentAttributes = optionList.stream().map(AttributeOption::getAttributeName).toList();
-            if (alreadyPresentAttributes.contains(option.getAttributeName()))
-                throw new BadRequestException("There are two options specifying " + option.getAttributeName());
-            optionList.add(option);
-        }
-        return optionList;
-    }
-
     public CommandResponse createCommand(CreateCommandRequest createCommandRequest, Authentication authentication)
             throws NotFoundException, BadRequestException {
         Account account = accountService.findByUsername(authentication.getName());
-        List<AttributeOption> optionList = checkCreateCommandRequestAndGetOptions(createCommandRequest);
+        List<AttributeOption> optionList = attributeOptionService.checkAndGetOptions(createCommandRequest.getOptions());
         long count = attributeRepository.count();
         if(optionList.size() != count) throw new BadRequestException(String.format("Should have %s options but have %s", count, optionList.size()));
         Command command = commandMapper.createCommandRequestToCommand(createCommandRequest, account, optionList);
@@ -70,7 +55,7 @@ public record CommandService(CommandRepository commandRepository,
 
     public CommandResponse updateCommand(UUID commandId, CreateCommandRequest createCommandRequest, Authentication authentication) throws NotFoundException, BadRequestException {
         Command command = findCommandByIdAndAccountUsername(commandId, authentication.getName());
-        List<AttributeOption> optionList = checkCreateCommandRequestAndGetOptions(createCommandRequest);
+        List<AttributeOption> optionList = attributeOptionService.checkAndGetOptions(createCommandRequest.getOptions());
         long count = attributeRepository.count();
         if(optionList.size() != count) throw new BadRequestException(String.format("Should have %s options but have %s", count, optionList.size()));
         commandMapper.updateCommand(command, optionList, createCommandRequest.getQuantity());

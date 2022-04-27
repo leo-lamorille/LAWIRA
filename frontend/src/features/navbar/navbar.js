@@ -142,7 +142,7 @@ export default function Navbar() {
                         <Link to="/aboutus" className={classes.title}>
                             A propos
                         </Link>
-                        <Link to={checkNavigation('/product')} className={classes.title}>
+                        <Link to={'/product'} className={classes.title}>
                             Produit
                         </Link>
                     </div>

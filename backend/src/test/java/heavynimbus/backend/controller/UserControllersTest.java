@@ -1,6 +1,5 @@
 package heavynimbus.backend.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import heavynimbus.backend.IntegrationTest;
@@ -23,7 +22,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Log4j2
@@ -189,7 +187,7 @@ public class UserControllersTest extends IntegrationTest {
             .andExpect(jsonPath("$.id").value(ANY_COMMAND.getId().toString()))
             .andExpect(jsonPath("$.status").value(ANY_COMMAND.getStatus().toString()))
             .andExpect(jsonPath("$.quantity").value(ANY_COMMAND.getQuantity()))
-            .andExpect(jsonPath("$.values.size()").value(ANY_COMMAND.getValues().size()));
+            .andExpect(jsonPath("$.values.size()").value(ANY_COMMAND.getOptions().size()));
       }
     }
 
