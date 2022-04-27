@@ -143,9 +143,10 @@ export default function Product() {
         .then((res) => {
           if (res.status === 201) {
             navigate("/account")
+          } else {
+            console.error(res.json());
           }
         })
-        .catch(err => console.error(err));
       }
     }}>
       Sauvegarder la configuration
@@ -173,9 +174,10 @@ export default function Product() {
             .then((res) => {
               if (res.status === 200) {
                 navigate("/account")
+              } else {
+                console.error(res.json());
               }
             })
-            .catch(err => console.error(err));
           }
         }}>
           Mettre à jour la configuration
@@ -211,9 +213,13 @@ export default function Product() {
           method: 'POST',
           headers, body
         })
-        .then(res => res.json())
-        .then(() => navigate("/basket"))
-        .catch(err => console.error(err));
+        .then(res => {
+          if (res.status === 201) {
+            navigate('/basket');
+          } else {
+            console.error(res.json());
+          }
+        })
       }
     }}>
       Ajouter au panier
@@ -236,9 +242,13 @@ export default function Product() {
               method: 'PUT',
               headers, body
             })
-            .then(res => res.json())
-            .then(() => navigate("/basket"))
-            .catch(err => console.error(err));
+            .then((res) => {
+              if (res.status === 200) {
+                navigate("/basket")
+              } else {
+                console.error(res.json());
+              }
+            })
           }
         }}>
           Mettre à jour la commande

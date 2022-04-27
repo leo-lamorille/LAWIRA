@@ -9,11 +9,7 @@ export default function Account() {
   const userToken = useSelector(state => state.user.jwt);
   const [configurations, setConfiguration] = useState()
 
-  useEffect(() => {
-    if (userToken === '') {
-      navigate('/account/signIn');
-    }
-
+  function refreshConfigurations() {
     let headers = new Headers()
     headers.append("Authorization", 'Bearer ' + userToken)
     fetch('http://localhost:8080/user/configurations', {
@@ -22,6 +18,29 @@ export default function Account() {
     .then(res => res.json())
     .then(res => setConfiguration(res))
     .catch(err => console.error(err));
+  }
+
+  function deleteConfiguration(id) {
+    const headers = new Headers()
+    headers.append("Authorization", 'Bearer ' + userToken)
+    fetch('http://localhost:8080/user/configurations/' + id, {
+      method: 'DELETE',
+      headers
+    })
+    .then(res => {
+      if (res.status === 200) {
+        refreshConfigurations()
+      } else {
+        console.error(res.json());
+      }
+    })
+  }
+
+  useEffect(() => {
+    if (userToken === '') {
+      navigate('/account/signIn');
+    }
+    refreshConfigurations();
   }, []);
 
   function computeProductUrlByValues(options, configurationId) {
@@ -50,6 +69,10 @@ export default function Account() {
                             key={attributeId}>{attributeName}:{optionValue}</div>
               })}
             </div>
+            <button onClick={() => {
+              deleteConfiguration(id);
+            }}>Delete
+            </button>
           </div>
         })
   }</div>
