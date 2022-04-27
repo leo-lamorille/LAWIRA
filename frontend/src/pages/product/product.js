@@ -8,7 +8,6 @@ import {useSelector} from "react-redux";
 
 export default function Product() {
   const [attributes, setAttributes] = useState([]);
-  const [quantity, setQuantity] = useState(1);
   const [errorMessage, setErrorMessage] = useState("")
   const location = useLocation();
   const navigate = useNavigate();
@@ -33,9 +32,9 @@ export default function Product() {
       </div>
     </div>;
   }
-
-  const selection = {}
   const requestParams = parseSearchRequest(location);
+  const {quantity, commandId, configurationId} = requestParams;
+  const selection = {}
   attributes.forEach(({id}) => {
     const optionId = requestParams[id];
     if (optionId !== undefined) {
@@ -46,7 +45,8 @@ export default function Product() {
   function clickOnOption(attributeId, optionId) {
     const newSelection = Object.assign(selection);
     newSelection[attributeId] = optionId;
-    const url = location.pathname + selectionToLocation(newSelection);
+    const url = location.pathname + selectionToLocation(newSelection, quantity,
+        commandId, configurationId);
     navigate(url);
   }
 
@@ -77,12 +77,37 @@ export default function Product() {
                                                            clickOnOption={clickOnOption}/>)
     }
 
+    <Button variant="outlined" onClick={() => {
+      const isSelectionGood = checkSelectionBeforeAddToStore()
+      if (isSelectionGood) {
+        const configurationName = prompt(
+            "Choisissez un nom pour votre configuration");
+        const headers = new Headers()
+        headers.append("Authorization", 'Bearer ' + userToken)
+        headers.append("Content-Type", "application/json")
+        const body = JSON.stringify({
+          name: configurationName,
+          options: Object.entries(selection).map(elt => elt[1])
+        })
+        fetch('http://localhost:8080/user/configurations', {
+          method: 'POST',
+          headers, body
+        })
+        .then(() => navigate("/account"))
+        .catch(err => console.error(err));
+      }
+    }}>
+      Sauvegarder la configuration
+    </Button>
+
     <TextField className="quantity" value={quantity} type="text"
                label="Quantité"
                focused onChange={(event) => {
       let newQuantity = parseInt(event.target.value)
       newQuantity = isNaN(newQuantity) ? 0 : newQuantity;
-      setQuantity(newQuantity);
+      const url = location.pathname + selectionToLocation(selection,
+          newQuantity, commandId, configurationId);
+      navigate(url);
     }}/>
     {
       <div className="errorMessage">{errorMessage}</div>
@@ -108,16 +133,28 @@ export default function Product() {
     }}>
       Ajouter au panier
     </Button>
+    {
+      commandId && <Button variant="outlined" onClick={() => {
+        const isSelectionGood = checkSelectionBeforeAddToStore()
+        if (isSelectionGood) {
+          const headers = new Headers()
+          headers.append("Authorization", 'Bearer ' + userToken)
+          headers.append("Content-Type", "application/json")
+          const body = JSON.stringify({
+            quantity: quantity,
+            options: Object.entries(selection).map(elt => elt[1])
+          })
+          fetch('http://localhost:8080/user/commands/' + commandId, {
+            method: 'PUT',
+            headers, body
+          })
+          .then(res => res.json())
+          .then(() => navigate("/basket"))
+          .catch(err => console.error(err));
+        }
+      }}>
+        Mettre à jour le panier
+      </Button>
+    }
   </div>
 }
-
-/**
- * <div className="quantity">
- *             <span>Quantity: </span>
- *             <input type={"text"} value={quantity} onChange={(event) => {
- *                 let newQuantity = parseInt(event.target.value)
- *                 newQuantity = isNaN(newQuantity) ? 0 : newQuantity;
- *                 setQuantity(newQuantity);
- *             }}/>
- *         </div>
- */

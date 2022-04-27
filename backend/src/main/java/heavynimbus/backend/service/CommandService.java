@@ -78,6 +78,12 @@ public record CommandService(CommandRepository commandRepository,
         return commandMapper.commandToCommandResponse(command);
     }
 
+    public void buyCommand(UUID commandId, Authentication authentication) throws NotFoundException {
+        Command command = findCommandByIdAndAccountUsername(commandId, authentication.getName());
+        command.setStatus(CommandStatus.PENDING);
+        commandRepository.save(command);
+    }
+
 
 
     public void deleteByIdAndAccountUsername(UUID id, String username) throws NotFoundException {

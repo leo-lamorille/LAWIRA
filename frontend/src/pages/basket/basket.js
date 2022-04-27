@@ -1,5 +1,5 @@
 import './basket.scss';
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {CircularProgress} from "@mui/material";
@@ -25,14 +25,12 @@ export default function Basket() {
       .then(res => setCreatedCommands(res))
       .catch(err => console.error(err));
 
-
       fetch('http://localhost:8080/user/commands?status=PENDING', {
         headers: headers
       })
       .then(res => res.json())
       .then(res => setPendingCommands(res))
       .catch(err => console.error(err));
-
 
       fetch('http://localhost:8080/user/commands?status=DONE', {
         headers: headers
@@ -42,27 +40,39 @@ export default function Basket() {
       .catch(err => console.error(err));
     }
   }, []);
+
+  function computeProductUrlByValues(values, commandId, quantity) {
+    let valuesString = ''
+    values.forEach(({attributeId, optionId}) => {
+      valuesString += '&' + attributeId + "=" + optionId
+    })
+    return '/product?commandId=' + commandId + '&quantity=' + quantity
+        + valuesString
+  }
+
   return <div className="basket__page">
     <div className="section">
       <h1>Commandes non payées</h1>
       {
         createdCommands === undefined ? <CircularProgress/>
             : createdCommands.map(({id, quantity, values, status}) => {
-              return <div className={"command"} key={id}>
-                <span>Quantité: {quantity}</span>
-                <div className={"values"}>
-                  {values.map(({
-                    attributeId,
-                    attributeName,
-                    optionId,
-                    optionValue,
-                    optionType
-                  }) => {
-                    return <div className={"value"}
-                                key={attributeId}>{attributeName}:{optionValue}</div>
-                  })}
+              return <Link to={computeProductUrlByValues(values, id, quantity)} key={id}>
+                <div className={"command"}>
+                  <span>Quantité: {quantity}</span>
+                  <div className={"values"}>
+                    {values.map(({
+                      attributeId,
+                      attributeName,
+                      optionId,
+                      optionValue,
+                      optionType
+                    }) => {
+                      return <div className={"value"}
+                                  key={attributeId}>{attributeName}:{optionValue}</div>
+                    })}
+                  </div>
                 </div>
-              </div>
+              </Link>
             })
       }
     </div>
@@ -86,6 +96,7 @@ export default function Basket() {
                   })}
                 </div>
               </div>
+
             })
       }
     </div>
