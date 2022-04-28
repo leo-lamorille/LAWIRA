@@ -116,163 +116,176 @@ export default function Product() {
     return true;
   }
 
+  function saveConfiguration() {
+    if (!checkConnection()) {
+      return;
+    }
+    const isSelectionGood = checkSelectionBeforeAddToStore()
+    if (isSelectionGood) {
+      const configName = prompt(
+          "Choisissez un nom pour votre configuration");
+      if (configName === undefined
+          || configName === null
+          || configName.length === 0) {
+        setErrorMessage('Le nom de la configuration ne doit pas être vide');
+        return;
+      }
+
+      const headers = new Headers()
+      headers.append("Authorization", 'Bearer ' + userToken)
+      headers.append("Content-Type", "application/json")
+      const body = JSON.stringify({
+        name: configName,
+        options: Object.entries(selection).map(elt => elt[1])
+      })
+      fetch('http://localhost:8080/user/configurations', {
+        method: 'POST',
+        headers, body
+      })
+      .then((res) => {
+        if (res.status === 201) {
+          navigate("/account")
+        } else {
+          console.error(res.json());
+        }
+      })
+    }
+  }
+
+  function updateConfiguration() {
+    if (!checkConnection()) {
+      return;
+    }
+    const isSelectionGood = checkSelectionBeforeAddToStore()
+    if (isSelectionGood) {
+      const configName = prompt(
+          "Choisissez un nom pour votre configuration", configurationName);
+      if (configName === undefined
+          || configName === null
+          || configName.length === 0) {
+        setErrorMessage('Le nom de la configuration ne doit pas être vide');
+        return;
+      }
+      const headers = new Headers()
+      headers.append("Authorization", 'Bearer ' + userToken)
+      headers.append("Content-Type", "application/json")
+      const body = JSON.stringify({
+        name: configName,
+        options: Object.entries(selection).map(elt => elt[1])
+      })
+      fetch('http://localhost:8080/user/configurations/' + configurationId,
+          {
+            method: 'PUT',
+            headers, body
+          })
+      .then((res) => {
+        if (res.status === 200) {
+          navigate("/account")
+        } else {
+          console.error(res.json());
+        }
+      })
+    }
+  }
+
+  function saveCommand(event) {
+    event.preventDefault();
+    if (!checkConnection()) {
+      return;
+    }
+    const isSelectionGood = checkSelectionBeforeAddToStore()
+    if (isSelectionGood) {
+      const headers = new Headers()
+      headers.append("Authorization", 'Bearer ' + userToken)
+      headers.append("Content-Type", "application/json")
+      const body = JSON.stringify({
+        quantity: quantity,
+        options: Object.entries(selection).map(elt => elt[1])
+      })
+      fetch('http://localhost:8080/user/commands', {
+        method: 'POST',
+        headers, body
+      })
+      .then(res => {
+        if (res.status === 201) {
+          navigate('/basket');
+        } else {
+          console.error(res.json());
+        }
+      })
+    }
+  }
+
+  function updateCommand() {
+    if (!checkConnection()) {
+      return;
+    }
+    const isSelectionGood = checkSelectionBeforeAddToStore()
+    if (isSelectionGood) {
+      const headers = new Headers()
+      headers.append("Authorization", 'Bearer ' + userToken)
+      headers.append("Content-Type", "application/json")
+      const body = JSON.stringify({
+        quantity: quantity,
+        options: Object.entries(selection).map(elt => elt[1])
+      })
+      fetch('http://localhost:8080/user/commands/' + commandId, {
+        method: 'PUT',
+        headers, body
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          navigate("/basket")
+        } else {
+          console.error(res.json());
+        }
+      })
+    }
+  }
+
   return <div className="product__page">
     <h1>PRODUIT</h1>
-    {
-      attributes.map(
-          ({id, name, description, options}) => <Attribute key={id} id={id}
-                                                           name={name}
-                                                           description={description}
-                                                           options={options}
-                                                           selectedOptionId={selection[id]}
-                                                           clickOnOption={clickOnOption}/>)
-    }
+    <form onSubmit={saveCommand}>
+      {
+        attributes.map(
+            ({id, name, description, options}) => <Attribute key={id} id={id}
+                                                             name={name}
+                                                             description={description}
+                                                             options={options}
+                                                             selectedOptionId={selection[id]}
+                                                             clickOnOption={clickOnOption}/>)
+      }
 
-    <Button variant="outlined" onClick={() => {
-      if (!checkConnection()) {
-        return;
+      <Button variant="outlined" onClick={saveConfiguration}>
+        Sauvegarder la configuration
+      </Button>
+      {
+          configurationId && <Button variant="outlined"
+                                     onClick={updateConfiguration}>
+            Mettre à jour la configuration
+          </Button>
       }
-      const isSelectionGood = checkSelectionBeforeAddToStore()
-      if (isSelectionGood) {
-        const configName = prompt(
-            "Choisissez un nom pour votre configuration");
-        if (configName === undefined
-            || configName === null
-            || configName.length === 0) {
-          setErrorMessage('Le nom de la configuration ne doit pas être vide');
-          return;
-        }
 
-        const headers = new Headers()
-        headers.append("Authorization", 'Bearer ' + userToken)
-        headers.append("Content-Type", "application/json")
-        const body = JSON.stringify({
-          name: configName,
-          options: Object.entries(selection).map(elt => elt[1])
-        })
-        fetch('http://localhost:8080/user/configurations', {
-          method: 'POST',
-          headers, body
-        })
-        .then((res) => {
-          if (res.status === 201) {
-            navigate("/account")
-          } else {
-            console.error(res.json());
-          }
-        })
+      <TextField className="quantity" value={quantity} type="text"
+                 label="Quantité"
+                 focused onChange={(event) => {
+        let newQuantity = parseInt(event.target.value)
+        newQuantity = isNaN(newQuantity) ? 0 : newQuantity;
+        const url = location.pathname + selectionToLocation(selection,
+            newQuantity, commandId, configurationId);
+        navigate(url);
+      }}/>
+      {
+        <div className="errorMessage">{errorMessage}</div>
       }
-    }}>
-      Sauvegarder la configuration
-    </Button>
-    {
-        configurationId && <Button variant="outlined" onClick={() => {
-          if (!checkConnection()) {
-            return;
-          }
-          const isSelectionGood = checkSelectionBeforeAddToStore()
-          if (isSelectionGood) {
-            const configName = prompt(
-                "Choisissez un nom pour votre configuration", configurationName);
-            if (configName === undefined
-                || configName === null
-                || configName.length === 0) {
-              setErrorMessage('Le nom de la configuration ne doit pas être vide');
-              return;
-            }
-            const headers = new Headers()
-            headers.append("Authorization", 'Bearer ' + userToken)
-            headers.append("Content-Type", "application/json")
-            const body = JSON.stringify({
-              name: configName,
-              options: Object.entries(selection).map(elt => elt[1])
-            })
-            fetch('http://localhost:8080/user/configurations/' + configurationId, {
-              method: 'PUT',
-              headers, body
-            })
-            .then((res) => {
-              if (res.status === 200) {
-                navigate("/account")
-              } else {
-                console.error(res.json());
-              }
-            })
-          }
-        }}>
-          Mettre à jour la configuration
-        </Button>
-    }
-
-    <TextField className="quantity" value={quantity} type="text"
-               label="Quantité"
-               focused onChange={(event) => {
-      let newQuantity = parseInt(event.target.value)
-      newQuantity = isNaN(newQuantity) ? 0 : newQuantity;
-      const url = location.pathname + selectionToLocation(selection,
-          newQuantity, commandId, configurationId);
-      navigate(url);
-    }}/>
-    {
-      <div className="errorMessage">{errorMessage}</div>
-    }
-    <Button variant="outlined" onClick={() => {
-      if (!checkConnection()) {
-        return;
+      <Button variant="outlined" type="submit">
+        Ajouter au panier
+      </Button>
+      {
+          commandId && <Button variant="outlined" onClick={updateCommand}>
+            Mettre à jour la commande
+          </Button>
       }
-      const isSelectionGood = checkSelectionBeforeAddToStore()
-      if (isSelectionGood) {
-        const headers = new Headers()
-        headers.append("Authorization", 'Bearer ' + userToken)
-        headers.append("Content-Type", "application/json")
-        const body = JSON.stringify({
-          quantity: quantity,
-          options: Object.entries(selection).map(elt => elt[1])
-        })
-        fetch('http://localhost:8080/user/commands', {
-          method: 'POST',
-          headers, body
-        })
-        .then(res => {
-          if (res.status === 201) {
-            navigate('/basket');
-          } else {
-            console.error(res.json());
-          }
-        })
-      }
-    }}>
-      Ajouter au panier
-    </Button>
-    {
-        commandId && <Button variant="outlined" onClick={() => {
-          if (!checkConnection()) {
-            return;
-          }
-          const isSelectionGood = checkSelectionBeforeAddToStore()
-          if (isSelectionGood) {
-            const headers = new Headers()
-            headers.append("Authorization", 'Bearer ' + userToken)
-            headers.append("Content-Type", "application/json")
-            const body = JSON.stringify({
-              quantity: quantity,
-              options: Object.entries(selection).map(elt => elt[1])
-            })
-            fetch('http://localhost:8080/user/commands/' + commandId, {
-              method: 'PUT',
-              headers, body
-            })
-            .then((res) => {
-              if (res.status === 200) {
-                navigate("/basket")
-              } else {
-                console.error(res.json());
-              }
-            })
-          }
-        }}>
-          Mettre à jour la commande
-        </Button>
-    }
+    </form>
   </div>
 }
