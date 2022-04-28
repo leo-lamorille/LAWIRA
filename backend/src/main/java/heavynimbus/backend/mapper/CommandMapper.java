@@ -4,6 +4,7 @@ import heavynimbus.backend.db.account.Account;
 import heavynimbus.backend.db.attributeOption.AttributeOption;
 import heavynimbus.backend.db.command.Command;
 import heavynimbus.backend.db.command.CommandStatus;
+import heavynimbus.backend.dto.command.AdminCommandResponse;
 import heavynimbus.backend.dto.command.CommandResponse;
 import heavynimbus.backend.dto.command.CreateCommandRequest;
 import java.util.UUID;
@@ -38,6 +39,19 @@ public record CommandMapper(AttributeOptionMapper attributeOptionMapper) {
             .stream()
             .map(attributeOptionMapper::attributeOptionToAttributeOptionDetailResponse)
             .toList())
+        .build();
+  }
+
+  public AdminCommandResponse commandToAdminCommandResponse(Command command){
+    return AdminCommandResponse.builder()
+        .id(UUID.fromString(command.getId()))
+        .username(command.getAccount().getUsername())
+        .quantity(command.getQuantity())
+        .status(command.getStatus())
+        .options(command.getValues()
+          .stream()
+          .map(attributeOptionMapper::attributeOptionToAttributeOptionDetailResponse)
+          .toList())
         .build();
   }
 }

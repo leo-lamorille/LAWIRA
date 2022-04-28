@@ -12,7 +12,7 @@ export default function Product() {
   const location = useLocation();
   const navigate = useNavigate();
   const userToken = useSelector(state => state.user.jwt);
-
+  const [configurationName, setConfigurationName] = useState('');
   const requestParams = parseSearchRequest(location);
   const {commandId, configurationId} = requestParams;
   let {quantity} = requestParams;
@@ -63,6 +63,13 @@ export default function Product() {
           const url = location.pathname + selectionToLocation(selection,
               quantity, commandId, undefined);
           navigate(url);
+        } else {
+          return res.json();
+        }
+      }).then(res => {
+        if (res) {
+          const {name} = res;
+          setConfigurationName(name);
         }
       })
     }
@@ -127,13 +134,20 @@ export default function Product() {
       }
       const isSelectionGood = checkSelectionBeforeAddToStore()
       if (isSelectionGood) {
-        const configurationName = prompt(
+        const configName = prompt(
             "Choisissez un nom pour votre configuration");
+        if (configName === undefined
+            || configName === null
+            || configName.length === 0) {
+          setErrorMessage('Le nom de la configuration ne doit pas être vide');
+          return;
+        }
+
         const headers = new Headers()
         headers.append("Authorization", 'Bearer ' + userToken)
         headers.append("Content-Type", "application/json")
         const body = JSON.stringify({
-          name: configurationName,
+          name: configName,
           options: Object.entries(selection).map(elt => elt[1])
         })
         fetch('http://localhost:8080/user/configurations', {
@@ -158,13 +172,19 @@ export default function Product() {
           }
           const isSelectionGood = checkSelectionBeforeAddToStore()
           if (isSelectionGood) {
-            const configurationName = prompt(
-                "Choisissez un nom pour votre configuration");
+            const configName = prompt(
+                "Choisissez un nom pour votre configuration", configurationName);
+            if (configName === undefined
+                || configName === null
+                || configName.length === 0) {
+              setErrorMessage('Le nom de la configuration ne doit pas être vide');
+              return;
+            }
             const headers = new Headers()
             headers.append("Authorization", 'Bearer ' + userToken)
             headers.append("Content-Type", "application/json")
             const body = JSON.stringify({
-              name: configurationName,
+              name: configName,
               options: Object.entries(selection).map(elt => elt[1])
             })
             fetch('http://localhost:8080/user/configurations/' + configurationId, {

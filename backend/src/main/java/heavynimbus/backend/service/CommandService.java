@@ -6,6 +6,7 @@ import heavynimbus.backend.db.attributeOption.AttributeOption;
 import heavynimbus.backend.db.command.Command;
 import heavynimbus.backend.db.command.CommandRepository;
 import heavynimbus.backend.db.command.CommandStatus;
+import heavynimbus.backend.dto.command.AdminCommandResponse;
 import heavynimbus.backend.dto.command.CommandResponse;
 import heavynimbus.backend.dto.command.CreateCommandRequest;
 import heavynimbus.backend.exception.BadRequestException;
@@ -69,11 +70,26 @@ public record CommandService(CommandRepository commandRepository,
         commandRepository.save(command);
     }
 
-
-
     public void deleteByIdAndAccountUsername(UUID id, String username) throws NotFoundException {
         Command command = findCommandByIdAndAccountUsername(id, username);
         if (command.getStatus().equals(CommandStatus.CREATED)) commandRepository.delete(command);
         else throw new NotFoundException("CREATED command", "id", id.toString());
+    }
+
+
+    // admin
+    public List<AdminCommandResponse> findAllPending(){
+        return commandRepository.findAllByStatus(CommandStatus.PENDING)
+            .stream()
+            .map(commandMapper::commandToAdminCommandResponse)
+            .collect(Collectors.toList());
+    }
+
+    public AdminCommandResponse validateCommand(UUID commandId) throws NotFoundException {
+        Command command = commandRepository.findByIdAndStatus(commandId.toString(), CommandStatus.PENDING)
+            .orElseThrow(() ->new NotFoundException("pending command", "id", commandId.toString()));
+        command.setStatus(CommandStatus.DONE);
+        command = commandRepository.save(command);
+        return commandMapper.commandToAdminCommandResponse(command);
     }
 }

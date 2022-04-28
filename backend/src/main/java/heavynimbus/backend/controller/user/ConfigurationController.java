@@ -57,7 +57,7 @@ public class ConfigurationController implements ConfigurationControllerDocumenta
   public ConfigurationResponse updateConfiguration(
       Authentication authentication,
       @PathVariable UUID configurationId,
-      @RequestBody CreateConfigurationRequest createConfigurationRequest)
+      @Valid @RequestBody CreateConfigurationRequest createConfigurationRequest)
       throws NotFoundException, BadRequestException {
     return configurationService.updateConfiguration(
         configurationId, createConfigurationRequest, authentication);
