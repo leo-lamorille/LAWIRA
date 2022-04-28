@@ -10,6 +10,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+:not(input[type='text'], input[type='password']){
+  caret-color: Transparent;
+}
+
+input[type='text'], input[type='password']{
+  caret-color: black;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

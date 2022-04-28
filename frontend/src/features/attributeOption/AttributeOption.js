@@ -8,9 +8,6 @@ export default function AttributeOption({
   selected,
   attributeName
 }) {
-  function selectOption(event) {
-    clickOnOption(id);
-  }
 
   function getClass() {
     let className = "attributeOption";
