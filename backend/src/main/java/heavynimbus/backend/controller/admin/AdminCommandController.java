@@ -3,6 +3,7 @@ package heavynimbus.backend.controller.admin;
 import heavynimbus.backend.dto.command.AdminCommandResponse;
 import heavynimbus.backend.exception.NotFoundException;
 import heavynimbus.backend.service.CommandService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@SecurityRequirement(name = "jwt_auth")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/commands")

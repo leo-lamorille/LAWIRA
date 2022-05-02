@@ -1,7 +1,7 @@
 package heavynimbus.backend.dto.command;
 
 import heavynimbus.backend.db.command.CommandStatus;
-import heavynimbus.backend.dto.product.AttributeOptionDetailResponse;
+import heavynimbus.backend.dto.attributeOption.AttributeOptionDetailResponse;
 import java.util.List;
 import lombok.*;
 

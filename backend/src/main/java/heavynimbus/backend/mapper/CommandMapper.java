@@ -22,20 +22,20 @@ public record CommandMapper(AttributeOptionMapper attributeOptionMapper) {
             .account(account)
             .status(CommandStatus.CREATED)
             .quantity(createCommandRequest.getQuantity())
-            .values(optionList)
+            .options(optionList)
             .build();
   }
 
   public void updateCommand(Command command, List<AttributeOption> optionList, int quantity){
     command.setQuantity(quantity);
-    command.setValues(optionList);
+    command.setOptions(optionList);
   }
   public CommandResponse commandToCommandResponse(Command command) {
     return CommandResponse.builder()
         .id(UUID.fromString(command.getId()))
         .quantity(command.getQuantity())
         .status(command.getStatus())
-        .options(command.getValues()
+        .options(command.getOptions()
             .stream()
             .map(attributeOptionMapper::attributeOptionToAttributeOptionDetailResponse)
             .toList())
@@ -48,7 +48,7 @@ public record CommandMapper(AttributeOptionMapper attributeOptionMapper) {
         .username(command.getAccount().getUsername())
         .quantity(command.getQuantity())
         .status(command.getStatus())
-        .options(command.getValues()
+        .options(command.getOptions()
           .stream()
           .map(attributeOptionMapper::attributeOptionToAttributeOptionDetailResponse)
           .toList())

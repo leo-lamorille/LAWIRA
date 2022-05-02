@@ -1,5 +1,6 @@
-package heavynimbus.backend.dto.product;
+package heavynimbus.backend.dto.attribute;
 
+import heavynimbus.backend.dto.attributeOption.AttributeOptionResponse;
 import lombok.*;
 
 import java.util.List;

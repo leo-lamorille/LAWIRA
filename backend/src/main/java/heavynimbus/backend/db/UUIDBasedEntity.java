@@ -20,4 +20,14 @@ public abstract class UUIDBasedEntity {
   public void prePersist() {
     if (this.id == null) this.id = UUID.randomUUID().toString();
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof UUIDBasedEntity) return equals((UUIDBasedEntity) obj);
+    return false;
+  }
+
+  public boolean equals(UUIDBasedEntity obj) {
+    return id.equals(obj.id);
+  }
 }
