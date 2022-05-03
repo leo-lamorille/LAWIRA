@@ -1,0 +1,61 @@
+.aboutContainer {
+  background: linear-gradient(90deg, rgba(47,52,65,1) 0%, rgba(19,23,32,1) 25%, rgba(19,23,32,1) 75%, rgba(47,52,65,1) 100%);
+  text-align: center;
+  .title {
+    font-size: 3em;
+    font-weight: bold;
+    margin: 0;
+    padding: 6vh 5vw;
+  }
+
+  .content {
+    font-size: 1.5em;
+    padding-top: 20vh;
+    .text {
+      padding: 6vh 6vw;
+    }
+
+    .avatarContainer {
+      margin-top: 10vh;
+      position: relative;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      justify-content: center;
+      flex-shrink: 0;
+      user-select: none;
+
+      .avatar {
+        margin: 0 2vw;
+      }
+    }
+
+    .objectifContainer {
+      margin-top: 5vh;
+      padding: 5vh 5vw;
+    }
+
+    .collabContainer {
+      font-weight: bold;
+      margin-top: 20vh;
+      margin-bottom: 10vh;
+      .imgJunia {
+        width: 20%;
+        height: 20%;
+        border-radius: 10px;
+      }
+    }
+    @media screen and (max-width: 680px) {
+      .avatarContainer {
+        flex-direction: column;
+      }
+      .collabContainer {
+        .imgJunia {
+          width: 50%;
+          height: 50%;
+        }
+      }
+    }
+  }
+}
