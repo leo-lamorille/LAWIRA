@@ -1,3 +1,4 @@
+import './createAttributeForm.scss'
 import {
   Button, Dialog,
   DialogActions,
@@ -12,6 +13,7 @@ import {useNavigate} from "react-router-dom";
 export default function () {
   const userToken = useSelector(state => state.user.jwt);
   const userRole = useSelector(state => state.user.role);
+  const [display, setDisplay] = useState(false)
   const [name, setName] = useState();
   const [description, setDescription] = useState();
   const navigate = useNavigate();
@@ -30,22 +32,20 @@ export default function () {
     .then(res=>navigate(`/admin/attribute/${res.id}`));
   }
 
-  const [display, setDisplay] = useState(
-      false)
   return <>      <Button type="button" color="success" variant="outlined"
                          onClick={() => setDisplay(true)}>Nouvel
     Attribut</Button><Dialog open={display}>
-    <form onSubmit={createAttribute}>
+    <form className="createAttributeForm" onSubmit={createAttribute}>
       <DialogTitle>Nouvel attribut</DialogTitle>
       <DialogContent>
         <DialogContentText>Créer un nouvel attribut permettra aux utilisateurs
           de personnaliser leur produit avec plus de choix</DialogContentText>
-        <div>
+        <div className="input">
           <label htmlFor="attributeName">Nom de l'attribut</label>
           <input type="text" name="attributeName" value={name}
                  onChange={event => setName(event.target.value)}/>
         </div>
-        <div>
+        <div className="input">
           <label htmlFor="attributeName">Description</label>
           <textarea value={description}
                     onChange={event => setDescription(event.target.value)}/>

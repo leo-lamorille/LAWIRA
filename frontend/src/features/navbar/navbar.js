@@ -88,10 +88,11 @@ export default function Navbar() {
     }
 
     const logout = () => {
-        dispatch(userAction.setSub(''));
+        dispatch(userAction.setName(''));
         dispatch(userAction.setRole(''));
         dispatch(userAction.setExp(0));
         dispatch(userAction.setIat(0));
+        dispatch(userAction.setJwtToken(''))
     }
 
 

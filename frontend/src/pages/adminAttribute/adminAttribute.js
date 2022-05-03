@@ -5,6 +5,8 @@ import {Button, CircularProgress, MenuItem, Select} from "@mui/material";
 import {useSelector} from "react-redux";
 import CRUDAttributeOption
   from "../../features/crudAttributeOption/CRUDAttributeOption";
+import CreateAttributeOptionForm
+  from "../../features/form/createAttributeOption/createAttributeOptionForm";
 
 export default function () {
   const userToken = useSelector(state => state.user.jwt);
@@ -37,11 +39,12 @@ export default function () {
   function updateAttribute() {
     let headers = new Headers()
     headers.append("Authorization", 'Bearer ' + userToken)
-    const body = {
+    headers.append("Content-Type", 'application/json');
+    const body = JSON.stringify({
       name, description
-    }
+    })
     fetch(`http://localhost:8080/admin/attributes/${attributeId}`, {
-      headers, method: 'PUT'
+      headers, method: 'PUT', body
     }).then(res => res.json())
     .then((attribute) => {
       refreshAttribute();
@@ -98,11 +101,14 @@ export default function () {
       <tbody>
       {
         options.map(({id, type, value}) => {
-          return <CRUDAttributeOption id={id} type={type} value={value}/>
+          return <CRUDAttributeOption key={id} attributeId={attributeId} id={id}
+                                      type={type} value={value}
+                                      refresh={refreshAttribute}/>
         })
       }
       </tbody>
     </table>
+    <CreateAttributeOptionForm attributeId={attributeId} refresh={refreshAttribute}/>
 
   </div>
 }
