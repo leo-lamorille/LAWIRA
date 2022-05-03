@@ -10,7 +10,9 @@ export default function Attribute({
   clickOnOption
 }) {
   function _clickOnOption(optionId) {
-    clickOnOption(id, optionId);
+    if (clickOnOption !== undefined) {
+      clickOnOption(id, optionId);
+    }
   }
 
   function isOptionSelected(optionId) {
@@ -23,7 +25,7 @@ export default function Attribute({
     <div>{description}</div>
     <div>
       {options.map(({id: optionId, type, value}) => {
-        return <AttributeOption id={optionId}
+        return <AttributeOption key={optionId} id={optionId}
                                 attributeName={name}
                                 value={value}
                                 type={type}

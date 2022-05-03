@@ -9,7 +9,6 @@ export function parseSearchRequest(location) {
       res[key] = value;
     })
   }
-  console.log("res", res)
   return res
 }
 

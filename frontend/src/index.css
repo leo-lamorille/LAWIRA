@@ -8,13 +8,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-:not(input[type='text'], input[type='password']){
   caret-color: Transparent;
 }
 
-input[type='text'], input[type='password']{
+input[type='text'], input[type='password'], textarea{
   caret-color: black;
 }
 

@@ -18,7 +18,7 @@ export default function AttributeOption({
 
   return <div className={getClass()} style={{
     backgroundColor: type === "COLOR" ? value : ''
-  }} onClick={() => clickOnOption(id)}><input name={attributeName}
+  }} onClick={() => clickOnOption(id)}><input onChange={()=>{}} name={attributeName}
                                               type="radio"
                                               value={value}
                                               checked={selected}/>
