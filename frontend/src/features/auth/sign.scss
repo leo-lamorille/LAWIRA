@@ -17,30 +17,21 @@
 
     .title {
       text-align: center;
-      font-size: 3vh;
+      font-size: 5vh;
       font-weight: bold;
     }
 
     .inputContainer {
-      text-align: center;
-      margin: 2vh 2vw;
+      margin: 1vh 2vw;
       .secondTitle {
-        font-size: 2vh;
+        font-size: 2em;
         font-weight: 500;
-      }
-      .inputSign {
-        width: 90%;
-        height: 3vh;
-        border-radius: 5px;
-        border: 0 solid;
-        background-color: #E4E4E4;
-        text-align: center;
       }
     }
 
     .error {
       text-align: center;
-      font-size: 2vh;
+      font-size: 2.2vh;
       font-weight: 500;
       color: red;
     }

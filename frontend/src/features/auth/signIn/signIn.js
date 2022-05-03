@@ -25,7 +25,8 @@ export default function SignIn() {
         dispatch(userAction.setJwtToken(token));
     }
 
-    function connection() {
+    function connection(e) {
+        e.preventDefault();
         const body = JSON.stringify({
             username: username.current.value,
             password: password.current.value
@@ -47,27 +48,40 @@ export default function SignIn() {
         navigate('/account/signUp');
     }
 
+    const style = {
+        padding: '1%',
+        border: '1px solid #ccc',
+        borderRadius: '4px',
+        boxSizing: 'border-box',
+        fontFamily: 'montserrat, Comic sans MS',
+        color: '#2C3E50',
+        fontSize: '1em',
+        width: '100%'
+    }
+
     return (
       <div className="signContainer">
         <div className="modal">
             <p className="title">Sign In</p>
-            <div className="inputContainer">
-                <p className="secondTitle">Nom d'utilisateur</p>
-                <input className="inputSign" ref={username}/>
-            </div>
-            <div className="inputContainer">
-                <p className="secondTitle">Mot de passe</p>
-                <input type="password" className="inputSign" ref={password}/>
-            </div>
-            {
-                <p className="error">
-                    {errorLogin}
-                </p>
-            }
-            <div className="buttonContainer">
-                <button className="buttonSign" onClick={connection}>Connexion</button>
-                <button className="buttonSign" onClick={signUp}>Sign up</button>
-            </div>
+            <form onSubmit={connection}>
+                <div className="inputContainer">
+                    <p className="secondTitle">Nom d'utilisateur</p>
+                    <input className="inputSign" ref={username} style={style}/>
+                </div>
+                <div className="inputContainer">
+                    <p className="secondTitle">Mot de passe</p>
+                    <input type="password" className="inputSign" ref={password} style={style}/>
+                </div>
+                {
+                    <p className="error">
+                        {errorLogin}
+                    </p>
+                }
+                <div className="buttonContainer">
+                    <button className="buttonSign" type='submit'>Connexion</button>
+                    <button className="buttonSign" onClick={signUp}>Sign up</button>
+                </div>
+            </form>
         </div>
       </div>
     );

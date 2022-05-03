@@ -27,6 +27,17 @@ export default function SignUp() {
         dispatch(userAction.setJwtToken(token));
     }
 
+    const style = {
+        padding: '1%',
+        border: '1px solid #ccc',
+        borderRadius: '4px',
+        boxSizing: 'border-box',
+        fontFamily: 'montserrat, Comic sans MS',
+        color: '#2C3E50',
+        fontSize: '1em',
+        width: '100%'
+    }
+
     const checkPasswordBeforeSignUp = () => {
         if(!(password.current.value === passwordConfirm.current.value)) {
             setErrorMessagePass('Veuillez renseigner un mot de passe correct');
@@ -53,7 +64,8 @@ export default function SignUp() {
         return true;
     }
 
-    const connection = () => {
+    const connection = (e) => {
+        e.preventDefault();
         const passCheck = checkPasswordBeforeSignUp()
         const usernameCheck = checkIfUsernameBeforeSignUp();
         const passClear = checkIfPassClear();
@@ -77,27 +89,29 @@ export default function SignUp() {
         <div className="signContainer">
             <div className="modal">
                 <p className="title">Sign Up</p>
-                <div className="inputContainer">
-                    <p className="secondTitle">Nom d'utilisateur</p>
-                    <input className="inputSign" ref={username}/>
-                </div>
-                <p className="error">
-                    {errorMessageUsername}
-                </p>
-                <div className="inputContainer">
-                    <p className="secondTitle">Mot de passe</p>
-                    <input type="password" className="inputSign" ref={password}/>
-                </div>
-                <div className="inputContainer">
-                    <p className="secondTitle">Confirmer votre mot de passe</p>
-                    <input type="password" className="inputSign" ref={passwordConfirm}/>
-                </div>
-                <p className="error">
-                    {errorMessagePass}
-                </p>
-                <div className="buttonContainer">
-                    <button className="buttonSign" onClick={connection}>Créer</button>
-                </div>
+                <form onSubmit={connection}>
+                    <div className="inputContainer">
+                        <p className="secondTitle">Nom d'utilisateur</p>
+                        <input className="inputSign" ref={username} style={style}/>
+                    </div>
+                    <p className="error">
+                        {errorMessageUsername}
+                    </p>
+                    <div className="inputContainer">
+                        <p className="secondTitle">Mot de passe</p>
+                        <input type="password" className="inputSign" ref={password} style={style}/>
+                    </div>
+                    <div className="inputContainer">
+                        <p className="secondTitle">Confirmer votre mot de passe</p>
+                        <input type="password" className="inputSign" ref={passwordConfirm} style={style}/>
+                    </div>
+                    <p className="error">
+                        {errorMessagePass}
+                    </p>
+                    <div className="buttonContainer">
+                        <button className="buttonSign" type='submit' >Créer</button>
+                    </div>
+                </form>
             </div>
         </div>
     )
