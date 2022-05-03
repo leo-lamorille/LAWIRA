@@ -6,12 +6,12 @@
   .modal {
     margin: 0;
     width: 50%;
-    background-color: #5D5D5D;
+    background: linear-gradient(90deg, rgba(37,41,64,1) 0%, rgba(28,34,66,1) 50%, rgba(37,41,64,1) 100%);
     border-radius: 40px;
     position: absolute;
     top: 50%;
     left: 50%;
-    box-shadow: 0 0 100px 25px #131313;
+    box-shadow: 0 0 100px 25px #3f4759;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 

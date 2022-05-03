@@ -121,7 +121,7 @@ export default function Navbar() {
 
     return (
         <ThemeProvider theme={customTheme}>
-            <AppBar position="static">
+            <AppBar position="sticky">
                 <Toolbar>
                     <div className={classes.sectionMobile}>
                         <IconButton
