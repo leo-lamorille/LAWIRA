@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface AttributeOptionRepository extends JpaRepository<AttributeOption, String> {
   List<AttributeOption> findAllByAttribute(Attribute attribute);
+  void deleteByIdAndAttribute_Id(String id, String attributeId);
 }

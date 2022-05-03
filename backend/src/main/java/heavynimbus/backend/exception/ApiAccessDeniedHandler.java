@@ -24,7 +24,6 @@ public class ApiAccessDeniedHandler implements AccessDeniedHandler {
       HttpServletResponse response,
       AccessDeniedException accessDeniedException)
       throws IOException, ServletException {
-    log.error("ALLALAALLALALALALAL");
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     if (auth != null) {
       log.warn(

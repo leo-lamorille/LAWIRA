@@ -1,0 +1,13 @@
+.createAttributeForm {
+  .input {
+    * {
+      display: block;
+    }
+    input, textarea {
+      width: 100%;
+    }
+    textarea {
+    resize: vertical;
+    }
+  }
+}

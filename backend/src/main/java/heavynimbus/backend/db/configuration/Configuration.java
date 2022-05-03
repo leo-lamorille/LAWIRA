@@ -5,6 +5,7 @@ import heavynimbus.backend.db.account.Account;
 import heavynimbus.backend.db.attribute.Attribute;
 import heavynimbus.backend.db.attributeOption.AttributeOption;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "configuration")

@@ -1,7 +1,7 @@
 package heavynimbus.backend.controller.pub;
 
 import heavynimbus.backend.controller.doc.AttributeControllerDocumentation;
-import heavynimbus.backend.dto.product.AttributeResponse;
+import heavynimbus.backend.dto.attribute.AttributeResponse;
 import heavynimbus.backend.exception.NotFoundException;
 import heavynimbus.backend.service.AttributeService;
 import lombok.RequiredArgsConstructor;

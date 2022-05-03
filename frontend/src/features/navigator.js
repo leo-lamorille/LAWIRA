@@ -7,19 +7,22 @@ import SignUp from "./auth/signUp/signUp";
 import Admin from "../pages/admin/admin";
 import Account from "../pages/account/account";
 import Basket from "../pages/basket/basket";
+import AdminAttribute from "../pages/adminAttribute/adminAttribute";
 
 export default function Navigator() {
-    return (
+  return (
       <Routes>
-          <Route path="/home" element={<Home/>} />
-          <Route path="/product" element={<Product/>} />
-          <Route path="/aboutus" element={<AboutUs/>} />
-          <Route path="/account" element={<Account />} />
-          <Route path="/account/signIn" element={<SignIn/>} />
-          <Route path="/account/signUp" element={<SignUp />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/basket" element={<Basket />} />
-          <Route path="*" element={<Navigate to="/home" />} />
+        <Route path="/home" element={<Home/>}/>
+        <Route path="/product" element={<Product/>}/>
+        <Route path="/aboutus" element={<AboutUs/>}/>
+        <Route path="/account" element={<Account/>}/>
+        <Route path="/account/signIn" element={<SignIn/>}/>
+        <Route path="/account/signUp" element={<SignUp/>}/>
+        <Route path="/admin" element={<Admin/>}/>
+        <Route path="/admin/attribute/:attributeId"
+               element={<AdminAttribute/>}/>
+        <Route path="/basket" element={<Basket/>}/>
+        <Route path="*" element={<Navigate to="/home"/>}/>
       </Routes>
-    );
+  );
 }

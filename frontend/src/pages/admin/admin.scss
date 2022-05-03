@@ -1,0 +1,19 @@
+.admin__page {
+  h1 {
+    text-align: center;
+  }
+  > div{
+    margin: 5vh auto;
+    width: 70vw;
+    height: 50vh;
+    overflow: scroll;
+    border: solid 1px white;
+    resize: vertical;
+    padding: 10px;
+
+    &.attributes > button{
+      margin: auto;
+      display: block;
+    }
+  }
+}

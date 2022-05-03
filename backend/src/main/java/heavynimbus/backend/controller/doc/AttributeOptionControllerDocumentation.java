@@ -1,6 +1,6 @@
 package heavynimbus.backend.controller.doc;
 
-import heavynimbus.backend.dto.product.AttributeOptionResponse;
+import heavynimbus.backend.dto.attributeOption.AttributeOptionResponse;
 import heavynimbus.backend.exception.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -1,4 +1,4 @@
-package heavynimbus.backend.dto.product;
+package heavynimbus.backend.dto.attributeOption;
 
 import heavynimbus.backend.db.attributeOption.AttributeOptionType;
 import lombok.*;

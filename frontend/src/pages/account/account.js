@@ -1,5 +1,5 @@
 import './account.scss';
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {CircularProgress} from "@mui/material";
@@ -9,11 +9,7 @@ export default function Account() {
   const userToken = useSelector(state => state.user.jwt);
   const [configurations, setConfiguration] = useState()
 
-  useEffect(() => {
-    if (userToken === '') {
-      navigate('/account/signIn');
-    }
-
+  function refreshConfigurations() {
     let headers = new Headers()
     headers.append("Authorization", 'Bearer ' + userToken)
     fetch('http://localhost:8080/user/configurations', {
@@ -22,13 +18,45 @@ export default function Account() {
     .then(res => res.json())
     .then(res => setConfiguration(res))
     .catch(err => console.error(err));
+  }
+
+  function deleteConfiguration(id) {
+    const headers = new Headers()
+    headers.append("Authorization", 'Bearer ' + userToken)
+    fetch('http://localhost:8080/user/configurations/' + id, {
+      method: 'DELETE',
+      headers
+    })
+    .then(res => {
+      if (res.status === 200) {
+        refreshConfigurations()
+      } else {
+        console.error(res.json());
+      }
+    })
+  }
+
+  useEffect(() => {
+    if (userToken === '') {
+      navigate('/account/signIn');
+    }
+    refreshConfigurations();
   }, []);
 
-  return <p>{
+  function computeProductUrlByValues(options, configurationId) {
+    let valuesString = ''
+    options.forEach(({attributeId, optionId}) => {
+      valuesString += '&' + attributeId + "=" + optionId
+    })
+    return '/product?configurationId=' + configurationId + valuesString
+  }
+
+  return <div>{
     configurations === undefined ? <CircularProgress/>
         : configurations.map(({id, name, options}) => {
           return <div className={"command"} key={id}>
-            <span>name: {name}</span>
+            <Link to={computeProductUrlByValues(options,
+                id)}><span>name: {name}</span></Link>
             <div className={"values"}>
               {options.map(({
                 attributeId,
@@ -41,7 +69,11 @@ export default function Account() {
                             key={attributeId}>{attributeName}:{optionValue}</div>
               })}
             </div>
+            <button onClick={() => {
+              deleteConfiguration(id);
+            }}>Delete
+            </button>
           </div>
         })
-  }</p>
+  }</div>
 }

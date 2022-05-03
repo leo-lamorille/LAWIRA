@@ -88,10 +88,11 @@ export default function Navbar() {
     }
 
     const logout = () => {
-        dispatch(userAction.setSub(''));
+        dispatch(userAction.setName(''));
         dispatch(userAction.setRole(''));
         dispatch(userAction.setExp(0));
         dispatch(userAction.setIat(0));
+        dispatch(userAction.setJwtToken(''))
     }
 
 
@@ -142,7 +143,7 @@ export default function Navbar() {
                         <Link to="/aboutus" className={classes.title}>
                             A propos
                         </Link>
-                        <Link to={checkNavigation('/product')} className={classes.title}>
+                        <Link to={'/product'} className={classes.title}>
                             Produit
                         </Link>
                     </div>

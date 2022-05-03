@@ -1,8 +1,9 @@
 package heavynimbus.backend.mapper;
 
 import heavynimbus.backend.db.attributeOption.AttributeOption;
-import heavynimbus.backend.dto.product.AttributeOptionDetailResponse;
-import heavynimbus.backend.dto.product.AttributeOptionResponse;
+import heavynimbus.backend.dto.attributeOption.AttributeOptionDetailResponse;
+import heavynimbus.backend.dto.attributeOption.AttributeOptionResponse;
+import heavynimbus.backend.dto.attributeOption.CreateAttributeOptionRequest;
 import java.util.UUID;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,21 @@ import java.util.stream.Collectors;
 
 @Component
 public class AttributeOptionMapper {
+
+  public AttributeOption createAttributeOptionRequestToAttributeOption(
+      CreateAttributeOptionRequest createAttributeOptionRequest) {
+    return AttributeOption.builder()
+        .type(createAttributeOptionRequest.getType())
+        .value(createAttributeOptionRequest.getValue())
+        .build();
+  }
+
+  public void update(
+      AttributeOption attributeOption, CreateAttributeOptionRequest createAttributeOptionRequest) {
+    attributeOption.setType(createAttributeOptionRequest.getType());
+    attributeOption.setValue(createAttributeOptionRequest.getValue());
+  }
+
   public AttributeOptionResponse attributeOptionToAttributeOptionResponse(
       AttributeOption attributeOption) {
     return AttributeOptionResponse.builder()

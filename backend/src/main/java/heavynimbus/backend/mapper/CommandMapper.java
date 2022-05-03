@@ -4,13 +4,13 @@ import heavynimbus.backend.db.account.Account;
 import heavynimbus.backend.db.attributeOption.AttributeOption;
 import heavynimbus.backend.db.command.Command;
 import heavynimbus.backend.db.command.CommandStatus;
+import heavynimbus.backend.dto.command.AdminCommandResponse;
 import heavynimbus.backend.dto.command.CommandResponse;
 import heavynimbus.backend.dto.command.CreateCommandRequest;
 import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
 @Component
 public record CommandMapper(AttributeOptionMapper attributeOptionMapper) {
@@ -22,23 +22,36 @@ public record CommandMapper(AttributeOptionMapper attributeOptionMapper) {
             .account(account)
             .status(CommandStatus.CREATED)
             .quantity(createCommandRequest.getQuantity())
-            .values(optionList)
+            .options(optionList)
             .build();
   }
 
   public void updateCommand(Command command, List<AttributeOption> optionList, int quantity){
     command.setQuantity(quantity);
-    command.setValues(optionList);
+    command.setOptions(optionList);
   }
   public CommandResponse commandToCommandResponse(Command command) {
     return CommandResponse.builder()
         .id(UUID.fromString(command.getId()))
         .quantity(command.getQuantity())
         .status(command.getStatus())
-        .values(command.getValues()
+        .options(command.getOptions()
             .stream()
             .map(attributeOptionMapper::attributeOptionToAttributeOptionDetailResponse)
             .toList())
+        .build();
+  }
+
+  public AdminCommandResponse commandToAdminCommandResponse(Command command){
+    return AdminCommandResponse.builder()
+        .id(UUID.fromString(command.getId()))
+        .username(command.getAccount().getUsername())
+        .quantity(command.getQuantity())
+        .status(command.getStatus())
+        .options(command.getOptions()
+          .stream()
+          .map(attributeOptionMapper::attributeOptionToAttributeOptionDetailResponse)
+          .toList())
         .build();
   }
 }

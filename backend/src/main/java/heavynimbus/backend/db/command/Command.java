@@ -30,5 +30,5 @@ public class Command extends UUIDBasedEntity {
       name = "command_attribute_options",
       joinColumns = @JoinColumn(name = "command_id", referencedColumnName = "id"),
       inverseJoinColumns = @JoinColumn(name = "attribute_option_id", referencedColumnName = "id"))
-  private List<AttributeOption> values;
+  private List<AttributeOption> options;
 }
