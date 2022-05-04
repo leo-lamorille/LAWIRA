@@ -24,6 +24,7 @@ public abstract class UUIDBasedEntity {
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof UUIDBasedEntity) return equals((UUIDBasedEntity) obj);
+    System.out.println("obj = " + obj);
     return false;
   }
 

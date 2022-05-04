@@ -13,6 +13,7 @@ import Attribute from "../../features/attribute/Attribute";
 import CRUDAttribute from "../../features/crudAttribute/CRUDAttribute";
 import CreateAttributeForm
   from "../../features/form/createAttribute/createAttributeForm";
+import {BarChart} from "react-bar-chart";
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -108,6 +109,9 @@ export default function Admin() {
       <CreateAttributeForm/>
     </div>
 
+    <div className="bar-chart">
+      <BarChart />
+    </div>
 
   </div>
 }
