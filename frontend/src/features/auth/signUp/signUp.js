@@ -5,11 +5,14 @@ import jwtDecode from "jwt-decode";
 import {userSlice} from "../../slices/userSlice";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {useCookies} from "react-cookie";
 
 export default function SignUp() {
   const [errorMessagePass, setErrorMessagePass] = useState('');
   const [errorMessageUsername, setErrorMessageUsername] = useState('');
   const navigate = useNavigate();
+
+  const [cookies, setCookie] = useCookies(['token']);
 
   const username = useRef();
   const password = useRef();
@@ -25,6 +28,8 @@ export default function SignUp() {
     dispatch(userAction.setExp(decoded.exp));
     dispatch(userAction.setIat(decoded.iat));
     dispatch(userAction.setJwtToken(token));
+    const date = new Date(decoded.exp * 1000);
+    setCookie('token', token, {path: '/', expires: date});
   }
 
   const style = {

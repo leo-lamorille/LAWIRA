@@ -11,7 +11,7 @@ body {
   caret-color: Transparent;
 }
 
-input[type='text'], input[type='password'], textarea{
+input, textarea{
   caret-color: black;
 }
 

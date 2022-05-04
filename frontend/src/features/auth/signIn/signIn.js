@@ -5,11 +5,13 @@ import {useDispatch} from "react-redux";
 import {userSlice} from "../../slices/userSlice";
 import jwtDecode from "jwt-decode";
 import {useNavigate} from "react-router-dom";
+import {useCookies} from "react-cookie";
 
 export default function SignIn() {
     const userAction = userSlice.actions;
     const dispatch = useDispatch();
 
+    const [cookies, setCookie] = useCookies(['token']);
     const [errorLogin, setErrorLogin] = useState('');
 
     const navigate = useNavigate();
@@ -23,6 +25,8 @@ export default function SignIn() {
         dispatch(userAction.setExp(decoded.exp));
         dispatch(userAction.setIat(decoded.iat));
         dispatch(userAction.setJwtToken(token));
+        const date = new Date(decoded.exp * 1000);
+        setCookie('token', token, {path: '/', expires: date});
     }
 
     function connection(e) {

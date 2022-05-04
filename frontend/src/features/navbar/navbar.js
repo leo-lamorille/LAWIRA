@@ -16,6 +16,7 @@ import {ThemeProvider} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {userSlice} from "../slices/userSlice";
+import {useCookies} from "react-cookie";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -70,6 +71,7 @@ export default function Navbar() {
     const userJwt = useSelector(state => state.user.jwt);
     const userName = useSelector(state => state.user.name);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+    const [cookies, setCookie, removeCookie] = useCookies(['token']);
 
     const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
@@ -93,6 +95,7 @@ export default function Navbar() {
         dispatch(userAction.setExp(0));
         dispatch(userAction.setIat(0));
         dispatch(userAction.setJwtToken(''))
+        removeCookie('token', {path: '/'});
     }
 
 
