@@ -12,6 +12,19 @@ export default function ({jwt}) {
   const [enableCommands, setEnableCommands] = useState(true);
   const [enableConfiguration, setEnableConfiguration] = useState(true);
 
+  function getTableTitle() {
+    let res = "Statistiques des "
+    if (enableCommands) {
+      res += "commandes"
+      if (enableConfiguration) {
+        res += " et des configurations"
+      }
+    } else if (enableConfiguration) {
+      res += "configurations"
+    }
+    return res;
+  }
+
   function refreshAttributes() {
     let headers = new Headers()
     headers.append("Authorization", 'Bearer ' + jwt)
@@ -47,15 +60,6 @@ export default function ({jwt}) {
   if (data === undefined) {
     return <div></div>
   }
-
-  /*const maxQuantity = Math.max(...data.map(({commandOccurrences}) => commandOccurrences))
-  let limit = 1;
-  let tmp = maxQuantity;
-  while (tmp > 1) {
-    tmp = tmp / 10;
-    limit = limit * 10;
-  }
-  console.log(data)*/
   const maxCommand = Math.max(
       ...data.map(({commandOccurrences}) => commandOccurrences))
   const maxConfiguration = Math.max(
@@ -71,8 +75,6 @@ export default function ({jwt}) {
   } else if (enableConfiguration) {
     maxQuantity = maxConfiguration;
   }
-  // const maxQuantity = Math.max(
-  //    ...data.map(({commandOccurrences}) => commandOccurrences))
   const limit = maxQuantity + 10 - (maxQuantity % 10)
   return <div className="charts">
     {
@@ -114,7 +116,7 @@ export default function ({jwt}) {
         style={{
           height
         }}>
-      <caption> Custom Heading</caption>
+      <caption>{getTableTitle()}</caption>
       <tbody>
       {
         data.map(({

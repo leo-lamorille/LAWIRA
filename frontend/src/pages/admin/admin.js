@@ -109,4 +109,3 @@ export default function Admin() {
     </div>
   </div>
 }
-//      <BarChart jwt={userToken}/>

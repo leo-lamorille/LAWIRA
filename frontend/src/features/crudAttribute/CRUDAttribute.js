@@ -1,5 +1,6 @@
 import Attribute from "../attribute/Attribute";
 import {
+  Alert,
   Button,
   Dialog, DialogActions,
   DialogContent,
@@ -28,6 +29,10 @@ export default function ({id, name, description, options, refresh}) {
     <Attribute id={id} name={name}
                description={description}
                options={options}/>
+    {
+        options.length === 0 && <Alert severity="warning">Cet attribut ne
+          possède pas d'options</Alert>
+    }
     <Button type="button" color="error" variant="outlined"
             onClick={deleteAttribute}>Supprimer</Button>
     <Link to={`/admin/attribute/${id}`}>
