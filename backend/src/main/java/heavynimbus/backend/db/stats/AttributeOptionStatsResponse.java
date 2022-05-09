@@ -15,5 +15,6 @@ import lombok.Setter;
 public class AttributeOptionStatsResponse {
   private String optionValue;
   private AttributeOptionType optionType;
-  private Double occurences;
+  private Double commandOccurrences;
+  private Double configurationOccurrences;
 }

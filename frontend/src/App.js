@@ -1,4 +1,5 @@
 import './App.css';
+import 'charts.css';
 import {BrowserRouter} from "react-router-dom";
 import Navigator from "./features/navigator";
 import Navbar from "./features/navbar/navbar";

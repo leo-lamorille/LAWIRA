@@ -1,0 +1,44 @@
+.charts table .tooltip span {
+  font-weight: bold;
+}
+
+.charts .legend {
+  border: None;
+}
+
+.charts table {
+  --color-1: #FEE101;
+  --color-2: #D7D7D7;
+}
+
+.charts table th[scope='row'] {
+  bottom: -40px !important;
+}
+
+.charts .commandLegend:before {
+  content: "\2588"; /* Add content: \2022 is the CSS Code/unicode for a bullet */
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 1em; /* Also needed for space (tweak if needed) */
+  margin-left: -1em; /* Also needed for space (tweak if needed) */
+}
+
+.charts > ul.legend-color {
+  list-style: none; /* Remove default bullets */
+}
+
+.charts li::before {
+  content: "\25A0"; /* Add content: \2022 is the CSS Code/unicode for a bullet */
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 1em; /* Also needed for space (tweak if needed) */
+  margin-left: -1em; /* Also needed for space (tweak if needed) */
+}
+
+.charts li.legend-command::before {
+  color: #fcc;
+}
+
+.charts li.legend-configuration::before {
+  color: #aea;
+}

@@ -5,6 +5,8 @@ import heavynimbus.backend.db.attributeOption.AttributeOption;
 import heavynimbus.backend.db.command.Command;
 import heavynimbus.backend.db.command.CommandRepository;
 import heavynimbus.backend.db.command.CommandStatus;
+import heavynimbus.backend.db.configuration.Configuration;
+import heavynimbus.backend.db.configuration.ConfigurationRepository;
 import heavynimbus.backend.db.stats.AttributeOptionStatsResponse;
 import heavynimbus.backend.exception.NotFoundException;
 import java.util.Collection;
@@ -22,13 +24,24 @@ import org.springframework.stereotype.Service;
 public class StatService {
   private final AttributeOptionService attributeOptionService;
   private final CommandRepository commandRepository;
+  private final ConfigurationRepository configurationRepository;
 
   public List<AttributeOptionStatsResponse> getCommandOptionStatsByAttribute(UUID attributeId)
       throws NotFoundException {
-    Map<AttributeOption, Double> res = new HashMap<>();
+    Map<AttributeOption, Double> commandStats = new HashMap<>();
+    Map<AttributeOption, Double> configurationStats = new HashMap<>();
     List<AttributeOption> options =
         attributeOptionService.findAllAttributeOptionByAttributeId(attributeId);
-    options.forEach(option -> res.put(option, 0D));
+    options.stream()
+        .peek(option -> configurationStats.put(option, 0D))
+        .forEach(option -> commandStats.put(option, 0D));
+    configurationRepository.findAll().stream()
+        .map(Configuration::getOptions)
+        .flatMap(Collection::stream)
+        .map(option -> options.stream().filter(o -> o.getId().equals(option.getId())).findAny())
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .forEach(option -> configurationStats.put(option, configurationStats.get(option) + 1D));
     commandRepository.findAll().stream()
         .filter(
             command ->
@@ -39,35 +52,18 @@ public class StatService {
         .map(option -> options.stream().filter(o -> o.getId().equals(option.getId())).findAny())
         .filter(Optional::isPresent)
         .map(Optional::get)
-        .forEach(option -> res.put(option, res.get(option) + 1D));
-    /*
-    .forEach(
-        command ->
-            command.getOptions().stream()
-                .map(
-                    option -> {
-                      System.out.println("option.getId() = " + option.getId());
-                      res.keySet().stream()
-                          .map(UUIDBasedEntity::getId)
-                          .map(s -> s + "\t")
-                          .forEach(System.out::print);
-                      System.out.println();
-                      return res.keySet().stream()
-                          .filter(o -> o.getId().equals(option.getId()))
-                          .findAny();
-                    })
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .forEach(option -> res.put(option, res.get(option) + 1D)));*/
-    return res.keySet().stream()
-        //.peek(e -> System.out.printf("%s %s %s%n", e.getValue(), res.get(e)))
+        .forEach(option -> commandStats.put(option, commandStats.get(option) + 1D));
+    return commandStats.keySet().stream()
         .map(
-            option ->
-                AttributeOptionStatsResponse.builder()
-                    .optionType(option.getType())
-                    .optionValue(option.getValue())
-                    .occurences(res.get(option))
-                    .build())
+            option -> {
+              var configurationOccurrences = configurationStats.get(option);
+              return AttributeOptionStatsResponse.builder()
+                  .optionType(option.getType())
+                  .optionValue(option.getValue())
+                  .commandOccurrences(commandStats.get(option))
+                  .configurationOccurrences(configurationOccurrences)
+                  .build();
+            })
         .toList();
   }
 

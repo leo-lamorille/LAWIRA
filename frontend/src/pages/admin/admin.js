@@ -3,17 +3,12 @@ import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {
-  Button,
   CircularProgress,
-  Dialog, DialogActions,
-  DialogContent, DialogContentText,
-  DialogTitle
 } from "@mui/material";
-import Attribute from "../../features/attribute/Attribute";
 import CRUDAttribute from "../../features/crudAttribute/CRUDAttribute";
 import CreateAttributeForm
   from "../../features/form/createAttribute/createAttributeForm";
-import {BarChart} from "react-bar-chart";
+import Chart from "../../features/chart/Chart";
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -108,10 +103,10 @@ export default function Admin() {
       }
       <CreateAttributeForm/>
     </div>
-
-    <div className="bar-chart">
-      <BarChart />
+    <h1>Statistiques</h1>
+    <div>
+      <Chart jwt={userToken}/>
     </div>
-
   </div>
 }
+//      <BarChart jwt={userToken}/>
