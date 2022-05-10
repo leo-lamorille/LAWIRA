@@ -272,10 +272,10 @@ public class PublicControllersTest extends IntegrationTest {
           .andExpect(
               jsonPath("$.message")
                   .value(
-                      "Attribute option with [id = 00000000-0000-0000-0000-000000000000] not found"))
+                      "Attribute option with [optionId = 00000000-0000-0000-0000-000000000000] not found"))
           .andExpect(jsonPath("$.data.value").value("00000000-0000-0000-0000-000000000000"))
           .andExpect(jsonPath("$.data.entity").value("Attribute option"))
-          .andExpect(jsonPath("$.data.parameter").value("id"));
+          .andExpect(jsonPath("$.data.parameter").value("optionId"));
     }
   }
 }
