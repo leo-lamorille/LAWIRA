@@ -1,7 +1,7 @@
 import './adminAttribute.scss';
 import {useParams} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
-import {Button, CircularProgress, MenuItem, Select} from "@mui/material";
+import {Alert, Button, CircularProgress, MenuItem, Select} from "@mui/material";
 import {useSelector} from "react-redux";
 import CRUDAttributeOption
   from "../../features/crudAttributeOption/CRUDAttributeOption";
@@ -90,25 +90,30 @@ export default function () {
     </form>}
 
     <h2>Options</h2>
-    <table>
-      <thead>
-      <tr>
-        <th>Type</th>
-        <th>Valeur</th>
-        <th>Actions</th>
-      </tr>
-      </thead>
-      <tbody>
-      {
-        options.map(({id, type, value}) => {
-          return <CRUDAttributeOption key={id} attributeId={attributeId} id={id}
-                                      type={type} value={value}
-                                      refresh={refreshAttribute}/>
-        })
-      }
-      </tbody>
-    </table>
-    <CreateAttributeOptionForm attributeId={attributeId} refresh={refreshAttribute}/>
+    {
+      options.length === 0 ? <Alert severity="warning">Cet attribut ne
+        possède pas d'options</Alert> : <table>
+        <thead>
+        <tr>
+          <th>Type</th>
+          <th>Valeur</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {
+          options.map(({id, type, value}) => {
+            return <CRUDAttributeOption key={id} attributeId={attributeId}
+                                        id={id}
+                                        type={type} value={value}
+                                        refresh={refreshAttribute}/>
+          })
+        }
+        </tbody>
+      </table>
+    }
+    <CreateAttributeOptionForm attributeId={attributeId}
+                               refresh={refreshAttribute}/>
 
   </div>
 }

@@ -2,7 +2,7 @@
   h1 {
     text-align: center;
   }
-  > div{
+  > div {
     margin: 5vh auto;
     width: 70vw;
     height: 50vh;
@@ -14,6 +14,11 @@
     &.attributes > button{
       margin: auto;
       display: block;
+    }
+
+    &:last-child {
+      margin-bottom: 100px;
+      height: 500px;
     }
   }
 }

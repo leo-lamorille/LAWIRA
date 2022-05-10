@@ -187,7 +187,7 @@ public class UserControllersTest extends IntegrationTest {
             .andExpect(jsonPath("$.id").value(ANY_COMMAND.getId().toString()))
             .andExpect(jsonPath("$.status").value(ANY_COMMAND.getStatus().toString()))
             .andExpect(jsonPath("$.quantity").value(ANY_COMMAND.getQuantity()))
-            .andExpect(jsonPath("$.values.size()").value(ANY_COMMAND.getOptions().size()));
+            .andExpect(jsonPath("$.options.size()").value(ANY_COMMAND.getOptions().size()));
       }
     }
 
@@ -232,7 +232,7 @@ public class UserControllersTest extends IntegrationTest {
                     .content(objectMapper.writeValueAsString(request.build()))
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .header("Authorization", "Bearer " + JWT_TOKEN))
-            .andExpect(status().isOk());
+            .andExpect(status().isCreated());
       }
     }
   }

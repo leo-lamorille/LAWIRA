@@ -36,6 +36,12 @@ public class AttributeOptionService {
             () -> new NotFoundException("Attribute option", "optionId", optionId.toString()));
   }
 
+  public List<AttributeOption> findAllAttributeOptionByAttributeId(UUID attributeId)
+      throws NotFoundException {
+    Attribute attribute = attributeService.findAttributeById(attributeId);
+    return attributeOptionRepository.findAllByAttribute(attribute);
+  }
+
   public AttributeOption findAttributeOptionById(UUID id) throws NotFoundException {
     return attributeOptionRepository
         .findById(id.toString())
@@ -50,8 +56,7 @@ public class AttributeOptionService {
 
   public List<AttributeOptionResponse> findAllByAttributeId(UUID attributeId)
       throws NotFoundException {
-    Attribute attribute = attributeService.findAttributeById(attributeId);
-    return attributeOptionRepository.findAllByAttribute(attribute).stream()
+    return findAllAttributeOptionByAttributeId(attributeId).stream()
         .map(attributeOptionMapper::attributeOptionToAttributeOptionResponse)
         .toList();
   }
