@@ -1,0 +1,47 @@
+.command {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  padding: 2% 5%;
+  width: 80%;
+  max-width: 60%;
+  margin: 2vh auto;
+  border: 1px solid #ffffff;
+  border-radius: 50px;
+  grid-gap: 5%;
+  font-size: 1.2em;
+
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    width: 40%;
+
+    .value {
+      margin: 1vh 2vw;
+      text-align: left;
+      .colordiv {
+        height: 30px;
+        float: right;
+        width: 40px;
+        border-radius: 5px;
+        border: solid black 2px;
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .quantity {
+    align-items: start;
+  }
+
+  .clickable {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .command {
+    flex-direction: column;
+  }
+}

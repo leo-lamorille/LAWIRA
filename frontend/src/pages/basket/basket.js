@@ -3,6 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {CircularProgress} from "@mui/material";
+import SectionBasket from "./sectionBasket/sectionBasket";
 
 export default function Basket() {
   const navigate = useNavigate();
@@ -69,82 +70,45 @@ export default function Basket() {
         + valuesString
   }
 
-  return <div className="basket__page">
-    <div className="section">
-      <h1>Commandes non payées</h1>
-      {
-        createdCommands === undefined ? <CircularProgress/>
-            : createdCommands.map(({id, quantity, options, status}) => {
-              return <div key={id} className={"command"}>
-                <Link to={computeProductUrlByValues(options, id, quantity)}>Modifier
-                  commande</Link>
-                <span>Quantité: {quantity}</span>
-                <div className={"values"}>
-                  {options.map(({
-                    attributeId,
-                    attributeName,
-                    optionId,
-                    optionValue,
-                    optionType
-                  }) => {
-                    return <div className={"value"}
-                                key={attributeId}>{attributeName}:{optionValue}</div>
-                  })}
-                </div>
-                <button onClick={() => {
-                  buy(id);
-                }}>Acheter
-                </button>
-              </div>
-            })
-      }
-    </div>
-    <div className="section">
-      <h1>Commandes en cours</h1>
-      {
-        pendingCommands === undefined ? <CircularProgress/>
-            : pendingCommands.map(({id, quantity, options, status}) => {
-              return <div className={"command"} key={id}>
-                <span>Quantité: {quantity}</span>
-                <div className={"values"}>
-                  {options.map(({
-                    attributeId,
-                    attributeName,
-                    optionId,
-                    optionValue,
-                    optionType
-                  }) => {
-                    return <div className={"value"}
-                                key={attributeId}>{attributeName}:{optionValue}</div>
-                  })}
-                </div>
-              </div>
-
-            })
-      }
-    </div>
-    <div className="section">
-      <h1>Commandes livrées</h1>
-      {
-        doneCommands === undefined ? <CircularProgress/>
-            : doneCommands.map(({id, quantity, options, status}) => {
-              return <div className={"command"} key={id}>
-                <span>Quantité: {quantity}</span>
-                <div className={"values"}>
-                  {options.map(({
-                    attributeId,
-                    attributeName,
-                    optionId,
-                    optionValue,
-                    optionType
-                  }) => {
-                    return <div className={"value"}
-                                key={attributeId}>{attributeName}:{optionValue}</div>
-                  })}
-                </div>
-              </div>
-            })
-      }
-    </div>
-  </div>
+  return (
+      <div className="basket__page">
+        <p className="title">MON PANIER</p>
+        <div className="section">
+          <h1>Commandes non payées</h1>
+          <div className="clickable">
+            <p>(Cliquer sur votre commande pour modifier)</p>
+          </div>
+          {
+            createdCommands === undefined ? <CircularProgress/>
+                : createdCommands.map(({id, quantity, options, status}) => {
+                  return (
+                      <Link to={computeProductUrlByValues(options, id, quantity)} key={id} style={{textDecoration: 'none'}}>
+                        <SectionBasket options={options} quantity={quantity}/>
+                      </Link>
+                  );
+                })
+          }
+        </div>
+        <div className="section">
+            <h1>Commandes en cours</h1>
+            {
+              pendingCommands === undefined ? <CircularProgress/>
+                  : pendingCommands.map(({id, quantity, options, status}) => {
+                    return <SectionBasket options={options} quantity={quantity}/>
+                  })
+            }
+          </div>
+          <div className="section">
+            <h1>Commandes livrées</h1>
+            {
+              doneCommands === undefined ? <CircularProgress/>
+                  : doneCommands.map(({id, quantity, options, status}) => {
+                    return (
+                        <SectionBasket options={options} quantity={quantity}/>
+                    );
+                  })
+            }
+          </div>
+      </div>
+  );
 }
