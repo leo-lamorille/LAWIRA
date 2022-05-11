@@ -31,7 +31,7 @@ export default function AboutUs() {
                   </div>
               </div>
               <div className="objectifContainer">
-                  <p>Notre objectif est de protéger vos données personnelles.</p>
+                  <p>Nous faisons nos clefs USB pour vos codes nucléaires.</p>
               </div>
               <div className="collabContainer">
                   <p>En collaboration avec </p>
