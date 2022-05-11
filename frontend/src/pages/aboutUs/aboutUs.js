@@ -31,7 +31,7 @@ export default function AboutUs() {
                   </div>
               </div>
               <div className="objectifContainer">
-                  <p>Je suis l'objectif de cette startup (nan je rigole aller faut le définir la)</p>
+                  <p>Notre objectif est de protéger vos données personnelles.</p>
               </div>
               <div className="collabContainer">
                   <p>En collaboration avec </p>
