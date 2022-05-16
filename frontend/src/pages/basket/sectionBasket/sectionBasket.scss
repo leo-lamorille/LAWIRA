@@ -46,6 +46,11 @@
   .imgCommand{
     width: 15vw;
   }
+  .buttons {
+    > * {
+      margin: 5%;
+    }
+  }
 }
 
 @media screen and (max-width: 1000px) {

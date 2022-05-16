@@ -6,7 +6,6 @@ export default function AdminSectionBasket({options, quantity, username, id, val
         return (
             (type === "COLOR")
                 ? <div className="colordiv" style={{backgroundColor: value}}/>
-
                 : value
         );
     };

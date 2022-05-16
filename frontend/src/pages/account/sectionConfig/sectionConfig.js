@@ -18,7 +18,7 @@ export default function SectionConfig({options, name, deleteConfig, id, updateCo
       <div className="config">
           <div>
                 <div className="configTitle">
-                    <p>{name}</p>
+                    <h2>{name}</h2>
                 </div>
                 <div className="imgCommand">
                     <img src="/clef/twoClef.png" alt="usb clef"/>
@@ -42,8 +42,11 @@ export default function SectionConfig({options, name, deleteConfig, id, updateCo
                       })
                   }
             </div>
+        <div className="buttons">
           <Link to={updateConfigURL(options, id)}><button className="btn styledButton">Modifier</button></Link>
           <button className="btn styledButton" onClick={deleteConfiguration}>Supprimer</button>
+        </div>
+
       </div>
     );
 }

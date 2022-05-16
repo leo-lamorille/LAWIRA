@@ -74,7 +74,9 @@ export default function Account() {
     return '/product?configurationId=' + configurationId + valuesString
   }
 
-  return <div>{
+  return <div className="account_page">
+    <h1>Mes configurations</h1>
+    {
     configurations === undefined ? <CircularProgress/>
         : configurations.map(({id, name, options}) =>
           <SectionConfig options={options} name={name} deleteConfig={deleteConfiguration} id={id} updateConfigURL={computeProductUrlByValues} key={id}/>

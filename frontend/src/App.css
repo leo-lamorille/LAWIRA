@@ -50,8 +50,6 @@
 }
 
 .btn {
-  margin: 5%;
-  width: 130px;
   height: 40px;
   color: #fff;
   border-radius: 5px;
@@ -70,9 +68,8 @@
 }
 
 .styledButton {
-  font-size: 1.8vw;
-  width: 13vw;
-  height: 6vh;
+  font-size: 20px;
+  height: 40px;
   line-height: 42px;
   padding: 0;
   border: none;
