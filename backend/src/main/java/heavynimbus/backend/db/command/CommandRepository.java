@@ -1,5 +1,6 @@
 package heavynimbus.backend.db.command;
 
+import heavynimbus.backend.db.account.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface CommandRepository extends JpaRepository<Command, String> {
   List<Command> findAllByAccount_Username(String username);
 
   Optional<Command> findByIdAndAccount_Username(String id, String username);
+
+  void deleteAllByAccount(Account account);
 }

@@ -12,6 +12,9 @@ import Chart from "../../features/chart/Chart";
 import AdminSectionBasket from "./adminSectionBasket/adminSectionBasket";
 import {userSlice} from "../../features/slices/userSlice";
 import {useCookies} from "react-cookie";
+import AdminSectionAccount from "./adminSectionAccount/adminSectionAccount";
+import CreateAdministratorForm
+  from "../../features/form/createAdministrator/createAdministratorForm";
 
 export default function Admin() {
   const userAction = userSlice.actions;
@@ -20,9 +23,11 @@ export default function Admin() {
 
   const navigate = useNavigate();
   const userToken = useSelector(state => state.user.jwt);
+  const userName = useSelector(state => state.user.name);
   const userRole = useSelector(state => state.user.role);
   const [pendingCommands, setPendingCommands] = useState();
   const [attributes, setAttributes] = useState();
+  const [accounts, setAccounts] = useState();
 
   const logout = () => {
     dispatch(userAction.logout(undefined));
@@ -81,6 +86,27 @@ export default function Admin() {
     })
   }
 
+  function refreshAccounts() {
+    let headers = new Headers()
+    headers.append("Authorization", 'Bearer ' + userToken)
+    fetch('http://localhost:8080/admin/accounts', {
+      headers
+    })
+    .then(res => {
+      if (res.status === 403) {
+        logout();
+        throw "You are not authorized to do this action"
+      } else if (res.status === 200) {
+        return res.json();
+      }
+    })
+    .then(res => {
+      console.log(res);
+      return res;
+    })
+    .then(res => setAccounts(res))
+  }
+
   useEffect(() => {
     if (userToken === '') {
       navigate('/account/signIn');
@@ -89,10 +115,12 @@ export default function Admin() {
     }
     refreshPendingCommands()
     refreshAttributes();
+    refreshAccounts();
   }, []);
 
   return <div className="admin__page">
-    <h1>Commandes à traiter</h1>
+    <h1>Commandes à traiter {pendingCommands
+        && `(${pendingCommands.length})`}</h1>
     <div className="pendingCommands">
       {
           (pendingCommands && pendingCommands.map(
@@ -101,7 +129,8 @@ export default function Admin() {
                                                                          quantity={quantity}
                                                                          options={options}
                                                                          validate={validateCommand}
-                                                                         key={id}/>)) || <CircularProgress/>
+                                                                         key={id}/>))
+          || <CircularProgress/>
       }
     </div>
 
@@ -119,8 +148,26 @@ export default function Admin() {
       }
       <CreateAttributeForm/>
     </div>
+    <h1>Comptes {accounts && `(${accounts.length})`}</h1>
+    <div className="accounts">
+      {accounts && accounts.map(
+              ({id, username, enabled, role, nbCommands, nbConfigurations}) =>
+                  <AdminSectionAccount key={id}
+                                       id={id}
+                                       username={username}
+                                       enabled={enabled}
+                                       role={role}
+                                       nbConfigurations={nbConfigurations}
+                                       nbCommands={nbCommands}
+                                       userToken={userToken}
+                                       refresh={refreshAccounts}
+                                       currentAccountUserName={userName}/>) ||
+          <CircularProgress/>
+      }
+      <CreateAdministratorForm refresh={refreshAccounts}/>
+    </div>
     <h1>Statistiques</h1>
-    <div>
+    <div className="stats">
       <Chart jwt={userToken}/>
     </div>
   </div>

@@ -21,4 +21,11 @@
       height: 500px;
     }
   }
+
+  .accounts {
+     > button:last-child {
+       display: block;
+       margin: auto;
+     }
+  }
 }

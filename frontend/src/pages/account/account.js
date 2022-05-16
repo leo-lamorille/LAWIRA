@@ -2,7 +2,7 @@ import './account.scss';
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {CircularProgress} from "@mui/material";
+import {Alert, CircularProgress} from "@mui/material";
 import SectionConfig from "./sectionConfig/sectionConfig";
 import {userSlice} from "../../features/slices/userSlice";
 import {useCookies} from "react-cookie";
@@ -78,7 +78,8 @@ export default function Account() {
     <h1>Mes configurations</h1>
     {
     configurations === undefined ? <CircularProgress/>
-        : configurations.map(({id, name, options}) =>
+        : configurations.length === 0 && <Alert severity="info">Aucune configuration sauvegardée</Alert> ||
+        configurations.map(({id, name, options}) =>
           <SectionConfig options={options} name={name} deleteConfig={deleteConfiguration} id={id} updateConfigURL={computeProductUrlByValues} key={id}/>
         )
   }</div>

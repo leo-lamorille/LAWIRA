@@ -2,7 +2,7 @@ import './basket.scss';
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {CircularProgress} from "@mui/material";
+import {Alert, CircularProgress} from "@mui/material";
 import SectionBasket from "./sectionBasket/sectionBasket";
 import {userSlice} from "../../features/slices/userSlice";
 import {useCookies} from "react-cookie";
@@ -112,17 +112,20 @@ export default function Basket() {
 
   return (
       <div className="basket__page">
-        <p className="title">MON PANIER</p>
+        <h1>MON PANIER</h1>
         <div className="section">
-          <h1>Commandes non payées</h1>
+          <h2>Commandes non payées</h2>
           <div className="clickable">
           </div>
           {
             createdCommands === undefined ? <CircularProgress/>
-                : createdCommands.map(({id, quantity, options, status}) => {
+                : createdCommands.length === 0 && <Alert severity="info">Aucune
+                  commande en attente de paiement</Alert> ||
+                createdCommands.map(({id, quantity, options, status}) => {
                   return (
                       <SectionBasket
-                          link={computeProductUrlByValues(options, id, quantity)}
+                          link={computeProductUrlByValues(options, id,
+                              quantity)}
                           commandId={id} options={options} quantity={quantity}
                           buy={buy} isBuy={false}/>
                   );
@@ -130,20 +133,23 @@ export default function Basket() {
           }
         </div>
         <div className="section">
-          <h1>Commandes en cours</h1>
+          <h2>Commandes en cours</h2>
           {
             pendingCommands === undefined ? <CircularProgress/>
-                : pendingCommands.map(({id, quantity, options, status}) => {
+                : pendingCommands.length === 0 && <Alert severity="info">Aucune
+                  commande en cours</Alert> ||
+                pendingCommands.map(({id, quantity, options, status}) => {
                   return <SectionBasket options={options} quantity={quantity}
                                         isBuy={true}/>
                 })
           }
         </div>
         <div className="section">
-          <h1>Commandes livrées</h1>
+          <h2>Commandes livrées</h2>
           {
             doneCommands === undefined ? <CircularProgress/>
-                : doneCommands.map(({id, quantity, options, status}) => {
+                : doneCommands.length === 0 && <Alert severity="info">Aucune commande livrée</Alert> ||
+                doneCommands.map(({id, quantity, options, status}) => {
                   return (
                       <SectionBasket options={options} quantity={quantity}
                                      isBuy={true}/>

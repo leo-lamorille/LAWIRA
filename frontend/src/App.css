@@ -71,10 +71,10 @@
   font-size: 20px;
   height: 40px;
   line-height: 42px;
-  padding: 0;
+  padding: 0 10px;
+  margin: 5px 10px;
   border: none;
-  background: rgb(37,41,64);
-//background: linear-gradient(0deg, rgba(255,27,0,1) 0%, rgba(251,75,2,1) 100%);
+  background: rgb(37,41,64)
 }
 .styledButton:hover {
   color: #ffffff;
@@ -106,4 +106,10 @@
 .styledButton:hover:after{
   width:100%;
   transition:800ms ease all;
+}
+
+@media screen and (max-width: 800px) {
+  .styledButton {
+    font-size: 15px;
+  }
 }
