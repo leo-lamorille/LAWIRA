@@ -1,7 +1,9 @@
 import './sectionBasket.scss';
-import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
-export default function SectionBasket({options, quantity}) {
+export default function SectionBasket({options, quantity, buy, isBuy, link, commandId}) {
+    const navigate = useNavigate();
+
     const isAColor = (value, name) => {
         return (
             (name === 'Couleur' || name === 'Leds')
@@ -10,6 +12,15 @@ export default function SectionBasket({options, quantity}) {
                 : value
         );
     };
+
+    const update = () => {
+        navigate(link);
+    }
+
+    const clickBuy = () => {
+        buy(commandId);
+    };
+
 
     return (
       <div className="command">
@@ -26,7 +37,7 @@ export default function SectionBasket({options, quantity}) {
                     return (
                         <div className={"value"} key={attributeId}>
                             <div className="text">
-                                {attributeName} : {isAColor(optionValue, attributeName)}
+                                <p className="attributeName">{attributeName} :</p> {isAColor(optionValue, attributeName)}
                             </div>
                         </div>
                     );
@@ -34,8 +45,16 @@ export default function SectionBasket({options, quantity}) {
             }
         </div>
         <div className="quantity">
-            <p>Quantité: {quantity}</p>
         </div>
+        <div className="buttonContainer">
+            <p>Quantité: {quantity}</p>
+            {
+              !isBuy ?
+                  <button onClick={clickBuy} className="btn styledButton">Acheter</button>
+                  : null
+            }
+            <button onClick={update} className="btn styledButton">Modifier</button>
+       </div>
       </div>
     );
 }

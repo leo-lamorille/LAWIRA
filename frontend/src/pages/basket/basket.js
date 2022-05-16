@@ -21,6 +21,7 @@ export default function Basket() {
     .then(res => res.json())
     .then(res => setCreatedCommands(res))
     .catch(err => console.error(err));
+    console.log(createdCommands);
   }
 
   function refreshPending() {
@@ -43,6 +44,7 @@ export default function Basket() {
   }
 
   function buy(commandId) {
+    console.log('here');
     fetch('http://localhost:8080/user/commands/' + commandId + '/buy', {
       method: 'PUT', headers
     }).then(() => {
@@ -82,9 +84,7 @@ export default function Basket() {
             createdCommands === undefined ? <CircularProgress/>
                 : createdCommands.map(({id, quantity, options, status}) => {
                   return (
-                      <Link to={computeProductUrlByValues(options, id, quantity)} key={id} style={{textDecoration: 'none'}}>
-                        <SectionBasket options={options} quantity={quantity}/>
-                      </Link>
+                      <SectionBasket link={computeProductUrlByValues(options, id, quantity)} commandId={id} options={options} quantity={quantity} buy={buy} isBuy={false}/>
                   );
                 })
           }
@@ -94,7 +94,7 @@ export default function Basket() {
             {
               pendingCommands === undefined ? <CircularProgress/>
                   : pendingCommands.map(({id, quantity, options, status}) => {
-                    return <SectionBasket options={options} quantity={quantity}/>
+                    return <SectionBasket options={options} quantity={quantity} isBuy={true}/>
                   })
             }
           </div>
@@ -104,7 +104,7 @@ export default function Basket() {
               doneCommands === undefined ? <CircularProgress/>
                   : doneCommands.map(({id, quantity, options, status}) => {
                     return (
-                        <SectionBasket options={options} quantity={quantity}/>
+                        <SectionBasket options={options} quantity={quantity} isBuy={true}/>
                     );
                   })
             }
