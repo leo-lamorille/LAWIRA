@@ -7,10 +7,11 @@
   width: 80%;
   max-width: 60%;
   margin: 2vh auto;
-  border: 1px solid #ffffff;
+  border: 0 solid #ffffff;
   border-radius: 50px;
   grid-gap: 5%;
-  font-size: 2vw;
+  font-size: calc(6px + 1vw);
+  box-shadow: 0px 0vw 3vw rgba(255, 255, 255, 0.1);
 
   .options {
     display: flex;
@@ -18,13 +19,13 @@
     width: 40%;
 
     .value {
-      margin: 1vh 2vw;
+      margin: 0.7vh 1.5vw;
       text-align: left;
 
       .colordiv {
-        display: block;
-        height: 30px;
-        width: 40px;
+        height: 1.5vw;
+        float: right;
+        width: 3vw;
         border-radius: 5px;
         border: solid black 2px;
       }
@@ -37,10 +38,22 @@
   .quantity {
     align-items: start;
   }
+
+  .clickable {
+    display: block;
+  }
+
+  .imgCommand{
+    width: 15vw;
+  }
 }
 
 @media screen and (max-width: 1000px) {
   .command {
-    flex-direction: column;
+    flex-direction: row;
+  }
+
+  .imgCommand{
+    width: 10vw;
   }
 }

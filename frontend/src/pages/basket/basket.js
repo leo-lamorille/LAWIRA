@@ -78,7 +78,6 @@ export default function Basket() {
         <div className="section">
           <h1>Commandes non payées</h1>
           <div className="clickable">
-            <p>(Cliquer sur votre commande pour modifier)</p>
           </div>
           {
             createdCommands === undefined ? <CircularProgress/>
