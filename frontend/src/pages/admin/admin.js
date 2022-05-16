@@ -1,6 +1,6 @@
 import './admin.scss';
 import {useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {
   CircularProgress,
@@ -10,13 +10,25 @@ import CreateAttributeForm
   from "../../features/form/createAttribute/createAttributeForm";
 import Chart from "../../features/chart/Chart";
 import AdminSectionBasket from "./adminSectionBasket/adminSectionBasket";
+import {userSlice} from "../../features/slices/userSlice";
+import {useCookies} from "react-cookie";
 
 export default function Admin() {
+  const userAction = userSlice.actions;
+  const dispatch = useDispatch();
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+
   const navigate = useNavigate();
   const userToken = useSelector(state => state.user.jwt);
   const userRole = useSelector(state => state.user.role);
   const [pendingCommands, setPendingCommands] = useState();
   const [attributes, setAttributes] = useState();
+
+  const logout = () => {
+    dispatch(userAction.logout(undefined));
+    removeCookie('token', {path: '/'});
+    navigate('/home');
+  }
 
   function refreshPendingCommands() {
     let headers = new Headers()
@@ -24,7 +36,14 @@ export default function Admin() {
     fetch('http://localhost:8080/admin/commands', {
       headers
     })
-    .then(res => res.json())
+    .then(res => {
+      if (res.status === 403) {
+        logout();
+        throw "You are not authorized to do this action"
+      } else if (res.status === 200) {
+        return res.json();
+      }
+    })
     .then(res => setPendingCommands(res))
   }
 
@@ -34,7 +53,14 @@ export default function Admin() {
     fetch('http://localhost:8080/admin/attributes', {
       headers
     })
-    .then(res => res.json())
+    .then(res => {
+      if (res.status === 403) {
+        logout();
+        throw "You are not authorized to do this action"
+      } else if (res.status === 200) {
+        return res.json();
+      }
+    })
     .then(res => setAttributes(res))
   }
 
@@ -44,7 +70,10 @@ export default function Admin() {
     fetch('http://localhost:8080/admin/commands/' + id + '/validate', {
       headers, method: 'PUT'
     }).then(res => {
-      if (res.status === 200) {
+      if (res.status === 403) {
+        logout();
+        throw "You are not authorized to do this action"
+      } else if (res.status === 200) {
         refreshPendingCommands();
       } else {
         console.error(res.json());

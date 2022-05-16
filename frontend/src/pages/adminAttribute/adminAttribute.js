@@ -1,14 +1,21 @@
 import './adminAttribute.scss';
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import {Alert, Button, CircularProgress, MenuItem, Select} from "@mui/material";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import CRUDAttributeOption
   from "../../features/crudAttributeOption/CRUDAttributeOption";
 import CreateAttributeOptionForm
   from "../../features/form/createAttributeOption/createAttributeOptionForm";
+import {userSlice} from "../../features/slices/userSlice";
+import {useCookies} from "react-cookie";
 
 export default function () {
+  const userAction = userSlice.actions;
+  const dispatch = useDispatch();
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  const navigate = useNavigate();
+
   const userToken = useSelector(state => state.user.jwt);
   const userRole = useSelector(state => state.user.role);
   const [loading, setLoading] = useState(true);
@@ -19,13 +26,26 @@ export default function () {
   const [options, setOptions] = useState([])
   const {attributeId} = useParams();
 
+  const logout = () => {
+    dispatch(userAction.logout(undefined));
+    removeCookie('token', {path: '/'});
+    navigate('/home');
+  }
+
   function refreshAttribute() {
     setLoading(true);
     let headers = new Headers()
     headers.append("Authorization", 'Bearer ' + userToken)
     fetch(`http://localhost:8080/admin/attributes/${attributeId}`, {
       headers, method: 'GET'
-    }).then(res => res.json())
+    }).then(res => {
+      if (res.status === 403) {
+        logout();
+        throw "You are not authorized to do this action"
+      } else if (res.status === 200) {
+        return res.json();
+      }
+    })
     .then((attribute) => {
       setInitialAttribute(attribute);
       const {id, name, description, options} = attribute;
@@ -45,9 +65,13 @@ export default function () {
     })
     fetch(`http://localhost:8080/admin/attributes/${attributeId}`, {
       headers, method: 'PUT', body
-    }).then(res => res.json())
-    .then((attribute) => {
-      refreshAttribute();
+    }).then(res => {
+      if (res.status === 403) {
+        logout();
+        throw "You are not authorized to do this action"
+      } else if (res.status === 200) {
+        refreshAttribute();
+      }
     });
   }
 
