@@ -50,10 +50,10 @@ export default function SectionBasket({options, quantity, commandId, isBuy, buy,
             <p>Quantité: {quantity}</p>
             {
               !isBuy ?
-                  <>
+                  <div className="buttons">
                     <button onClick={clickBuy} className="btn styledButton">Acheter</button>
                     <button onClick={update} className="btn styledButton">Modifier</button>
-                  </>
+                  </div>
                   : null
             }
        </div>

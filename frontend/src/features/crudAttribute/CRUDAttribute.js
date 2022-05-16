@@ -33,11 +33,11 @@ export default function ({id, name, description, options, refresh}) {
         options.length === 0 && <Alert severity="warning">Cet attribut ne
           possède pas d'options</Alert>
     }
-    <Button type="button" color="error" variant="outlined"
-            onClick={deleteAttribute}>Supprimer</Button>
+    <button className="btn styledButton"
+            onClick={deleteAttribute}>Supprimer</button>
     <Link to={`/admin/attribute/${id}`}>
-      <Button type="button" color="warning" variant="outlined"
-              onClick={() => setDisplayModal(true)}>Modifier</Button>
+      <button className="btn styledButton"
+              onClick={() => setDisplayModal(true)}>Modifier</button>
     </Link>
   </div>
 }
