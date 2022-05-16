@@ -70,8 +70,9 @@
 }
 
 .styledButton {
-  width: 130px;
-  height: 40px;
+  font-size: 1.8vw;
+  width: 13vw;
+  height: 6vh;
   line-height: 42px;
   padding: 0;
   border: none;

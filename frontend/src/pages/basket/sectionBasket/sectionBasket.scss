@@ -10,7 +10,7 @@
   border: 0 solid #ffffff;
   border-radius: 50px;
   grid-gap: 5%;
-  font-size: calc(6px + 1vw);
+  font-size: calc(7px + 1vw);
   box-shadow: 0px 0vw 3vw rgba(255, 255, 255, 0.1);
 
   .options {
@@ -50,7 +50,15 @@
 
 @media screen and (max-width: 1000px) {
   .command {
-    flex-direction: row;
+    flex-direction: column;
+
+    .options{
+      width: 80%;
+    }
+
+    .buttons{
+      display: flex;
+    }
   }
 
   .imgCommand{

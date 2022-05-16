@@ -32,9 +32,9 @@ export default function () {
     .then(res=>navigate(`/admin/attribute/${res.id}`));
   }
 
-  return <>      <Button type="button" color="success" variant="outlined"
+  return <>      <button type="button" className="btn styledButton"
                          onClick={() => setDisplay(true)}>Nouvel
-    Attribut</Button><Dialog open={display}>
+    Attribut</button><Dialog open={display}>
     <form className="createAttributeForm" onSubmit={createAttribute}>
       <DialogTitle>Nouvel attribut</DialogTitle>
       <DialogContent>
@@ -52,13 +52,13 @@ export default function () {
         </div>
       </DialogContent>
       <DialogActions>
-        <Button type="button"
+        <button type="button" className="btn styledButton"
                 onClick={() => setDisplay(
-                    false)}>Annuler</Button>
+                    false)}>Annuler</button>
 
-        <Button type="submit">
+        <button type="submit" className="btn styledButton">
           Valider
-        </Button>
+        </button>
       </DialogActions>
     </form>
   </Dialog></>
