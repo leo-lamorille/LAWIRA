@@ -23,10 +23,6 @@ services:
       MYSQL_PASSWORD: pass
     ports:
       - '3307:3306'
-    logging:
-      driver: syslog
-      options:
-        tag: "{{.DaemonName}}(image={{.ImageName}};name={{.Name}};id={{.ID}})"
     restart: on-failure
     volumes:
       - lawira-db-vol:/var/lib/mysql

@@ -1,16 +1,16 @@
-.command {
+.adminBasket {
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
   padding: 2% 5%;
   width: 80%;
-  max-width: 60%;
+  max-width: 90%;
   margin: 2vh auto;
   border: 1px solid #ffffff;
   border-radius: 50px;
   grid-gap: 5%;
-  font-size: 2vw;
+  font-size: calc(5px + 0.8vw);
 
   .options {
     display: flex;
@@ -18,12 +18,12 @@
     width: 40%;
 
     .value {
-      margin: 1vh 2vw;
+      margin: 0.3vh 1vw;
       text-align: left;
       .colordiv {
-        height: 30px;
+        height: 1em;
         float: right;
-        width: 40px;
+        width: 1.25rem;
         border-radius: 5px;
         border: solid black 2px;
         margin-left: 10px;
@@ -37,6 +37,12 @@
 
   .clickable {
     display: block;
+  }
+
+  .imgCommand{
+    width: 20%;
+    text-align: center;
+    font-weight: bolder;
   }
 }
 
