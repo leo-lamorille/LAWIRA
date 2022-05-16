@@ -9,6 +9,7 @@ import CRUDAttribute from "../../features/crudAttribute/CRUDAttribute";
 import CreateAttributeForm
   from "../../features/form/createAttribute/createAttributeForm";
 import Chart from "../../features/chart/Chart";
+import AdminSectionBasket from "./adminSectionBasket/adminSectionBasket";
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -66,26 +67,12 @@ export default function Admin() {
     <div className="pendingCommands">
       {
           (pendingCommands && pendingCommands.map(
-              ({id, username, quantity, options}) => {
-                return <div key={id}>
-                  {username} {id} {quantity}
-                  <ul>
-                    {
-                      options.map(({
-                        attributeId,
-                        attributeName,
-                        optionId,
-                        optionValue,
-                        optionType
-                      }) => {
-                        return <li
-                            key={attributeId}>{attributeName}: {optionValue}</li>
-                      })
-                    }
-                  </ul>
-                  <button onClick={() => validateCommand(id)}>Valider</button>
-                </div>
-              })) || <CircularProgress/>
+              ({id, username, quantity, options}) => <AdminSectionBasket id={id}
+                                                                         username={username}
+                                                                         quantity={quantity}
+                                                                         options={options}
+                                                                         validate={validateCommand}
+                                                                         key={id}/>)) || <CircularProgress/>
       }
     </div>
 

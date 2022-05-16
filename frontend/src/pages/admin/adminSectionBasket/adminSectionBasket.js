@@ -1,7 +1,7 @@
-import './sectionBasket.scss';
+import './adminSectionBasket.scss';
 import {useEffect, useState} from "react";
 
-export default function SectionBasket({options, quantity}) {
+export default function AdminSectionBasket({options, quantity, username, id, validate}) {
     const isAColor = (value, type) => {
         return (
             (type === "COLOR")
@@ -12,9 +12,14 @@ export default function SectionBasket({options, quantity}) {
     };
 
     return (
-      <div className="command">
+      <div className="adminBasket">
         <div className="imgCommand">
-            <img src="/clef/twoClef.png" alt="usb clef"/>
+            <div>
+                {username}
+            </div>
+            <div>
+                <img src="/clef/twoClef.png" alt="usb clef"/>
+            </div>
         </div>
         <div className="options">
             {
@@ -37,6 +42,7 @@ export default function SectionBasket({options, quantity}) {
         <div className="quantity">
             <p>Quantité: {quantity}</p>
         </div>
+          <button className="btn styledButton" onClick={()=>validate(id)}>Valider</button>
       </div>
     );
 }

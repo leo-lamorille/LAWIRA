@@ -1,4 +1,4 @@
-.command {
+.config {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,8 +31,10 @@
     }
   }
 
-  .quantity {
+  .configTitle {
     align-items: start;
+    font-weight: bolder;
+    font-size: 2.35vw;
   }
 
   .clickable {

@@ -3,6 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {CircularProgress} from "@mui/material";
+import SectionConfig from "./sectionConfig/sectionConfig";
 
 export default function Account() {
   const navigate = useNavigate();
@@ -53,27 +54,8 @@ export default function Account() {
 
   return <div>{
     configurations === undefined ? <CircularProgress/>
-        : configurations.map(({id, name, options}) => {
-          return <div className={"command"} key={id}>
-            <Link to={computeProductUrlByValues(options,
-                id)}><span>name: {name}</span></Link>
-            <div className={"values"}>
-              {options.map(({
-                attributeId,
-                attributeName,
-                optionId,
-                optionValue,
-                optionType
-              }) => {
-                return <div className={"value"}
-                            key={attributeId}>{attributeName}:{optionValue}</div>
-              })}
-            </div>
-            <button onClick={() => {
-              deleteConfiguration(id);
-            }}>Delete
-            </button>
-          </div>
-        })
+        : configurations.map(({id, name, options}) =>
+          <SectionConfig options={options} name={name} deleteConfig={deleteConfiguration} id={id} updateConfigURL={computeProductUrlByValues} key={id}/>
+        )
   }</div>
 }
