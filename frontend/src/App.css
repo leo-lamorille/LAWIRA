@@ -48,3 +48,64 @@
     transform: rotate(360deg);
   }
 }
+
+.btn {
+  margin: 5%;
+  width: 130px;
+  height: 40px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  box-shadow:inset 2px 2px 2px 0 #3c436a,
+  7px 7px 20px 0 rgba(0,0,0,.1),
+  4px 4px 5px 0 rgba(0,0,0,.1);
+  outline: none;
+}
+
+.styledButton {
+  width: 130px;
+  height: 40px;
+  line-height: 42px;
+  padding: 0;
+  border: none;
+  background: rgb(37,41,64);
+//background: linear-gradient(0deg, rgba(255,27,0,1) 0%, rgba(251,75,2,1) 100%);
+}
+.styledButton:hover {
+  color: #ffffff;
+  background: transparent;
+  box-shadow:none;
+}
+.styledButton:before,
+.styledButton:after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background: #3c436a;
+  box-shadow:
+          -1px -1px 5px 0 #fff,
+          7px 7px 20px 0 #0003,
+          4px 4px 5px 0 #0002;
+  transition:400ms ease all;
+}
+.styledButton:after{
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+.styledButton:hover:before,
+.styledButton:hover:after{
+  width:100%;
+  transition:800ms ease all;
+}

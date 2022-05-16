@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ace0d8dc-d055-4b23-875e-cf1b7f016641" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../docker-compose.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/navigator.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/navigator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/basket/basket.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/basket/basket.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/basket/sectionBasket/sectionBasket.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/basket/sectionBasket/sectionBasket.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/basket/sectionBasket/sectionBasket.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/basket/sectionBasket/sectionBasket.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
