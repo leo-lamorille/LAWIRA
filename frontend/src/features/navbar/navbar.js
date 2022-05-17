@@ -120,6 +120,11 @@ export default function Navbar() {
                     Produit
                 </Link>
             </MenuItem>
+            <MenuItem onClick={handleMenuClose}>
+                <Link to="/form" className={classes.mobileTitle}>
+                    Nous contacter
+                </Link>
+            </MenuItem>
         </Menu>
     );
 
@@ -148,6 +153,9 @@ export default function Navbar() {
                         </Link>
                         <Link to={'/product'} className={classes.title}>
                             Produit
+                        </Link>
+                        <Link to="/form" className={classes.title}>
+                            Nous contacter
                         </Link>
                     </div>
                     <div className={classes.grow} />
