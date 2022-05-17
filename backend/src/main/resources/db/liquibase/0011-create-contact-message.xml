@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+  <changeSet id="create contact message" author="HeavyNimbus">
+    <sql>
+      CREATE TABLE contact_message
+      (
+        id         CHAR(36) PRIMARY KEY,
+        firstname  VARCHAR(255) NOT NULL,
+        lastname   VARCHAR(255) NOT NULL,
+        email      VARCHAR(255) NOT NULL,
+        subject    VARCHAR(255) NOT NULL,
+        content    TEXT         NOT NULL,
+        status     VARCHAR(10)  NOT NULL,
+        account_id CHAR(36),
+        FOREIGN KEY (account_id) REFERENCES account (id)
+      );
+    </sql>
+  </changeSet>
+</databaseChangeLog>
