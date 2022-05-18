@@ -1,0 +1,53 @@
+.adminSectionMessage {
+  display: grid;
+  margin-top: 10px;
+  padding-bottom: 20px;
+  border-bottom: solid 1px white;
+  grid-template-columns: 300px calc(70vw - 300px - 160px) 160px;
+
+  > a {
+    grid-row: 1 / span 2;
+    margin: auto;
+
+    &:hover img {
+      animation-duration: 1.5s;
+      animation-name: shake;
+    }
+  }
+
+  > div {
+    span {
+      text-decoration: underline;
+    }
+
+    div:last-child {
+      margin-top: 10px;
+      font-style: italic;
+    }
+  }
+}
+
+
+@keyframes shake {
+  from {
+    transform: rotate(0deg);
+  }
+  16% {
+     transform: rotate(-10deg);
+  }
+  33% {
+    transform: rotate(10deg);
+  }
+  50% {
+    transform: rotate(-10deg);
+  }
+  66% {
+    transform: rotate(10deg);
+  }
+  83% {
+    transform: rotate(-10deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}

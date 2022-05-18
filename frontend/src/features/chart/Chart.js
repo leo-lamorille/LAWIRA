@@ -33,8 +33,10 @@ export default function ({jwt}) {
     })
     .then(res => res.json())
     .then(res => {
-      setAttributes(res)
-      setCurrentAttribute(res[0].id)
+      if (res.length > 0) {
+        setAttributes(res)
+        setCurrentAttribute(res[0].id)
+      }
     })
   }
 
@@ -58,7 +60,8 @@ export default function ({jwt}) {
   }, [currentAttribute])
 
   if (data === undefined) {
-    return <div></div>
+    return <div>
+    </div>
   }
   const maxCommand = Math.max(
       ...data.map(({commandOccurrences}) => commandOccurrences))
@@ -79,7 +82,7 @@ export default function ({jwt}) {
   return <div className="charts">
     {
         (!enableCommands && !enableConfiguration) && <Alert severity="warning">Aucun
-          service n'est sé lectionné</Alert>
+          service n'est sélectionné</Alert>
     }
     <div className="charts-css legend">
       <fieldset>

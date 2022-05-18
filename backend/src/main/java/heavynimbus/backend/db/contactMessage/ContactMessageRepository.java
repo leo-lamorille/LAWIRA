@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ContactMessageRepository extends JpaRepository<ContactMessage, String> {
-  List<ContactMessage> findAllByStatusIn(List<ContactMessageStatus> statuses);
+  List<ContactMessage> findAllByStatusInOrderBySentAtAsc(List<ContactMessageStatus> statuses);
 }

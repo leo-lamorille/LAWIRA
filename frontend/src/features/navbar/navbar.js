@@ -110,6 +110,11 @@ export default function Navbar() {
           onClose={handleMobileMenuClose}
       >
         <MenuItem onClick={handleMenuClose}>
+          <Link to="/home" className={classes.mobileTitle}>
+            Accueil
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleMenuClose}>
           <Link to="/aboutus" className={classes.mobileTitle}>
             A propos
           </Link>

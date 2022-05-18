@@ -1,10 +1,13 @@
 package heavynimbus.backend.service;
 
+import heavynimbus.backend.db.contactMessage.ContactMessage;
 import heavynimbus.backend.db.contactMessage.ContactMessageRepository;
 import heavynimbus.backend.db.contactMessage.ContactMessageStatus;
 import heavynimbus.backend.dto.contactMessage.ContactMessageResponse;
+import heavynimbus.backend.exception.NotFoundException;
 import heavynimbus.backend.mapper.ContactMessageMapper;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,8 +19,28 @@ public class ContactMessageService {
   private final ContactMessageMapper contactMessageMapper;
 
   public List<ContactMessageResponse> findAllByStatusIn(List<ContactMessageStatus> statuses) {
-    return contactMessageRepository.findAllByStatusIn(statuses).stream()
+    statuses =
+        statuses == null ? List.of(ContactMessageStatus.NEW, ContactMessageStatus.SEEN) : statuses;
+    return contactMessageRepository.findAllByStatusInOrderBySentAtAsc(statuses).stream()
         .map(contactMessageMapper::contactMessageToContactMessageResponse)
         .collect(Collectors.toList());
+  }
+
+  public ContactMessage findContactMessageById(UUID id) throws NotFoundException {
+    return contactMessageRepository
+        .findById(id.toString())
+        .orElseThrow(() -> new NotFoundException("Contact message", "id", id.toString()));
+  }
+
+  public ContactMessageResponse findById(UUID id) throws NotFoundException {
+    ContactMessage contactMessage = findContactMessageById(id);
+    contactMessage.setStatus(ContactMessageStatus.SEEN);
+    contactMessage = contactMessageRepository.save(contactMessage);
+    return contactMessageMapper.contactMessageToContactMessageResponse(contactMessage);
+  }
+
+  public void delete(UUID id) throws NotFoundException {
+    ContactMessage contactMessage = findContactMessageById(id);
+    contactMessageRepository.delete(contactMessage);
   }
 }

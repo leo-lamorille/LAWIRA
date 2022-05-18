@@ -16,6 +16,7 @@
         subject    VARCHAR(255) NOT NULL,
         content    TEXT         NOT NULL,
         status     VARCHAR(10)  NOT NULL,
+        sent_at    TIMESTAMP,
         account_id CHAR(36),
         FOREIGN KEY (account_id) REFERENCES account (id)
       );

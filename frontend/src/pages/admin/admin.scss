@@ -2,7 +2,7 @@
   h1 {
     text-align: center;
   }
-  > div {
+  > div:not([class*="showSeenMessages"]) {
     margin: 5vh auto;
     width: 70vw;
     height: 50vh;
@@ -27,5 +27,10 @@
        display: block;
        margin: auto;
      }
+  }
+  .showSeenMessages {
+    text-align: center;
+    margin: 0;
+    padding: 10px;
   }
 }

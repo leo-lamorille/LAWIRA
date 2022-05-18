@@ -42,6 +42,8 @@ export default function () {
       if (res.status === 403) {
         logout();
         throw "You are not authorized to do this action"
+      } else if (res.status === 404) {
+        navigate('/admin')
       } else if (res.status === 200) {
         return res.json();
       }
@@ -76,6 +78,11 @@ export default function () {
   }
 
   useEffect(() => {
+    if (userToken === '') {
+      navigate('/account/signIn');
+    } else if (userRole !== 'ADMIN') {
+      navigate('/home');
+    }
     refreshAttribute();
   }, [])
 

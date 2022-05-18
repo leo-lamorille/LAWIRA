@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {
-  CircularProgress,
+  CircularProgress, FormControlLabel, Input,
 } from "@mui/material";
 import CRUDAttribute from "../../features/crudAttribute/CRUDAttribute";
 import CreateAttributeForm
@@ -15,6 +15,8 @@ import {useCookies} from "react-cookie";
 import AdminSectionAccount from "./adminSectionAccount/adminSectionAccount";
 import CreateAdministratorForm
   from "../../features/form/createAdministrator/createAdministratorForm";
+import AdminSectionMessage from "./adminSectionMessage/adminSectionMessage";
+import {CheckBox} from "@material-ui/icons";
 
 export default function Admin() {
   const userAction = userSlice.actions;
@@ -28,6 +30,8 @@ export default function Admin() {
   const [pendingCommands, setPendingCommands] = useState();
   const [attributes, setAttributes] = useState();
   const [accounts, setAccounts] = useState();
+  const [messages, setMessages] = useState();
+  const [showSeenMessages, setShowSeenMessages] = useState(false);
 
   const logout = () => {
     dispatch(userAction.logout(undefined));
@@ -100,11 +104,24 @@ export default function Admin() {
         return res.json();
       }
     })
-    .then(res => {
-      console.log(res);
-      return res;
-    })
     .then(res => setAccounts(res))
+  }
+
+  function refreshMessages() {
+    let headers = new Headers()
+    headers.append("Authorization", 'Bearer ' + userToken)
+    fetch('http://localhost:8080/admin/contact', {
+      headers
+    })
+    .then(res => {
+      if (res.status === 403) {
+        logout();
+        throw "You are not authorized to do this action"
+      } else if (res.status === 200) {
+        return res.json();
+      }
+    })
+    .then(res => setMessages(res))
   }
 
   useEffect(() => {
@@ -116,8 +133,13 @@ export default function Admin() {
     refreshPendingCommands()
     refreshAttributes();
     refreshAccounts();
+    refreshMessages();
   }, []);
 
+  const nbSeenMessages = messages === undefined ? "-" : messages.filter(
+      ({status}) => status === "SEEN").length;
+  const nbNewMessages = messages === undefined ? "-" : messages.length
+      - nbSeenMessages;
   return <div className="admin__page">
     <h1>Commandes à traiter {pendingCommands
         && `(${pendingCommands.length})`}</h1>
@@ -165,6 +187,38 @@ export default function Admin() {
           <CircularProgress/>
       }
       <CreateAdministratorForm refresh={refreshAccounts}/>
+    </div>
+    <h1>Messages {messages && `(${nbNewMessages})`}</h1>
+    <div className="showSeenMessages">
+      <label htmlFor="showSeenMessages">Afficher {nbSeenMessages} messages
+        lus:</label>
+      <input name="showSeenMessages" type="checkbox" value={showSeenMessages}
+             onChange={() => setShowSeenMessages(!showSeenMessages)}/>
+    </div>
+    <div className="messages">
+      {
+          messages && messages.filter(({status}) => {
+            if (status === "NEW") {
+              return true;
+            }
+            return showSeenMessages;
+          }).map(({
+            id,
+            firstname,
+            lastname,
+            email,
+            subject,
+            content,
+            status,
+            account,
+            sentAt
+          }) => <AdminSectionMessage key={id} id={id} firstname={firstname}
+                                     lastname={lastname} email={email}
+                                     subject={subject} content={content}
+                                     status={status} account={account}
+                                     sentAt={sentAt}/>) ||
+          <CircularProgress/>
+      }
     </div>
     <h1>Statistiques</h1>
     <div className="stats">

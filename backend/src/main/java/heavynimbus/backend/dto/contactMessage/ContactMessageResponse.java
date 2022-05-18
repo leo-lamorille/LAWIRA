@@ -1,6 +1,7 @@
 package heavynimbus.backend.dto.contactMessage;
 
 import heavynimbus.backend.db.contactMessage.ContactMessageStatus;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,4 +23,5 @@ public class ContactMessageResponse {
   private String content;
   private ContactMessageStatus status;
   private String account;
+  private String sentAt;
 }
