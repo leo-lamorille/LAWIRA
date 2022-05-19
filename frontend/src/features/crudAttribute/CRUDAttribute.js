@@ -10,8 +10,9 @@ import {
 import {useState} from "react";
 import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";
+import Snackbar from "@mui/material/Snackbar";
 
-export default function ({id, name, description, options, refresh}) {
+export default function ({id, name, description, options, refresh, setShowAlert}) {
   const userToken = useSelector(state => state.user.jwt);
   const userRole = useSelector(state => state.user.role);
   const [displayModal, setDisplayModal] = useState(false);
@@ -22,8 +23,12 @@ export default function ({id, name, description, options, refresh}) {
     fetch(`http://localhost:8080/admin/attributes/${id}`, {
       headers, method: 'DELETE'
     })
-    .then(() => refresh())
+    .then(() => {
+      setShowAlert("Attribut supprimé");
+      refresh();
+    })
   }
+
 
   return <div className="CRUDAttribute">
     <Attribute id={id} name={name}
@@ -34,10 +39,10 @@ export default function ({id, name, description, options, refresh}) {
           possède pas d'options</Alert>
     }
     <button className="btn styledButton"
-            onClick={deleteAttribute}>Supprimer</button>
+            onClick={deleteAttribute}>Supprimer
+    </button>
     <Link to={`/admin/attribute/${id}`}>
-      <button className="btn styledButton"
-              onClick={() => setDisplayModal(true)}>Modifier</button>
+      <button className="btn styledButton">Modifier</button>
     </Link>
   </div>
 }

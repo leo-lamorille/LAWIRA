@@ -9,6 +9,7 @@ import Account from "../pages/account/account";
 import Basket from "../pages/basket/basket";
 import AdminAttribute from "../pages/adminAttribute/adminAttribute";
 import Form from "../pages/form/form";
+import AdminMessage from "../pages/adminMessage/adminMessage";
 
 export default function Navigator() {
   return (
@@ -22,6 +23,7 @@ export default function Navigator() {
         <Route path="/admin" element={<Admin/>}/>
         <Route path="/admin/attribute/:attributeId"
                element={<AdminAttribute/>}/>
+        <Route path="/admin/message/:messageId" element={<AdminMessage/>}/>
         <Route path="/basket" element={<Basket/>}/>
         <Route path="/form" element={<Form />} />
         <Route path="*" element={<Navigate to="/home"/>}/>

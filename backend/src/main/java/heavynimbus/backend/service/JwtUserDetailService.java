@@ -28,9 +28,19 @@ public class JwtUserDetailService implements UserDetailsService {
     Account account =
         accountRepository
             .findByUsername(username)
+            .filter(Account::getEnabled)
             .orElseThrow(
-                () -> new UsernameNotFoundException("User not find with username " + username));
-    return new User(account.getUsername(), account.getPassword(), getAuthorities(account));
+                () ->
+                    new UsernameNotFoundException(
+                        "User with username " + username + " not found or disabled"));
+    return new User(
+        account.getUsername(),
+        account.getPassword(),
+        account.getEnabled(),
+        true,
+        true,
+        true,
+        getAuthorities(account));
   }
 
   private static List<GrantedAuthority> getAuthorities(Account account) {

@@ -1,8 +1,7 @@
 .formContainer {
-  .title {
+  h1 {
     text-align: center;
     font-size: 3em;
-    font-weight: 700;
   }
 
   .formulaire {
@@ -52,7 +51,7 @@
   }
 
   input, textarea {
-    font-size: 1.5vw;
+    font-size: 1.5em;
     width:30%;
     height:100%;
     padding:5px 10px;

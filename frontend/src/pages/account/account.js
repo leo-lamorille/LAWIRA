@@ -1,14 +1,26 @@
 import './account.scss';
 import {Link, useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {CircularProgress} from "@mui/material";
+import {Alert, CircularProgress} from "@mui/material";
 import SectionConfig from "./sectionConfig/sectionConfig";
+import {userSlice} from "../../features/slices/userSlice";
+import {useCookies} from "react-cookie";
 
 export default function Account() {
+  const userAction = userSlice.actions;
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+
   const userToken = useSelector(state => state.user.jwt);
   const [configurations, setConfiguration] = useState()
+
+  const logout = () => {
+    dispatch(userAction.logout(undefined));
+    removeCookie('token', {path: '/'});
+    navigate('/home');
+  }
 
   function refreshConfigurations() {
     let headers = new Headers()
@@ -16,7 +28,14 @@ export default function Account() {
     fetch('http://localhost:8080/user/configurations', {
       headers: headers
     })
-    .then(res => res.json())
+    .then(res => {
+      if (res.status === 403) {
+        logout();
+        throw "You are not authorized to do this action"
+      } else if (res.status === 200) {
+        return res.json();
+      }
+    })
     .then(res => setConfiguration(res))
     .catch(err => console.error(err));
   }
@@ -29,7 +48,10 @@ export default function Account() {
       headers
     })
     .then(res => {
-      if (res.status === 200) {
+      if (res.status === 403) {
+        logout();
+        throw "You are not authorized to do this action"
+      } else if (res.status === 200) {
         refreshConfigurations()
       } else {
         console.error(res.json());
@@ -52,9 +74,12 @@ export default function Account() {
     return '/product?configurationId=' + configurationId + valuesString
   }
 
-  return <div>{
+  return <div className="account_page">
+    <h1>Mes configurations</h1>
+    {
     configurations === undefined ? <CircularProgress/>
-        : configurations.map(({id, name, options}) =>
+        : configurations.length === 0 && <Alert severity="info">Aucune configuration sauvegardée</Alert> ||
+        configurations.map(({id, name, options}) =>
           <SectionConfig options={options} name={name} deleteConfig={deleteConfiguration} id={id} updateConfigURL={computeProductUrlByValues} key={id}/>
         )
   }</div>

@@ -13,6 +13,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -44,6 +45,17 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
     return ApiExceptionResponse.builder()
         .status(HttpStatus.FORBIDDEN)
         .message("Wrong username or password")
+        .data(Map.of())
+        .build();
+  }
+
+  @ExceptionHandler(UsernameNotFoundException.class)
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  public ApiExceptionResponse hendleUsernameNotFoundException(
+      UsernameNotFoundException e, HttpServletRequest request) {
+    return ApiExceptionResponse.builder()
+        .status(HttpStatus.FORBIDDEN)
+        .message(e.getMessage())
         .data(Map.of())
         .build();
   }

@@ -48,7 +48,10 @@
 }
 
 @media screen and (max-width: 800px) {
-  .command {
+  .adminBasket {
     flex-direction: column;
+    .options {
+        width: 80%;
+    }
   }
 }

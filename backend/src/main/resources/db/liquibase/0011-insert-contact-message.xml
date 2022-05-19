@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+  <changeSet id="insert contact message" author="HeavyNimbus">
+    <sql>
+      INSERT INTO contact_message (id, firstname, lastname, email, subject, content, status,
+                                   account_id, sent_at)
+      VALUES (UUID(), 'John', 'Doe', 'john.doe@email.com', 'lorem ipsum',
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam commodo, ex eget consequat accumsan, metus odio tristique est, ultricies fringilla nisl eros dictum leo. Fusce libero massa, pretium vitae lobortis in, consectetur vitae ipsum. Donec non ullamcorper mauris, id maximus mi. Mauris ullamcorper nunc et velit gravida elementum. Sed sed augue posuere, placerat mi sed, mattis orci. Ut faucibus elit eu dictum elementum. Integer eget arcu porta, ullamcorper lacus at, consectetur magna. Aliquam a ante ut dui ultrices tincidunt et a ligula. Quisque venenatis ultrices turpis vitae elementum. Vestibulum egestas dui eget libero sodales, sollicitudin ultricies lacus maximus. Etiam ut tellus nec magna pellentesque malesuada.',
+              'NEW', null, DATE_ADD(NOW(), INTERVAL 2 HOUR)),
+             (UUID(), 'Armel', 'Ranaldi', 'aranaldi@email.com', 'lorem ipsum 2',
+              'Nulla facilisi. Pellentesque a lorem libero. Curabitur quis efficitur quam, ac lobortis justo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus turpis vitae laoreet elementum. Duis sollicitudin dolor dui, eget venenatis sapien luctus sit amet. Phasellus consectetur bibendum lorem at efficitur. Ut tristique est vitae felis ornare sodales. Morbi vel ultricies lorem. Duis luctus velit sed elit vulputate, id tincidunt velit volutpat. Pellentesque aliquet augue eget consectetur scelerisque. Sed finibus libero erat, et egestas libero consectetur mollis. Curabitur ac auctor libero. Aenean tristique facilisis aliquam. Quisque volutpat vitae turpis accumsan pellentesque.',
+              'NEW', (SELECT id FROM account WHERE username = 'Armel'), DATE_ADD(NOW(), INTERVAL 2 HOUR));
+    </sql>
+  </changeSet>
+</databaseChangeLog>

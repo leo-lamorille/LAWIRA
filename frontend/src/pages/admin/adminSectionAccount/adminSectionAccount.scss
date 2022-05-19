@@ -1,0 +1,50 @@
+.adminSectionAccount{
+  padding: 5%;
+  display: inline-flex;
+  width: calc(100% - 2*5%);
+  img {
+    width: 20%;
+  }
+  div {
+    margin-left: 20px;
+
+    ul {
+      list-style: none;
+
+      li {
+        margin: 5px 0;
+        span {
+          text-decoration: underline;
+          font-weight: bold;
+          padding: 5px;
+        }
+      }
+    }
+  }
+}
+
+
+@media screen and (max-width: 800px) {
+  .adminSectionAccount{
+    padding: 5%;
+    display: inline-flex;
+    width: calc(100% - 2*5%);
+    img {
+      width: 20%;
+      height: auto;
+    }
+    div {
+      font-size: 15px;
+      h1 {
+        font-size: 20px;
+      }
+      margin-left: 20px;
+
+      button {
+        display: block;
+        margin-top: 50px;
+      }
+    }
+  }
+}
+

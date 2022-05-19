@@ -1,12 +1,26 @@
 import {useState} from "react";
 import {Button} from "@mui/material";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {userSlice} from "../slices/userSlice";
+import {useCookies} from "react-cookie";
+import {useNavigate} from "react-router-dom";
 
-export default function ({attributeId, id, type, value, refresh}) {
+export default function ({attributeId, id, type, value, refresh, showAlert}) {
+  const userAction = userSlice.actions;
+  const dispatch = useDispatch();
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  const navigate = useNavigate();
+
   const userToken = useSelector(state => state.user.jwt);
   const userRole = useSelector(state => state.user.role);
   const [typeInput, setTypeInput] = useState(type);
   const [valueInput, setValueInput] = useState(value);
+
+  const logout = () => {
+    dispatch(userAction.logout(undefined));
+    removeCookie('token', {path: '/'});
+    navigate('/home');
+  }
 
   function checkIfOptionModified() {
     return type !== typeInput || value !== valueInput;
@@ -19,8 +33,14 @@ export default function ({attributeId, id, type, value, refresh}) {
         {
           headers, method: 'DELETE'
         })
-    .then(() => {
-      refresh();
+    .then((res) => {
+      if (res.status === 403) {
+        logout();
+        throw "You are not authorized to do this action"
+      } else if (res.status === 200) {
+        refresh();
+        showAlert("Option supprimée")
+      }
     });
   }
 
@@ -35,8 +55,14 @@ export default function ({attributeId, id, type, value, refresh}) {
         {
           headers, method: 'PUT', body
         })
-    .then(() => {
-      refresh();
+    .then((res) => {
+      if (res.status === 403) {
+        logout();
+        throw "You are not authorized to do this action"
+      } else if (res.status === 200) {
+        refresh();
+        showAlert("Option mise à jour")
+      }
     });
   }
 
@@ -50,10 +76,10 @@ export default function ({attributeId, id, type, value, refresh}) {
     <td><input type="text" value={valueInput}
                onChange={(e) => setValueInput(e.target.value)}/></td>
     <td>
-      <Button color="error" variant="outlined" type="button"
-              onClick={deleteOption}>Supprimer</Button>
-      <Button color="warning" variant="outlined" type="button"
-              disabled={!checkIfOptionModified()} onClick={updateOption}>Valider modification</Button>
+      <button className="btn styledButton" type="button"
+              onClick={deleteOption}>Supprimer</button>
+      <button className="btn styledButton" type="button"
+              disabled={!checkIfOptionModified()} onClick={updateOption}>Valider modification</button>
     </td>
   </tr>
 }

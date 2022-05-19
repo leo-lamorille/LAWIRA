@@ -1,0 +1,29 @@
+.adminMessagePage {
+  position: relative;
+
+  .sentAt {
+    position: absolute;
+    top: 0;
+    right: 20px;
+  }
+
+  h1, h2, h3 {
+    text-align: center;
+  }
+
+  p {
+    margin: 50px auto;
+    width: 70vw;
+    text-align: justify;
+  }
+  .buttons {
+    text-align: center;
+    margin: auto;
+    width: 70vw;
+
+    button {
+            display: inline-block;
+        }
+  }
+
+}

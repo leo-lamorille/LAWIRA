@@ -1,60 +1,125 @@
 import './form.scss';
-import {useRef} from "react";
+import {useRef, useState} from "react";
+import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import Snackbar from '@mui/material/Snackbar';
+import {Alert} from "@mui/material";
 
 export default function Form() {
-    const name = useRef();
-    const familyName = useRef();
-    const email = useRef();
-    const content = useRef();
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [content, setContent] = useState('');
+  const [subject, setSubject] = useState('');
 
-    const submit = () => {
-        console.log('submit');
-        console.log(name);
-        console.log(familyName);
-        console.log(email);
-        console.log(content);
+  const [showAlert, setShowAlert] = useState(false);
+
+  const userToken = useSelector(state => state.user.jwt);
+  const userRole = useSelector(state => state.user.role);
+  const navigate = useNavigate();
+
+  function sendMessage() {
+    const headers = new Headers()
+    headers.append("Authorization", 'Bearer ' + userToken)
+    headers.append("Content-Type", 'application/json');
+    const body = JSON.stringify({
+      firstname,
+      lastname,
+      email,
+      subject,
+      content
+    })
+    fetch("http://localhost:8080/public/contact", {
+      method: 'POST', body, headers
+    }).then(res => {
+      setFirstname("");
+      setLastName("");
+      setEmail("");
+      setSubject("");
+      setContent("");
+      setShowAlert(true);
+    }).catch(err => {
+      console.error(err);
+    })
+  }
+
+  const submit = (e) => {
+    e.preventDefault();
+    sendMessage();
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
     }
+    setShowAlert(false);
+  };
 
-    return (
-        <div className="formContainer" key="formContainer">
-            <p className="title">Nous contacter</p>
-            <form className="formulaire" onSubmit={submit}>
-                <div className="field-wrap">
-                    <label className="label">
-                        Nom<span className="req">*</span> :
-                    </label>
-                </div>
-                <div className="field-wrap">
-                    <input type="text" required autoComplete="off" ref={familyName}/>
-                </div>
-                <div className="field-wrap">
-                    <label className="label">
-                        Prénom<span className="req">*</span> :
-                    </label>
-                </div>
-                <div className="field-wrap">
-                    <input type="text" required autoComplete="off" ref={name}/>
-                </div>
-                <div className="field-wrap">
-                    <label className="label">
-                        Em@il<span className="req">*</span> :
-                    </label>
-                </div>
-                <div className="field-wrap">
-                    <input type="text" required autoComplete="off" ref={email}/>
-                </div>
-                <div className="field-wrap content">
-                    <label className="label">
-                        Votre problème ?<span className="req">*</span> :
-                    </label>
-                </div>
-                <div className="field-wrap">
-                    <textarea required autoComplete="off" ref={content}/>
-                </div>
-                <div className="field-wrap">
-                    <button type="submit" className="btn styledButton validate">Envoyer</button>
-                </div>
-            </form>
-        </div>
-    );
+  return (
+      <div className="formContainer" key="formContainer">
+        <h1>Nous contacter</h1>
+        <form className="formulaire" onSubmit={submit}>
+          <div className="field-wrap">
+            <label className="label" htmlFor="familyName">
+              Nom<span className="req">*</span> :
+            </label>
+          </div>
+          <div className="field-wrap">
+            <input type="text" name="familyName" required autoComplete="off"
+                   value={lastname}
+                   onChange={(e) => setLastName(e.target.value)}/>
+          </div>
+          <div className="field-wrap">
+            <label className="label" htmlFor="firstname">
+              Prénom<span className="req">*</span> :
+            </label>
+          </div>
+          <div className="field-wrap">
+            <input type="text" name="firstname" required autoComplete="off"
+                   value={firstname}
+                   onChange={(e) => setFirstname(e.target.value)}/>
+          </div>
+          <div className="field-wrap">
+            <label className="label" htmlFor="email">
+              Em@il<span className="req">*</span> :
+            </label>
+          </div>
+          <div className="field-wrap">
+            <input type="text" name="email" required autoComplete="off"
+                   value={email} onChange={(e) => setEmail(e.target.value)}/>
+          </div>
+          <div className="field-wrap content">
+            <label className="label" htmlFor="subject">
+              Sujet<span className="req">*</span> :
+            </label>
+          </div>
+          <div className="field-wrap">
+            <input type="text" name="subject" required autoComplete="off"
+                   value={subject}
+                   onChange={(e) => setSubject(e.target.value)}/>
+          </div>
+          <div className="field-wrap content">
+            <label className="label">
+              Veuillez expliquer votre situation<span className="req">*</span> :
+            </label>
+          </div>
+          <div className="field-wrap">
+            <textarea required autoComplete="off" value={content}
+                      onChange={(e) => setContent(e.target.value)}/>
+          </div>
+          <div className="field-wrap">
+            <button type="submit"
+                    className="btn styledButton validate">Envoyer
+            </button>
+          </div>
+        </form>
+
+        <Snackbar open={showAlert} autoHideDuration={6000}
+                  onClose={handleClose}>
+          <Alert severity="success" onClose={() => setShowAlert(false)}>
+            Message envoyé, une réponse vous sera envoyée par mail
+          </Alert>
+        </Snackbar>
+      </div>
+  );
 }

@@ -116,11 +116,22 @@ export default function Product() {
     return true;
   }
 
+  function checkSelectionBeforeAddToConfig() {
+    const nbAttributes = attributes.length;
+    const nbSelection = Object.entries(selection).length;
+    if (nbSelection !== nbAttributes) {
+      setErrorMessage("Erreur: vous avez oublié des configurations ...");
+      return false;
+    }
+    setErrorMessage("")
+    return true;
+  }
+
   function saveConfiguration() {
     if (!checkConnection()) {
       return;
     }
-    const isSelectionGood = checkSelectionBeforeAddToStore()
+    const isSelectionGood = checkSelectionBeforeAddToConfig()
     if (isSelectionGood) {
       const configName = prompt(
           "Choisissez un nom pour votre configuration");
