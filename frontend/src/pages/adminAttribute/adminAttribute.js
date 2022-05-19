@@ -9,6 +9,7 @@ import CreateAttributeOptionForm
   from "../../features/form/createAttributeOption/createAttributeOptionForm";
 import {userSlice} from "../../features/slices/userSlice";
 import {useCookies} from "react-cookie";
+import Snackbar from "@mui/material/Snackbar";
 
 export default function () {
   const userAction = userSlice.actions;
@@ -21,10 +22,20 @@ export default function () {
   const [loading, setLoading] = useState(true);
   const [initialAttribute, setInitialAttribute] = useState();
 
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [options, setOptions] = useState([])
   const {attributeId} = useParams();
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setShowAlert(false);
+  };
 
   const logout = () => {
     dispatch(userAction.logout(undefined));
@@ -55,6 +66,7 @@ export default function () {
       setLoading(false);
       setDescription(description);
       setOptions(options);
+
     });
   }
 
@@ -73,6 +85,9 @@ export default function () {
         throw "You are not authorized to do this action"
       } else if (res.status === 200) {
         refreshAttribute();
+
+        setShowAlert(true);
+        setAlertMessage("Attribut mis à jour");
       }
     });
   }
@@ -102,6 +117,12 @@ export default function () {
   }
 
   return <div className="adminAttribute">
+    <Snackbar open={showAlert} autoHideDuration={3000}
+              onClose={handleClose}>
+      <Alert severity="success" onClose={() => setShowAlert(false)}>
+        {alertMessage}
+      </Alert>
+    </Snackbar>
     <h1>Attribut {attributeId}</h1>
     {loading && <CircularProgress/> || <form onSubmit={submit}>
       <div>
@@ -115,9 +136,9 @@ export default function () {
                   onChange={(e) => setDescription(e.target.value)}/>
       </div>
 
-      <Button type="submit" variant="outlined" color="warning"
+      <button type="submit" className="btn styledButton"
               disabled={!checkIfAttributeModified()}>
-        Valider la modification</Button>
+        Valider la modification</button>
     </form>}
 
     <h2>Options</h2>
@@ -137,6 +158,10 @@ export default function () {
             return <CRUDAttributeOption key={id} attributeId={attributeId}
                                         id={id}
                                         type={type} value={value}
+                                        showAlert={(message)=>{
+                                          setShowAlert(true);
+                                          setAlertMessage(message);
+                                        }}
                                         refresh={refreshAttribute}/>
           })
         }

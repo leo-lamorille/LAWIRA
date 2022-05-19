@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {
+  Alert,
   CircularProgress, FormControlLabel, Input,
 } from "@mui/material";
 import CRUDAttribute from "../../features/crudAttribute/CRUDAttribute";
@@ -17,11 +18,15 @@ import CreateAdministratorForm
   from "../../features/form/createAdministrator/createAdministratorForm";
 import AdminSectionMessage from "./adminSectionMessage/adminSectionMessage";
 import {CheckBox} from "@material-ui/icons";
+import Snackbar from "@mui/material/Snackbar";
 
 export default function Admin() {
   const userAction = userSlice.actions;
   const dispatch = useDispatch();
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const navigate = useNavigate();
   const userToken = useSelector(state => state.user.jwt);
@@ -32,6 +37,13 @@ export default function Admin() {
   const [accounts, setAccounts] = useState();
   const [messages, setMessages] = useState();
   const [showSeenMessages, setShowSeenMessages] = useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setShowAlert(false);
+  };
 
   const logout = () => {
     dispatch(userAction.logout(undefined));
@@ -84,6 +96,8 @@ export default function Admin() {
         throw "You are not authorized to do this action"
       } else if (res.status === 200) {
         refreshPendingCommands();
+        setShowAlert(true);
+        setAlertMessage("Commande validée");
       } else {
         console.error(res.json());
       }
@@ -141,6 +155,12 @@ export default function Admin() {
   const nbNewMessages = messages === undefined ? "-" : messages.length
       - nbSeenMessages;
   return <div className="admin__page">
+    <Snackbar open={showAlert} autoHideDuration={3000}
+              onClose={handleClose}>
+      <Alert severity="success" onClose={() => setShowAlert(false)}>
+        {alertMessage}
+      </Alert>
+    </Snackbar>
     <h1>Commandes à traiter {pendingCommands
         && `(${pendingCommands.length})`}</h1>
     <div className="pendingCommands">
@@ -165,6 +185,10 @@ export default function Admin() {
                                                                      name={name}
                                                                      description={description}
                                                                      options={options}
+                                                                     setShowAlert={(message)=>{
+                                                                       setShowAlert(true);
+                                                                       setAlertMessage(message);
+                                                                     }}
                                                                      refresh={refreshAttributes}/>)
             || <CircularProgress/>)
       }

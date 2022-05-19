@@ -4,6 +4,7 @@ import heavynimbus.backend.db.account.Account;
 import heavynimbus.backend.db.account.AccountRepository;
 import heavynimbus.backend.db.command.CommandRepository;
 import heavynimbus.backend.db.configuration.ConfigurationRepository;
+import heavynimbus.backend.db.contactMessage.ContactMessageRepository;
 import heavynimbus.backend.dto.account.AccountResponse;
 import heavynimbus.backend.dto.login.LoginRequest;
 import heavynimbus.backend.exception.AlreadyExistsException;
@@ -26,6 +27,7 @@ public class AccountService {
   private final AccountMapper accountMapper;
   private final CommandRepository commandRepository;
   private final ConfigurationRepository configurationRepository;
+  private final ContactMessageRepository contactMessageRepository;
   private final LoginService loginService;
 
   public String createAccount(LoginRequest loginRequest) throws AlreadyExistsException {
@@ -88,6 +90,7 @@ public class AccountService {
     Account account = findAccountById(accountId);
     commandRepository.deleteAllByAccount(account);
     configurationRepository.deleteAllByAccount(account);
+    contactMessageRepository.deleteAllByAccount(account);
     accountRepository.delete(account);
   }
 }

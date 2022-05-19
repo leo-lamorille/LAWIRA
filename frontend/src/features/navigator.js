@@ -25,7 +25,7 @@ export default function Navigator() {
                element={<AdminAttribute/>}/>
         <Route path="/admin/message/:messageId" element={<AdminMessage/>}/>
         <Route path="/basket" element={<Basket/>}/>
-        <Route path="/form" element={<Form/>}/>
+        <Route path="/form" element={<Form />} />
         <Route path="*" element={<Navigate to="/home"/>}/>
       </Routes>
   );

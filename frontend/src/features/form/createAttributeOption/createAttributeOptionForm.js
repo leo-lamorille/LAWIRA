@@ -35,8 +35,8 @@ export default function ({attributeId, refresh}) {
   }
 
   return <>
-    <Button type="button" color="success" variant="outlined"
-            onClick={() => setDisplay(true)}>Nouvelle option</Button>
+    <button type="button" className="btn styledButton"
+            onClick={() => setDisplay(true)}>Nouvelle option</button>
     <Dialog open={display}>
       <form className="createAttributeForm" onSubmit={createAttributeOption}>
         <DialogTitle>Nouvel attribut</DialogTitle>
@@ -58,12 +58,12 @@ export default function ({attributeId, refresh}) {
           </div>
         </DialogContent>
         <DialogActions>
-          <Button type="button"
+          <button type="button" className="btn styledButton"
                   onClick={() => setDisplay(
-                      false)}>Annuler</Button>
-          <Button type="submit">
+                      false)}>Annuler</button>
+          <button type="submit" className="btn styledButton">
             Valider
-          </Button>
+          </button>
         </DialogActions>
       </form>
     </Dialog></>

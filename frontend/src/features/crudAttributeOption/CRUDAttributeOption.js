@@ -5,7 +5,7 @@ import {userSlice} from "../slices/userSlice";
 import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
 
-export default function ({attributeId, id, type, value, refresh}) {
+export default function ({attributeId, id, type, value, refresh, showAlert}) {
   const userAction = userSlice.actions;
   const dispatch = useDispatch();
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
@@ -39,6 +39,7 @@ export default function ({attributeId, id, type, value, refresh}) {
         throw "You are not authorized to do this action"
       } else if (res.status === 200) {
         refresh();
+        showAlert("Option supprimée")
       }
     });
   }
@@ -60,6 +61,7 @@ export default function ({attributeId, id, type, value, refresh}) {
         throw "You are not authorized to do this action"
       } else if (res.status === 200) {
         refresh();
+        showAlert("Option mise à jour")
       }
     });
   }
@@ -74,10 +76,10 @@ export default function ({attributeId, id, type, value, refresh}) {
     <td><input type="text" value={valueInput}
                onChange={(e) => setValueInput(e.target.value)}/></td>
     <td>
-      <Button color="error" variant="outlined" type="button"
-              onClick={deleteOption}>Supprimer</Button>
-      <Button color="warning" variant="outlined" type="button"
-              disabled={!checkIfOptionModified()} onClick={updateOption}>Valider modification</Button>
+      <button className="btn styledButton" type="button"
+              onClick={deleteOption}>Supprimer</button>
+      <button className="btn styledButton" type="button"
+              disabled={!checkIfOptionModified()} onClick={updateOption}>Valider modification</button>
     </td>
   </tr>
 }

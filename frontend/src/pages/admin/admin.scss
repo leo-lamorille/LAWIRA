@@ -3,22 +3,24 @@
     text-align: center;
   }
   > div:not([class*="showSeenMessages"]) {
-    margin: 5vh auto;
-    width: 70vw;
-    height: 50vh;
-    overflow: scroll;
-    border: solid 1px white;
-    resize: vertical;
-    padding: 10px;
+    &:not([class*="MuiSnackbar-root"]){
+      margin: 5vh auto;
+      width: 70vw;
+      height: 50vh;
+      overflow: scroll;
+      border: solid 1px white;
+      resize: vertical;
+      padding: 10px;
 
-    &.attributes > button{
-      margin: auto;
-      display: block;
-    }
+      &.attributes > button{
+        margin: auto;
+        display: block;
+      }
 
-    &:last-child {
-      margin-bottom: 100px;
-      height: 500px;
+      &:last-child {
+        margin-bottom: 100px;
+        height: 500px;
+      }
     }
   }
 

@@ -1,25 +1,63 @@
 import './form.scss';
-import {useRef} from "react";
+import {useRef, useState} from "react";
+import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import Snackbar from '@mui/material/Snackbar';
+import {Alert} from "@mui/material";
 
 export default function Form() {
-  const name = useRef();
-  const familyName = useRef();
-  const email = useRef();
-  const content = useRef();
-  const subject = useRef();
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [content, setContent] = useState('');
+  const [subject, setSubject] = useState('');
+
+  const [showAlert, setShowAlert] = useState(false);
+
+  const userToken = useSelector(state => state.user.jwt);
+  const userRole = useSelector(state => state.user.role);
+  const navigate = useNavigate();
+
+  function sendMessage() {
+    const headers = new Headers()
+    headers.append("Authorization", 'Bearer ' + userToken)
+    headers.append("Content-Type", 'application/json');
+    const body = JSON.stringify({
+      firstname,
+      lastname,
+      email,
+      subject,
+      content
+    })
+    fetch("http://localhost:8080/public/contact", {
+      method: 'POST', body, headers
+    }).then(res => {
+      setFirstname("");
+      setLastName("");
+      setEmail("");
+      setSubject("");
+      setContent("");
+      setShowAlert(true);
+    }).catch(err => {
+      console.error(err);
+    })
+  }
 
   const submit = (e) => {
     e.preventDefault();
-    console.log('submit');
-    console.log(name);
-    console.log(familyName);
-    console.log(email);
-    console.log(content);
+    sendMessage();
   }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setShowAlert(false);
+  };
 
   return (
       <div className="formContainer" key="formContainer">
-        <p className="title">Nous contacter</p>
+        <h1>Nous contacter</h1>
         <form className="formulaire" onSubmit={submit}>
           <div className="field-wrap">
             <label className="label" htmlFor="familyName">
@@ -28,7 +66,8 @@ export default function Form() {
           </div>
           <div className="field-wrap">
             <input type="text" name="familyName" required autoComplete="off"
-                   ref={familyName}/>
+                   value={lastname}
+                   onChange={(e) => setLastName(e.target.value)}/>
           </div>
           <div className="field-wrap">
             <label className="label" htmlFor="firstname">
@@ -37,7 +76,8 @@ export default function Form() {
           </div>
           <div className="field-wrap">
             <input type="text" name="firstname" required autoComplete="off"
-                   ref={name}/>
+                   value={firstname}
+                   onChange={(e) => setFirstname(e.target.value)}/>
           </div>
           <div className="field-wrap">
             <label className="label" htmlFor="email">
@@ -46,7 +86,7 @@ export default function Form() {
           </div>
           <div className="field-wrap">
             <input type="text" name="email" required autoComplete="off"
-                   ref={email}/>
+                   value={email} onChange={(e) => setEmail(e.target.value)}/>
           </div>
           <div className="field-wrap content">
             <label className="label" htmlFor="subject">
@@ -55,7 +95,8 @@ export default function Form() {
           </div>
           <div className="field-wrap">
             <input type="text" name="subject" required autoComplete="off"
-                   ref={subject}/>
+                   value={subject}
+                   onChange={(e) => setSubject(e.target.value)}/>
           </div>
           <div className="field-wrap content">
             <label className="label">
@@ -63,7 +104,8 @@ export default function Form() {
             </label>
           </div>
           <div className="field-wrap">
-            <textarea required autoComplete="off" ref={content}/>
+            <textarea required autoComplete="off" value={content}
+                      onChange={(e) => setContent(e.target.value)}/>
           </div>
           <div className="field-wrap">
             <button type="submit"
@@ -71,6 +113,13 @@ export default function Form() {
             </button>
           </div>
         </form>
+
+        <Snackbar open={showAlert} autoHideDuration={6000}
+                  onClose={handleClose}>
+          <Alert severity="success" onClose={() => setShowAlert(false)}>
+            Message envoyé, une réponse vous sera envoyée par mail
+          </Alert>
+        </Snackbar>
       </div>
   );
 }
