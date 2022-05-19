@@ -1,5 +1,6 @@
 package heavynimbus.backend.controller.admin;
 
+import heavynimbus.backend.controller.doc.AdminStatControllerDocumentation;
 import heavynimbus.backend.db.stats.AttributeOptionStatsResponse;
 import heavynimbus.backend.exception.NotFoundException;
 import heavynimbus.backend.service.StatService;
@@ -16,16 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/stats")
-@SecurityRequirement(name = "jwt_auth")
-public class AdminStatController {
+public class AdminStatController implements AdminStatControllerDocumentation {
   private final StatService statService;
 
-  @GetMapping("/command/{attributeId}")
+  @GetMapping("/{attributeId}")
   public List<AttributeOptionStatsResponse> getCommandOptionStatsByAttribute(
       @PathVariable UUID attributeId) throws NotFoundException {
     return statService.getCommandOptionStatsByAttribute(attributeId);
   }
-
-  @GetMapping("/configuration/{attributeId}")
-  public void getConfigurationOptionStatsByAttribute(@PathVariable UUID attributeId) {}
 }

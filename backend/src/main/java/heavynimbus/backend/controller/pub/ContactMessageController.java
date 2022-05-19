@@ -1,5 +1,6 @@
 package heavynimbus.backend.controller.pub;
 
+import heavynimbus.backend.controller.doc.ContactMessageControllerDocumentation;
 import heavynimbus.backend.dto.contactMessage.ContactMessageResponse;
 import heavynimbus.backend.dto.contactMessage.CreateContactMessageRequest;
 import heavynimbus.backend.service.ContactMessageService;
@@ -14,9 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@SecurityRequirement(name = "jwt_auth")
 @RequestMapping("/public/contact")
-public class ContactMessageController {
+public class ContactMessageController implements ContactMessageControllerDocumentation {
 
   private final ContactMessageService contactMessageService;
 

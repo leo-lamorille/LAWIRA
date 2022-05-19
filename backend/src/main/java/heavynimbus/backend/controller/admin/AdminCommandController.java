@@ -1,5 +1,6 @@
 package heavynimbus.backend.controller.admin;
 
+import heavynimbus.backend.controller.doc.AdminCommandControllerDocumentation;
 import heavynimbus.backend.dto.command.AdminCommandResponse;
 import heavynimbus.backend.exception.NotFoundException;
 import heavynimbus.backend.service.CommandService;
@@ -13,11 +14,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@SecurityRequirement(name = "jwt_auth")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/commands")
-public class AdminCommandController {
+public class AdminCommandController implements AdminCommandControllerDocumentation {
 
   private final CommandService commandService;
 

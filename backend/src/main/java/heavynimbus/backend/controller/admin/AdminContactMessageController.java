@@ -1,5 +1,6 @@
 package heavynimbus.backend.controller.admin;
 
+import heavynimbus.backend.controller.doc.AdminContactMessageControllerDocumentation;
 import heavynimbus.backend.db.contactMessage.ContactMessageStatus;
 import heavynimbus.backend.dto.contactMessage.ContactMessageResponse;
 import heavynimbus.backend.exception.NotFoundException;
@@ -16,10 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@SecurityRequirement(name = "jwt_auth")
 @RequestMapping("/admin/contact")
 @RequiredArgsConstructor
-public class AdminContactMessageController {
+public class AdminContactMessageController implements AdminContactMessageControllerDocumentation {
 
   private final ContactMessageService contactMessageService;
 

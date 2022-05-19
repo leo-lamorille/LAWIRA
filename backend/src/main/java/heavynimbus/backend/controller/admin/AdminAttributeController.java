@@ -1,5 +1,6 @@
 package heavynimbus.backend.controller.admin;
 
+import heavynimbus.backend.controller.doc.AdminAttributeControllerDocumentation;
 import heavynimbus.backend.dto.attribute.CreateAttributeRequest;
 import heavynimbus.backend.dto.attribute.AttributeResponse;
 import heavynimbus.backend.exception.NotFoundException;
@@ -17,11 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@SecurityRequirement(name = "jwt_auth")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/attributes")
-public class AdminAttributeController {
+public class AdminAttributeController implements AdminAttributeControllerDocumentation {
 
   private final AttributeService attributeService;
 

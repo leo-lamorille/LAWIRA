@@ -267,14 +267,14 @@ export default function Product() {
                                                              clickOnOption={clickOnOption}/>)
       }
 
-      <Button variant="outlined" onClick={saveConfiguration}>
+      <button className="btn styledButton" onClick={saveConfiguration}>
         Sauvegarder la configuration
-      </Button>
+      </button>
       {
-          configurationId && <Button variant="outlined"
+          configurationId && <button className="btn styledButton"
                                      onClick={updateConfiguration}>
             Mettre à jour la configuration
-          </Button>
+          </button>
       }
 
       <TextField className="quantity" value={quantity} type="text"
@@ -289,13 +289,14 @@ export default function Product() {
       {
         <div className="errorMessage">{errorMessage}</div>
       }
-      <Button variant="outlined" type="submit">
+      <button type="submit" className="btn styledButton">
         Ajouter au panier
-      </Button>
+      </button>
       {
-          commandId && <Button variant="outlined" onClick={updateCommand}>
+          commandId && <button className="btn styledButton"
+                               onClick={updateCommand}>
             Mettre à jour la commande
-          </Button>
+          </button>
       }
     </form>
   </div>

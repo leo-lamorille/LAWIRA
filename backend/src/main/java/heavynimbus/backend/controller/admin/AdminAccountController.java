@@ -1,5 +1,6 @@
 package heavynimbus.backend.controller.admin;
 
+import heavynimbus.backend.controller.doc.AdminAccountControllerDocumentation;
 import heavynimbus.backend.dto.account.AccountResponse;
 import heavynimbus.backend.dto.login.LoginRequest;
 import heavynimbus.backend.exception.AlreadyExistsException;
@@ -20,11 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@SecurityRequirement(name = "jwt_auth")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/accounts")
-public class AdminAccountController {
+public class AdminAccountController implements AdminAccountControllerDocumentation {
   private final AccountService accountService;
 
   @GetMapping

@@ -43,7 +43,7 @@ export default function ({jwt}) {
   function refreshData(attributeId) {
     let headers = new Headers()
     headers.append("Authorization", 'Bearer ' + jwt)
-    fetch(`http://localhost:8080/admin/stats/command/${attributeId}`,
+    fetch(`http://localhost:8080/admin/stats/${attributeId}`,
         {headers})
     .then(d => d.json())
     .then(r => setData(r))

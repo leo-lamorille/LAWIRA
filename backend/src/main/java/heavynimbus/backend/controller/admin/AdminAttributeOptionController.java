@@ -1,5 +1,6 @@
 package heavynimbus.backend.controller.admin;
 
+import heavynimbus.backend.controller.doc.AdminAttributeOptionControllerDocumentation;
 import heavynimbus.backend.dto.attributeOption.AttributeOptionResponse;
 import heavynimbus.backend.dto.attributeOption.CreateAttributeOptionRequest;
 import heavynimbus.backend.exception.NotFoundException;
@@ -17,11 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@SecurityRequirement(name = "jwt_auth")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/attributes/{attributeId}/options")
-public class AdminAttributeOptionController {
+public class AdminAttributeOptionController implements AdminAttributeOptionControllerDocumentation {
 
   private final AttributeOptionService attributeOptionService;
 
